@@ -37,9 +37,7 @@
         nil      # Nix
       ];
       environment.shells = [ pkgs.fish ];
-      environment.variables = {
-        EDITOR = "hx";
-      };
+      environment.variables.EDITOR = "hx";
 
       services.nix-daemon.enable = true;
 

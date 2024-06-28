@@ -1,3 +1,7 @@
+let
+  palette = import ./palette.nix;
+in
+''
 // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
 keybinds {
     normal {
@@ -262,17 +266,17 @@ scrollback_lines_to_serialize 100000
 //
 themes {
     gruvbox-dark {
-        fg "#D5C4A1"
-        bg "#282828"
-        black "#3C3836"
-        red "#CC241D"
-        green "#98971A"
-        yellow "#D79921"
-        blue "#3C8588"
-        magenta "#B16286"
-        cyan "#689D6A"
-        white "#FBF1C7"
-        orange "#D65D0E"
+        fg "#${palette.gray."150"}"
+        bg "#${palette.gray."350"}"
+        black "#${palette.gray."400"}"
+        red "#${palette.red."300"}"
+        green "#${palette.green."250"}"
+        yellow "#${palette.yellow."250"}"
+        blue "#${palette.blue."250"}"
+        magenta "#${palette.magenta."250"}"
+        cyan "#${palette.cyan."250"}"
+        white "#${palette.gray."150"}"
+        orange "#${palette.orange."250"}"
     }
 }
 
@@ -363,3 +367,4 @@ default_layout "compact"
 // Default: false
 //
 // disable_session_metadata true
+''

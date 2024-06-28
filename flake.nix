@@ -13,6 +13,8 @@
       realname = "Emil Broman";
       email = "emil@emilbroman.me";
     };
+
+    fish = import ./fish.nix;
     
     configuration = { pkgs, ... }: {
       # List packages installed in system profile. To search by name, run:
@@ -22,10 +24,10 @@
         skhd     # macOS keyboard shortcuts
 
         # Terminal development stack
-        zellij   # Terminal multiplexer
-        fish     # Shell
-        yazi     # File explorer
-        helix    # Editor
+        zellij    # Terminal multiplexer
+        pkgs.fish # Shell
+        yazi      # File explorer
+        helix     # Editor
 
         # Terminal tools
         git
@@ -35,6 +37,7 @@
 
         # Language servers
         nil      # Nix
+        marksman # Markdown
       ];
       environment.shells = [ pkgs.fish ];
       environment.variables.EDITOR = "hx";
@@ -42,7 +45,6 @@
       services.nix-daemon.enable = true;
 
       nix.settings.experimental-features = "nix-command flakes";
-      programs.fish.enable = true;
 
       homebrew.enable = true;
       homebrew.casks = [
@@ -53,12 +55,10 @@
         autoUpdate = false;
         cleanup = "zap";
       };
-      programs.fish.shellInit = ''
-        fish_add_path /run/current-system/sw/bin /opt/homebrew/bin
 
-        # Enter GPG password using this TTY
-        export GPG_TTY=(tty)
-      '';
+      programs.fish = fish.systemConfig // {
+        enable = true;
+      };
 
       programs.gnupg.agent = {
         enable = true;
@@ -91,14 +91,21 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.${user.username} = { pkgs, ... }:
+            let
+              helix = import ./helix.nix;
+            in
             {
               home.stateVersion = "23.05";
 
               programs.home-manager.enable = true;
 
+              programs.fish = fish.userConfig // {
+                enable = true;
+              };
+
               programs.wezterm = {
                 enable = true;
-                extraConfig = builtins.readFile ./wezterm.lua;
+                extraConfig = import ./wezterm.lua.nix;
               };
 
               # Toggle WezTerm using F13
@@ -125,8 +132,11 @@
                 pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
               '';
 
-              home.file.".config/zellij/config.kdl".source = ./zellij.kdl;
-              home.file.".config/helix/config.toml".source = ./helix.toml;
+              home.file.".config/zellij/config.kdl".text = import ./zellij.kdl.nix;
+
+              programs.helix = helix // {
+                enable = true;
+              };
             };
         }
       ];
@@ -134,7 +144,7 @@
   in
   {
     darwinConfigurations."Emils-Mac-mini" = system;
-    darwinConfigurations."Emils-MacBook-Pro-2.local" = system;
+    darwinConfigurations."Emils-MacBook-Pro-2" = system;
 
     darwinPackages = system.pkgs;
   };

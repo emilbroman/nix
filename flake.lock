@@ -69,7 +69,20 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
-        "nix-darwin": "nix-darwin"
+        "nix-darwin": "nix-darwin",
+        "zjstatus": "zjstatus"
+      }
+    },
+    "zjstatus": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-mUOTSVgUncYPU8ms6ohzM6A4fEpL84IbUyW0+zOvoo8=",
+        "type": "file",
+        "url": "https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm"
       }
     }
   },

@@ -4,9 +4,11 @@
   inputs = {
     nix-darwin.url = "github:LnL7/nix-darwin";
     home-manager.url = "github:nix-community/home-manager";
+    zjstatus.url = "https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm";
+    zjstatus.flake = false;
   };
 
-  outputs = { self, nix-darwin, home-manager }:
+  outputs = { self, nix-darwin, home-manager, zjstatus }:
   let
     user = {
       username = "emilbroman";
@@ -41,6 +43,7 @@
       ];
       environment.shells = [ pkgs.fish ];
       environment.variables.EDITOR = "hx";
+      environment.variables.COLORTERM = "truecolor";
 
       services.nix-daemon.enable = true;
 
@@ -132,7 +135,8 @@
                 pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
               '';
 
-              home.file.".config/zellij/config.kdl".text = import ./zellij.kdl.nix;
+              home.file.".config/zellij/config.kdl".text = (import ./zellij.nix).config;
+              home.file.".config/zellij/layouts/default.kdl".text = (import ./zellij.nix).defaultLayout { inherit zjstatus; };
 
               programs.helix = helix // {
                 enable = true;

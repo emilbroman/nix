@@ -1,7 +1,8 @@
 let
   palette = import ./palette.nix;
 in
-''
+{
+  config = ''
 // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
 keybinds {
     normal {
@@ -265,7 +266,7 @@ scrollback_lines_to_serialize 100000
 // Once these themes are defined, one of them should to be selected in the "theme" section of this file
 //
 themes {
-    gruvbox-dark {
+    emil {
         fg "#${palette.gray."150"}"
         bg "#${palette.gray."350"}"
         black "#${palette.gray."400"}"
@@ -283,12 +284,12 @@ themes {
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-theme "gruvbox-dark"
+theme "emil"
 
 // The name of the default layout to load on startup
 // Default: "default"
 //
-default_layout "compact"
+// default_layout "compact"
 
 // Choose the mode that zellij uses when starting up.
 // Default: normal
@@ -367,4 +368,49 @@ default_layout "compact"
 // Default: false
 //
 // disable_session_metadata true
-''
+'';
+
+  defaultLayout = { zjstatus }: ''
+layout {
+  default_tab_template {
+    pane size=1 borderless=true {
+      plugin location="file:${zjstatus}" {
+        format_left   "{tabs}"
+        format_right  "{mode} {datetime}"
+
+        border_enabled  "false"
+
+        hide_frame_for_single_pane "true"
+
+        mode_normal   "#[fg=#${palette.gray."200"},bg=#${palette.gray."300"}] {name} "
+        mode_locked   "#[fg=#${palette.orange."300"},bg=#${palette.orange."200"}] {name} "
+        mode_default_to_mode "normal"
+
+        tab_normal   "#[fg=#${palette.gray."200"},bg=#${palette.gray."300"}] {name} #[normal] "
+        tab_active   "#[bg=#${palette.gray."200"},fg=#${palette.gray."300"}] {name} #[normal] "
+
+        datetime          "#[fg=#${palette.gray."250"}] {format}"
+        datetime_format   "%H:%M"
+        datetime_timezone "Europe/Stockholm"
+      }
+    }
+
+    children
+
+    pane size=1 borderless=true {
+      plugin location="file:${zjstatus}" {
+        format_right  "{command_hostname}"
+        border_enabled  "false"
+
+        command_hostname_command     "./hostname"
+        command_hostname_format      "#[fg=#${palette.gray."250"},bold]{stdout}"
+        command_hostname_interval    "0"
+        command_hostname_rendermode  "static"
+        command_hostname_cwd         "/bin"
+        command_hostname_env         {}
+      }
+    }
+  }
+}
+'';
+}

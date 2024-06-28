@@ -3,29 +3,29 @@ let
 palette = import ./palette.nix;
 
 variables = {
-  fish_color_autosuggestion = "77849E";
-  fish_color_cancel = "\x2dr";
-  fish_color_command = "ECD444\x1e\x2d\x2dbold";
-  fish_color_comment = "77849E\x1e\x2d\x2ditalics";
-  fish_color_cwd = "FB997D";
-  fish_color_cwd_root = "F46036";
-  fish_color_end = "77849E";
-  fish_color_error = "E4455A";
-  fish_color_escape = "FB997D";
+  fish_color_autosuggestion = palette.gray."250";
+  fish_color_cancel = "-r";
+  fish_color_command = "${palette.yellow."350"} --bold";
+  fish_color_comment = "${palette.gray."250"} --italics";
+  fish_color_cwd = palette.orange."250";
+  fish_color_cwd_root = palette.orange."350";
+  fish_color_end = palette.gray."250";
+  fish_color_error = palette.red."350";
+  fish_color_escape = palette.orange."250";
   fish_color_history_current = "normal";
   fish_color_host = "normal";
   fish_color_host_remote = "normal";
-  fish_color_match = "354256";
-  fish_color_normal = "E6EAF1";
-  fish_color_operator = "FD6BDD";
-  fish_color_param = "F8EB9E";
-  fish_color_quote = "6AEAA0";
-  fish_color_redirection = "FFD2F5\x1e\x2d\x2ditalics";
-  fish_color_search_match = "\x2d\x2dbackground\x3d354256";
-  fish_color_selection = "\x2d\x2dbackground\x3d354256";
-  fish_color_status = "ECD444\x1e\x2d\x2dunderline";
-  fish_color_user = "F46036";
-  fish_color_valid_path = "F8EB9E\x1e\x2d\x2dunderline";
+  fish_color_match = palette.gray."300";
+  fish_color_normal = palette.gray."150";
+  fish_color_operator = palette.magenta."200";
+  fish_color_param = palette.yellow."200";
+  fish_color_quote = palette.green."200";
+  fish_color_redirection = "${palette.magenta."100"} --italics";
+  fish_color_search_match = "--background=${palette.gray."300"}";
+  fish_color_selection = "--background=${palette.gray."300"}";
+  fish_color_status = "${palette.yellow."350"} --underline";
+  fish_color_user = palette.orange."350";
+  fish_color_valid_path = "${palette.yellow."200"} --underline";
 };
 
 in

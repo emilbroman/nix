@@ -143,8 +143,8 @@
     };
   in
   {
-    darwinConfigurations."Emils-Mac-mini" = system;
-    darwinConfigurations."Emils-MacBook-Pro-2" = system;
+    darwinConfigurations."emils-mini" = system;
+    darwinConfigurations."emils-macbook" = system;
 
     darwinPackages = system.pkgs;
   };

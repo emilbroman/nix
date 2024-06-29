@@ -41,6 +41,8 @@ in
   home.file.".config/zellij/config.kdl".text = (import ./zellij.nix).config;
   home.file.".config/zellij/layouts/default.kdl".text = (import ./zellij.nix).defaultLayout { zjstatus = zjstatus; };
 
+  home.file.".hushlogin".text = "";
+
   programs.helix = (import ./helix.nix) // {
     enable = true;
   };

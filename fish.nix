@@ -3,6 +3,7 @@ let
 palette = import ./palette.nix;
 
 variables = {
+  fish_term24bit = "1";
   fish_color_autosuggestion = palette.gray."250";
   fish_color_cancel = "-r";
   fish_color_command = "${palette.yellow."350"} --bold";
@@ -33,7 +34,7 @@ in
 {
   systemConfig = {
     shellInit = ''
-      fish_add_path /run/current-system/sw/bin /opt/homebrew/bin
+      fish_add_path /opt/homebrew/bin
     '';
   };
 

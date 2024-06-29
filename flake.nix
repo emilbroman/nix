@@ -1,14 +1,15 @@
 {
-  description = "Emil's Nix Flake for macOS";
+  description = "Emil's Nix Flake for macOS & Linux";
 
   inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     home-manager.url = "github:nix-community/home-manager";
     zjstatus.url = "https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm";
     zjstatus.flake = false;
   };
 
-  outputs = { self, nix-darwin, home-manager, zjstatus }:
+  outputs = { self, nixpkgs, nix-darwin, home-manager, zjstatus }:
   let
     user = {
       username = "emilbroman";
@@ -22,9 +23,6 @@
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = with pkgs; [
-        # OS packages
-        skhd     # macOS keyboard shortcuts
-
         # Terminal development stack
         zellij    # Terminal multiplexer
         pkgs.fish # Shell
@@ -36,6 +34,7 @@
         ripgrep  # Fuzzy finder
         openssh  # SSH
         gnupg    # PGP
+        wget
 
         # Language servers
         nil      # Nix
@@ -45,19 +44,7 @@
       environment.variables.EDITOR = "hx";
       environment.variables.COLORTERM = "truecolor";
 
-      services.nix-daemon.enable = true;
-
       nix.settings.experimental-features = "nix-command flakes";
-
-      homebrew.enable = true;
-      homebrew.casks = [
-        "wezterm"
-        "docker"
-      ];
-      homebrew.onActivation = {
-        autoUpdate = false;
-        cleanup = "zap";
-      };
 
       programs.fish = fish.systemConfig // {
         enable = true;
@@ -70,85 +57,147 @@
 
       system.configurationRevision = self.rev or self.dirtyRev or null;
 
-      system.stateVersion = 4;
-
       users.users.${user.username} = {
         name = user.username;
         shell = pkgs.fish;
       };
 
       nix.settings.trusted-users = [ user.username ];
+      
+      home-manager.backupFileExtension = "old";
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.users.${user.username} = { pkgs, ... }: {
+        home.stateVersion = "23.05";
+
+        programs.home-manager.enable = true;
+
+        programs.fish = fish.userConfig // {
+          enable = true;
+        };
+
+        programs.wezterm = {
+          enable = true;
+          extraConfig = import ./wezterm.lua.nix;
+        };
+
+        programs.git = {
+          enable = true;
+          userName = user.realname;
+          userEmail = user.email;
+          signing.signByDefault = true;
+          signing.key = null;
+
+          extraConfig = {
+            init.defaultBranch = "main";
+          };
+        };
+
+        home.file.".gnupg/gpg-agent.conf".text = ''
+          pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
+        '';
+
+        home.file.".config/zellij/config.kdl".text = (import ./zellij.nix).config;
+        home.file.".config/zellij/layouts/default.kdl".text = (import ./zellij.nix).defaultLayout { inherit zjstatus; };
+
+        programs.helix = (import ./helix.nix) // {
+          enable = true;
+        };
+      };
     };
 
-    system = nix-darwin.lib.darwinSystem {
-      modules = [
-        configuration
-        home-manager.darwinModules.home-manager
-        {
-          nixpkgs.hostPlatform = "aarch64-darwin";
+    darwinConfiguration = { pkgs, ... }: {
+      system.stateVersion = 4;
 
-          users.users.${user.username}.home = "/Users/${user.username}";
+      services.nix-daemon.enable = true;
 
-          system.defaults.NSGlobalDomain.InitialKeyRepeat = 10;
-          system.defaults.NSGlobalDomain.KeyRepeat = 3;
-
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.${user.username} = { pkgs, ... }:
-            let
-              helix = import ./helix.nix;
-            in
-            {
-              home.stateVersion = "23.05";
-
-              programs.home-manager.enable = true;
-
-              programs.fish = fish.userConfig // {
-                enable = true;
-              };
-
-              programs.wezterm = {
-                enable = true;
-                extraConfig = import ./wezterm.lua.nix;
-              };
-
-              # Toggle WezTerm using F13
-              home.file.".config/skhd/skhdrc".text = ''
-                f13 [
-                  "wezterm" : osascript -e 'tell application "System Events" to set visible of process "WezTerm" to false'
-                  *         : osascript -e 'activate application "WezTerm"'
-                ]
-              '';
-
-              programs.git = {
-                enable = true;
-                userName = user.realname;
-                userEmail = user.email;
-                signing.signByDefault = true;
-                signing.key = null;
-
-                extraConfig = {
-                  init.defaultBranch = "main";
-                };
-              };
-
-              home.file.".gnupg/gpg-agent.conf".text = ''
-                pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
-              '';
-
-              home.file.".config/zellij/config.kdl".text = (import ./zellij.nix).config;
-              home.file.".config/zellij/layouts/default.kdl".text = (import ./zellij.nix).defaultLayout { inherit zjstatus; };
-
-              programs.helix = helix // {
-                enable = true;
-              };
-            };
-        }
+      homebrew.enable = true;
+      homebrew.casks = [
+        "wezterm"
+        "docker"
       ];
+      homebrew.onActivation = {
+        autoUpdate = false;
+        cleanup = "zap";
+      };
+
+      environment.systemPackages = with pkgs; [
+        skhd     # macOS keyboard shortcuts
+      ];
+
+      users.users.${user.username}.home = "/Users/${user.username}";
+
+      system.defaults.NSGlobalDomain.InitialKeyRepeat = 10;
+      system.defaults.NSGlobalDomain.KeyRepeat = 3;
+
+      home-manager.users.${user.username} = {
+        # Toggle WezTerm using F13
+        home.file.".config/skhd/skhdrc".text = ''
+          f13 [
+            "wezterm" : osascript -e 'tell application "System Events" to set visible of process "WezTerm" to false'
+            *         : osascript -e 'activate application "WezTerm"'
+          ]
+        '';
+      };
+    };
+
+    linuxConfiguration = {
+      # Use the systemd-boot EFI boot loader.
+      boot.loader.systemd-boot.enable = true;
+      boot.loader.efi.canTouchEfiVariables = true;
+
+      networking.hostName = "nuc";
+      networking.wireless.enable = true;
+
+      time.timeZone = "Europe/Stockholm";
+
+      # Select internationalisation properties.
+      i18n.defaultLocale = "en_US.UTF-8";
+      console = {
+        font = "Lat2-Terminus16";
+        keyMap = "us";
+      };
+
+      # Define a user account. Don't forget to set a password with ‘passwd’.
+      users.users.${user.username} = {
+        isNormalUser = true;
+        extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+      };
+
+      # Enable the OpenSSH daemon.
+      services.openssh.enable = true;
+
+      # Disable firewall (use firewall in router).
+      networking.firewall.enable = false;
+
+      system.stateVersion = "24.11";
     };
   in
   {
-    darwinConfigurations."emils-mini" = system;
-    darwinConfigurations."emils-macbook" = system;
+    darwinConfigurations."emils-mini" = nix-darwin.lib.darwinSystem {
+      modules = [
+        configuration
+        home-manager.darwinModules.home-manager
+        darwinConfiguration
+      ];
+    };
+
+    darwinConfigurations."emils-macbook" = nix-darwin.lib.darwinSystem {
+      modules = [
+        configuration
+        home-manager.darwinModules.home-manager
+        darwinConfiguration
+      ];
+    };
+
+    nixosConfigurations."nuc" = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        configuration
+        /etc/nixos/hardware-configuration.nix
+        home-manager.nixosModules.home-manager
+        linuxConfiguration
+      ];
+    };
   };
 }

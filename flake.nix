@@ -57,7 +57,7 @@
 
       system.configurationRevision = self.rev or self.dirtyRev or null;
 
-      users.users.${user.username} = {
+      users.users.${user.username} = { ... }: {
         name = user.username;
         shell = pkgs.fish;
       };
@@ -67,64 +67,7 @@
       home-manager.backupFileExtension = "old";
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.users.${user.username} = { pkgs, ... }: {
-        home.stateVersion = "23.05";
-
-        programs.home-manager.enable = true;
-
-        programs.fish = fish.userConfig // {
-          enable = true;
-        };
-
-        programs.wezterm = {
-          enable = true;
-          extraConfig = import ./wezterm.lua.nix;
-        };
-
-        programs.git = {
-          enable = true;
-          userName = user.realname;
-          userEmail = user.email;
-          signing.signByDefault = true;
-          signing.key = null;
-
-          extraConfig = {
-            init.defaultBranch = "main";
-            pull.rebase = true;
-            fetch.prunt = true;
-            diff.colorMoved = "zebra";
-            push.autoSetupRemote = true;
-          };
-        };
-
-        home.file.".gnupg/gpg-agent.conf".text = ''
-          pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
-        '';
-
-        home.file.".config/zellij/config.kdl".text = (import ./zellij.nix).config;
-        home.file.".config/zellij/layouts/default.kdl".text = (import ./zellij.nix).defaultLayout { inherit zjstatus; };
-
-        programs.helix = (import ./helix.nix) // {
-          enable = true;
-        };
-
-        programs.ssh.enable = true;
-
-        programs.ssh.matchBlocks.home = {
-          host = "home";
-          hostname = "home.emilbroman.me";
-        };
-
-        programs.ssh.matchBlocks.nuc = {
-          host = "nuc";
-          hostname = "10.0.0.2";
-        };
-
-        programs.ssh.matchBlocks.mini = {
-          host = "mini";
-          hostname = "10.0.0.3";
-        };
-      };
+      home-manager.extraSpecialArgs = { inherit user; inherit zjstatus; };
     };
 
     darwinConfiguration = { pkgs, ... }: {
@@ -152,7 +95,9 @@
       system.defaults.NSGlobalDomain.InitialKeyRepeat = 10;
       system.defaults.NSGlobalDomain.KeyRepeat = 3;
 
-      home-manager.users.${user.username} = {
+      home-manager.users.${user.username} = { ... }: {
+        imports = [ ./home.nix ];
+
         # Toggle WezTerm using F13
         home.file.".config/skhd/skhdrc".text = ''
           f13 [
@@ -160,6 +105,8 @@
             *         : osascript -e 'activate application "WezTerm"'
           ]
         '';
+
+        programs.fish.shellAliases.nix-rebuild = "darwin-rebuild switch --flake ~/code/nix";
       };
     };
 
@@ -201,6 +148,12 @@
       networking.firewall.enable = false;
 
       system.stateVersion = "24.11";
+
+      home-manager.users.${user.username} = {
+        imports = [ ./home.nix ];
+
+        programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
+      };
     };
   in
   {

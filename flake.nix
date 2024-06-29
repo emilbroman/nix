@@ -114,6 +114,7 @@
       system.stateVersion = 4;
 
       services.nix-daemon.enable = true;
+      nixpkgs.hostPlatform = "aarch64-darwin";
 
       homebrew.enable = true;
       homebrew.casks = [

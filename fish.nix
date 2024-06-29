@@ -110,6 +110,9 @@ in
             printf ' %d ' $last_command_status
         end
 
+        set_color ${palette.orange."300"} --background ${palette.orange."150"}
+        printf ' '(hostname | awk -F\. '{print $1}')' '
+
         set_color ${palette.gray."200"} --background ${palette.gray."300"}
         printf ' '(fish_prompt_pwd_dir_length=0 prompt_pwd)' '
 

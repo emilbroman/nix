@@ -90,6 +90,10 @@
 
           extraConfig = {
             init.defaultBranch = "main";
+            pull.rebase = true;
+            fetch.prunt = true;
+            diff.colorMoved = "zebra";
+            push.autoSetupRemote = true;
           };
         };
 

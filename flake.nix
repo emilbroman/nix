@@ -72,14 +72,8 @@
 
       system.stateVersion = 4;
 
-      nixpkgs.hostPlatform = "aarch64-darwin";
-
-      system.defaults.NSGlobalDomain.InitialKeyRepeat = 10;
-      system.defaults.NSGlobalDomain.KeyRepeat = 3;
-
       users.users.${user.username} = {
         name = user.username;
-        home = "/Users/${user.username}";
         shell = pkgs.fish;
       };
 
@@ -91,6 +85,13 @@
         configuration
         home-manager.darwinModules.home-manager
         {
+          nixpkgs.hostPlatform = "aarch64-darwin";
+
+          users.users.${user.username}.home = "/Users/${user.username}";
+
+          system.defaults.NSGlobalDomain.InitialKeyRepeat = 10;
+          system.defaults.NSGlobalDomain.KeyRepeat = 3;
+
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.${user.username} = { pkgs, ... }:
@@ -149,7 +150,5 @@
   {
     darwinConfigurations."emils-mini" = system;
     darwinConfigurations."emils-macbook" = system;
-
-    darwinPackages = system.pkgs;
   };
 }

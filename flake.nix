@@ -141,7 +141,7 @@
       };
     };
 
-    linuxConfiguration = {
+    linuxConfiguration = { pkgs, ...}: {
       # Use the systemd-boot EFI boot loader.
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
@@ -150,6 +150,11 @@
       networking.wireless.enable = true;
 
       time.timeZone = "Europe/Stockholm";
+
+      virtualisation.docker.enable = true;
+      environment.systemPackages = with pkgs; [
+        docker
+      ];
 
       # Select internationalisation properties.
       i18n.defaultLocale = "en_US.UTF-8";
@@ -161,7 +166,10 @@
       # Define a user account. Don't forget to set a password with ‘passwd’.
       users.users.${user.username} = {
         isNormalUser = true;
-        extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+        extraGroups = [
+          "wheel" # Enable ‘sudo’.
+          "docker"
+        ];
       };
 
       # Enable the OpenSSH daemon.

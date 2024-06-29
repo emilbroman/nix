@@ -107,6 +107,23 @@
         programs.helix = (import ./helix.nix) // {
           enable = true;
         };
+
+        programs.ssh.enable = true;
+
+        programs.ssh.matchBlocks.home = {
+          host = "home";
+          hostname = "home.emilbroman.me";
+        };
+
+        programs.ssh.matchBlocks.nuc = {
+          host = "nuc";
+          hostname = "10.0.0.2";
+        };
+
+        programs.ssh.matchBlocks.mini = {
+          host = "mini";
+          hostname = "10.0.0.3";
+        };
       };
     };
 

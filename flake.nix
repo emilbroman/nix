@@ -105,7 +105,10 @@
           ]
         '';
 
-        programs.fish.shellAliases.nix-rebuild = "darwin-rebuild switch --flake ~/code/nix";
+        programs.fish.functions.nix-rebuild = ''
+          sudo true
+          and darwin-rebuild switch --flake ~/code/nix
+        '';
       };
     };
 

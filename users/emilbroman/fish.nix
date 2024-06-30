@@ -28,13 +28,14 @@ let
     fish_color_valid_path = "${palette.yellow."200"} --underline";
   };
 in {
-  systemConfig = {
+  programs.fish = {
+    enable = true;
+
     shellInit = ''
       fish_add_path /opt/homebrew/bin
+      fish_add_path $HOME/.nix-profile/bin
     '';
-  };
 
-  userConfig = {
     interactiveShellInit =
       ''
         # Disable greeting

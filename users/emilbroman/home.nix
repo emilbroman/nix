@@ -1,20 +1,36 @@
 {
   pkgs,
-  user,
   zjstatus,
   ...
-}: let
-  fish = import ./fish.nix;
-in {
+}: {
+  imports = [./fish.nix];
+
   home.stateVersion = "23.05";
 
-  programs.home-manager.enable = true;
+  home.packages = with pkgs; [
+    # Terminal development stack
+    zellij # Terminal multiplexer
+    yazi # File explorer
+    helix # Editor
 
-  programs.fish =
-    fish.userConfig
-    // {
-      enable = true;
-    };
+    # Terminal tools
+    git
+    ripgrep # Fuzzy finder
+    openssh # SSH
+    gnupg # PGP
+    wget
+
+    # Nix
+    nil
+    alejandra
+
+    # Markdown
+    marksman
+  ];
+  home.sessionVariables.EDITOR = "hx";
+  home.sessionVariables.COLORTERM = "truecolor";
+
+  programs.home-manager.enable = true;
 
   programs.wezterm = {
     enable = true;
@@ -23,8 +39,8 @@ in {
 
   programs.git = {
     enable = true;
-    userName = user.realname;
-    userEmail = user.email;
+    userName = "Emil Broman";
+    userEmail = "emil@emilbroman.me";
     signing.signByDefault = true;
     signing.key = null;
 

@@ -3,8 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     nix-darwin.url = "github:LnL7/nix-darwin";
+
     home-manager.url = "github:nix-community/home-manager";
+
     zjstatus.url = "https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm";
     zjstatus.flake = false;
   };
@@ -16,189 +19,40 @@
     home-manager,
     zjstatus,
   }: let
-    user = {
-      username = "emilbroman";
-      realname = "Emil Broman";
-      email = "emil@emilbroman.me";
-    };
-
-    fish = import ./fish.nix;
-
-    configuration = {pkgs, ...}: {
-      # List packages installed in system profile. To search by name, run:
-      # $ nix-env -qaP | grep wget
-      environment.systemPackages = with pkgs; [
-        # Terminal development stack
-        zellij # Terminal multiplexer
-        pkgs.fish # Shell
-        yazi # File explorer
-        helix # Editor
-
-        # Terminal tools
-        git
-        ripgrep # Fuzzy finder
-        openssh # SSH
-        gnupg # PGP
-        wget
-
-        # Nix
-        nil
-        alejandra
-
-        # Markdown
-        marksman
-      ];
-      environment.shells = [pkgs.fish];
-      environment.variables.EDITOR = "hx";
-      environment.variables.COLORTERM = "truecolor";
-
-      nix.settings.experimental-features = "nix-command flakes";
-
-      programs.fish =
-        fish.systemConfig
-        // {
-          enable = true;
-        };
-
-      programs.gnupg.agent = {
-        enable = true;
-        enableSSHSupport = true;
-      };
-
-      system.configurationRevision = self.rev or self.dirtyRev or null;
-
-      users.users.${user.username} = {...}: {
-        name = user.username;
-        shell = pkgs.fish;
-      };
-
-      nix.settings.trusted-users = [user.username];
-
-      home-manager.backupFileExtension = "old";
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      home-manager.extraSpecialArgs = {
-        inherit user;
-        inherit zjstatus;
-      };
-    };
-
-    darwinConfiguration = {pkgs, ...}: {
-      system.stateVersion = 4;
-
-      services.nix-daemon.enable = true;
-
-      homebrew.enable = true;
-      homebrew.casks = [
-        "wezterm"
-        "docker"
-      ];
-      homebrew.onActivation = {
-        autoUpdate = false;
-        cleanup = "zap";
-      };
-
-      environment.systemPackages = with pkgs; [
-        skhd # macOS keyboard shortcuts
-      ];
-
-      users.users.${user.username}.home = "/Users/${user.username}";
-
-      system.defaults.NSGlobalDomain.InitialKeyRepeat = 10;
-      system.defaults.NSGlobalDomain.KeyRepeat = 3;
-
-      home-manager.users.${user.username} = {...}: {
-        imports = [./home.nix];
-
-        # Toggle WezTerm using F13
-        home.file.".config/skhd/skhdrc".text = ''
-          f13 [
-            "wezterm" : osascript -e 'tell application "System Events" to set visible of process "WezTerm" to false'
-            *         : osascript -e 'activate application "WezTerm"'
-          ]
-        '';
-
-        programs.fish.functions.nix-rebuild = ''
-          sudo true
-          and darwin-rebuild switch --flake ~/code/nix
-        '';
-      };
-    };
-
-    linuxConfiguration = {pkgs, ...}: {
-      # Use the systemd-boot EFI boot loader.
-      boot.loader.systemd-boot.enable = true;
-      boot.loader.efi.canTouchEfiVariables = true;
-
-      networking.wireless.enable = true;
-
-      time.timeZone = "Europe/Stockholm";
-
-      virtualisation.docker.enable = true;
-      environment.systemPackages = with pkgs; [
-        docker
-      ];
-
-      # Select internationalisation properties.
-      i18n.defaultLocale = "en_US.UTF-8";
-      console = {
-        font = "Lat2-Terminus16";
-        keyMap = "us";
-      };
-
-      # Define a user account. Don't forget to set a password with ‘passwd’.
-      users.users.${user.username} = {
-        isNormalUser = true;
-        extraGroups = [
-          "wheel" # Enable ‘sudo’.
-          "docker"
-        ];
-      };
-
-      # Enable the OpenSSH daemon.
-      services.openssh.enable = true;
-
-      # Disable firewall (use firewall in router).
-      networking.firewall.enable = false;
-
-      system.stateVersion = "24.11";
-
-      home-manager.users.${user.username} = {
-        imports = [./home.nix];
-
-        programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
-      };
+    specialArgs = {
+      inherit zjstatus;
+      flake = self;
     };
   in {
-    darwinConfigurations."emils-mini" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."emils-macbook" = nix-darwin.lib.darwinSystem {
+      inherit specialArgs;
       modules = [
-        configuration
-        home-manager.darwinModules.home-manager
-        darwinConfiguration
         {
           nixpkgs.hostPlatform = "aarch64-darwin";
         }
+        home-manager.darwinModules.home-manager
+        ./darwin.nix
       ];
     };
 
-    darwinConfigurations."emils-macbook" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."emils-mini" = nix-darwin.lib.darwinSystem {
+      inherit specialArgs;
       modules = [
-        configuration
-        home-manager.darwinModules.home-manager
-        darwinConfiguration
         {
           nixpkgs.hostPlatform = "aarch64-darwin";
         }
+        home-manager.darwinModules.home-manager
+        ./darwin.nix
       ];
     };
 
     nixosConfigurations."nuc" = nixpkgs.lib.nixosSystem {
+      inherit specialArgs;
       system = "x86_64-linux";
       modules = [
-        configuration
         /etc/nixos/hardware-configuration.nix
         home-manager.nixosModules.home-manager
-        linuxConfiguration
+        ./nixos.nix
         {
           networking.hostName = "nuc";
         }

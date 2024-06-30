@@ -1,5 +1,8 @@
 {pkgs, ...}: {
-  imports = [./configuration.nix];
+  imports = [
+    ./configuration.nix
+    ./users/darwin.nix
+  ];
 
   system.stateVersion = 4;
 

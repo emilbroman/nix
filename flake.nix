@@ -74,7 +74,6 @@
       system.stateVersion = 4;
 
       services.nix-daemon.enable = true;
-      nixpkgs.hostPlatform = "aarch64-darwin";
 
       homebrew.enable = true;
       homebrew.casks = [
@@ -115,7 +114,6 @@
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
 
-      networking.hostName = "nuc";
       networking.wireless.enable = true;
 
       time.timeZone = "Europe/Stockholm";
@@ -162,6 +160,9 @@
         configuration
         home-manager.darwinModules.home-manager
         darwinConfiguration
+        {
+          nixpkgs.hostPlatform = "aarch64-darwin";
+        }
       ];
     };
 
@@ -170,6 +171,9 @@
         configuration
         home-manager.darwinModules.home-manager
         darwinConfiguration
+        {
+          nixpkgs.hostPlatform = "aarch64-darwin";
+        }
       ];
     };
 
@@ -180,6 +184,9 @@
         /etc/nixos/hardware-configuration.nix
         home-manager.nixosModules.home-manager
         linuxConfiguration
+        {
+          networking.hostName = "nuc";
+        }
       ];
     };
   };

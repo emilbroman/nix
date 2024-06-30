@@ -57,6 +57,13 @@ in
       gap = "git add -p .";
     };
     functions = {
+      nix-apply = ''
+        cd ~/code/nix
+        git add .
+        nix-rebuild
+        and git commit
+        and git push
+      '';
       dotenv = {
         argumentNames = ["file"];
         body = ''

@@ -9,8 +9,13 @@
     zjstatus.flake = false;
   };
 
-  outputs = { self, nixpkgs, nix-darwin, home-manager, zjstatus }:
-  let
+  outputs = {
+    self,
+    nixpkgs,
+    nix-darwin,
+    home-manager,
+    zjstatus,
+  }: let
     user = {
       username = "emilbroman";
       realname = "Emil Broman";
@@ -18,37 +23,42 @@
     };
 
     fish = import ./fish.nix;
-    
-    configuration = { pkgs, ... }: {
+
+    configuration = {pkgs, ...}: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = with pkgs; [
         # Terminal development stack
-        zellij    # Terminal multiplexer
+        zellij # Terminal multiplexer
         pkgs.fish # Shell
-        yazi      # File explorer
-        helix     # Editor
+        yazi # File explorer
+        helix # Editor
 
         # Terminal tools
         git
-        ripgrep  # Fuzzy finder
-        openssh  # SSH
-        gnupg    # PGP
+        ripgrep # Fuzzy finder
+        openssh # SSH
+        gnupg # PGP
         wget
 
-        # Language servers
-        nil      # Nix
-        marksman # Markdown
+        # Nix
+        nil
+        alejandra
+
+        # Markdown
+        marksman
       ];
-      environment.shells = [ pkgs.fish ];
+      environment.shells = [pkgs.fish];
       environment.variables.EDITOR = "hx";
       environment.variables.COLORTERM = "truecolor";
 
       nix.settings.experimental-features = "nix-command flakes";
 
-      programs.fish = fish.systemConfig // {
-        enable = true;
-      };
+      programs.fish =
+        fish.systemConfig
+        // {
+          enable = true;
+        };
 
       programs.gnupg.agent = {
         enable = true;
@@ -57,20 +67,23 @@
 
       system.configurationRevision = self.rev or self.dirtyRev or null;
 
-      users.users.${user.username} = { ... }: {
+      users.users.${user.username} = {...}: {
         name = user.username;
         shell = pkgs.fish;
       };
 
-      nix.settings.trusted-users = [ user.username ];
-      
+      nix.settings.trusted-users = [user.username];
+
       home-manager.backupFileExtension = "old";
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.extraSpecialArgs = { inherit user; inherit zjstatus; };
+      home-manager.extraSpecialArgs = {
+        inherit user;
+        inherit zjstatus;
+      };
     };
 
-    darwinConfiguration = { pkgs, ... }: {
+    darwinConfiguration = {pkgs, ...}: {
       system.stateVersion = 4;
 
       services.nix-daemon.enable = true;
@@ -86,7 +99,7 @@
       };
 
       environment.systemPackages = with pkgs; [
-        skhd     # macOS keyboard shortcuts
+        skhd # macOS keyboard shortcuts
       ];
 
       users.users.${user.username}.home = "/Users/${user.username}";
@@ -94,8 +107,8 @@
       system.defaults.NSGlobalDomain.InitialKeyRepeat = 10;
       system.defaults.NSGlobalDomain.KeyRepeat = 3;
 
-      home-manager.users.${user.username} = { ... }: {
-        imports = [ ./home.nix ];
+      home-manager.users.${user.username} = {...}: {
+        imports = [./home.nix];
 
         # Toggle WezTerm using F13
         home.file.".config/skhd/skhdrc".text = ''
@@ -112,7 +125,7 @@
       };
     };
 
-    linuxConfiguration = { pkgs, ...}: {
+    linuxConfiguration = {pkgs, ...}: {
       # Use the systemd-boot EFI boot loader.
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
@@ -151,13 +164,12 @@
       system.stateVersion = "24.11";
 
       home-manager.users.${user.username} = {
-        imports = [ ./home.nix ];
+        imports = [./home.nix];
 
         programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
       };
     };
-  in
-  {
+  in {
     darwinConfigurations."emils-mini" = nix-darwin.lib.darwinSystem {
       modules = [
         configuration

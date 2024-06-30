@@ -1,37 +1,33 @@
 let
+  palette = import ./palette.nix;
 
-palette = import ./palette.nix;
-
-variables = {
-  fish_term24bit = "1";
-  fish_color_autosuggestion = palette.gray."250";
-  fish_color_cancel = "-r";
-  fish_color_command = "${palette.yellow."350"} --bold";
-  fish_color_comment = "${palette.gray."250"} --italics";
-  fish_color_cwd = palette.orange."250";
-  fish_color_cwd_root = palette.orange."350";
-  fish_color_end = palette.gray."250";
-  fish_color_error = palette.red."350";
-  fish_color_escape = palette.orange."250";
-  fish_color_history_current = "normal";
-  fish_color_host = "normal";
-  fish_color_host_remote = "normal";
-  fish_color_match = palette.gray."300";
-  fish_color_normal = palette.gray."150";
-  fish_color_operator = palette.magenta."200";
-  fish_color_param = palette.yellow."200";
-  fish_color_quote = palette.green."200";
-  fish_color_redirection = "${palette.magenta."100"} --italics";
-  fish_color_search_match = "--background=${palette.gray."300"}";
-  fish_color_selection = "--background=${palette.gray."300"}";
-  fish_color_status = "${palette.yellow."350"} --underline";
-  fish_color_user = palette.orange."350";
-  fish_color_valid_path = "${palette.yellow."200"} --underline";
-};
-
-in
-
-{
+  variables = {
+    fish_term24bit = "1";
+    fish_color_autosuggestion = palette.gray."250";
+    fish_color_cancel = "-r";
+    fish_color_command = "${palette.yellow."350"} --bold";
+    fish_color_comment = "${palette.gray."250"} --italics";
+    fish_color_cwd = palette.orange."250";
+    fish_color_cwd_root = palette.orange."350";
+    fish_color_end = palette.gray."250";
+    fish_color_error = palette.red."350";
+    fish_color_escape = palette.orange."250";
+    fish_color_history_current = "normal";
+    fish_color_host = "normal";
+    fish_color_host_remote = "normal";
+    fish_color_match = palette.gray."300";
+    fish_color_normal = palette.gray."150";
+    fish_color_operator = palette.magenta."200";
+    fish_color_param = palette.yellow."200";
+    fish_color_quote = palette.green."200";
+    fish_color_redirection = "${palette.magenta."100"} --italics";
+    fish_color_search_match = "--background=${palette.gray."300"}";
+    fish_color_selection = "--background=${palette.gray."300"}";
+    fish_color_status = "${palette.yellow."350"} --underline";
+    fish_color_user = palette.orange."350";
+    fish_color_valid_path = "${palette.yellow."200"} --underline";
+  };
+in {
   systemConfig = {
     shellInit = ''
       fish_add_path /opt/homebrew/bin
@@ -39,19 +35,21 @@ in
   };
 
   userConfig = {
-    interactiveShellInit = ''
-      # Disable greeting
-      set fish_greeting
+    interactiveShellInit =
+      ''
+        # Disable greeting
+        set fish_greeting
 
-      # Enter GPG password using this TTY
-      export GPG_TTY=(tty)
-    '' + builtins.concatStringsSep "\n" (
-      map
+        # Enter GPG password using this TTY
+        export GPG_TTY=(tty)
+      ''
+      + builtins.concatStringsSep "\n" (
+        map
         (key: ''
           set ${key} ${variables.${key}}
         '')
         (builtins.attrNames variables)
-    );
+      );
     shellAliases = {
       co = "git checkout";
       gap = "git add -p .";

@@ -1,17 +1,20 @@
-{ pkgs, user, zjstatus, ... }:
-
-let
-  fish = import ./fish.nix;
-in
-
 {
+  pkgs,
+  user,
+  zjstatus,
+  ...
+}: let
+  fish = import ./fish.nix;
+in {
   home.stateVersion = "23.05";
 
   programs.home-manager.enable = true;
 
-  programs.fish = fish.userConfig // {
-    enable = true;
-  };
+  programs.fish =
+    fish.userConfig
+    // {
+      enable = true;
+    };
 
   programs.wezterm = {
     enable = true;
@@ -39,13 +42,15 @@ in
   '';
 
   home.file.".config/zellij/config.kdl".text = (import ./zellij.nix).config;
-  home.file.".config/zellij/layouts/default.kdl".text = (import ./zellij.nix).defaultLayout { zjstatus = zjstatus; };
+  home.file.".config/zellij/layouts/default.kdl".text = (import ./zellij.nix).defaultLayout {zjstatus = zjstatus;};
 
   home.file.".hushlogin".text = "";
 
-  programs.helix = (import ./helix.nix) // {
-    enable = true;
-  };
+  programs.helix =
+    (import ./helix.nix)
+    // {
+      enable = true;
+    };
 
   programs.ssh.enable = true;
 

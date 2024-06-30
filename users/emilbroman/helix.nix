@@ -34,13 +34,11 @@ in {
   ];
 
   themes.${themeName} = {
-    "ui.background" = palette.gray."350";
+    "ui.window" = palette.gray."250";
+    "ui.background" = palette.gray."250";
+
     "ui.text" = palette.gray."150";
     "ui.selection" = {bg = palette.gray."300";};
-    "ui.window" = {
-      bg = palette.gray."300";
-      fg = palette.gray."150";
-    };
 
     "ui.linenr" = palette.gray."300";
     "ui.linenr.selected" = palette.gray."250";
@@ -59,13 +57,17 @@ in {
       fg = palette.gray."150";
     };
 
+    "diff.plus.gutter" = {fg = palette.green."300";};
+    "diff.minus.gutter" = {fg = palette.red."300";};
+    "diff.delta.gutter" = {fg = palette.orange."300";};
+
     "ui.statusline" = {
-      bg = palette.gray."150";
-      fg = palette.gray."350";
+      bg = palette.gray."200";
+      fg = palette.gray."300";
     };
     "ui.statusline.inactive" = {
-      bg = palette.gray."350";
-      fg = palette.gray."150";
+      bg = palette.gray."300";
+      fg = palette.gray."200";
     };
 
     "ui.virtual.ruler" = palette.gray."300";

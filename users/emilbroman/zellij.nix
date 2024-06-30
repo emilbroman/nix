@@ -266,17 +266,17 @@ in {
     //
     themes {
         emil {
-            fg "#${palette.gray."150"}"
+            fg "#${palette.gray."250"}"
             bg "#${palette.gray."350"}"
             black "#${palette.gray."400"}"
-            red "#${palette.red."300"}"
-            green "#${palette.green."250"}"
-            yellow "#${palette.yellow."250"}"
-            blue "#${palette.blue."250"}"
-            magenta "#${palette.magenta."250"}"
-            cyan "#${palette.cyan."250"}"
-            white "#${palette.gray."150"}"
-            orange "#${palette.orange."250"}"
+            red "#${palette.red."400"}"
+            green "#${palette.green."350"}"
+            yellow "#${palette.yellow."350"}"
+            blue "#${palette.blue."350"}"
+            magenta "#${palette.magenta."350"}"
+            cyan "#${palette.cyan."350"}"
+            white "#${palette.gray."250"}"
+            orange "#${palette.orange."350"}"
         }
     }
 
@@ -379,7 +379,7 @@ in {
 
             border_enabled  "false"
 
-            hide_frame_for_single_pane "true"
+            // hide_frame_for_single_pane "true"
 
             mode_normal   "#[fg=#${palette.gray."200"},bg=#${palette.gray."300"}] {name} "
             mode_locked   "#[fg=#${palette.orange."300"},bg=#${palette.orange."200"}] {name} "

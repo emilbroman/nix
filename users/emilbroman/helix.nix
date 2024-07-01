@@ -32,6 +32,13 @@ in {
       }
 
       {
+        name = "typescript";
+        auto-format = true;
+        formatter.command = "yarn";
+        formatter.args = ["prettier" "--parser" "typescript"];
+      }
+
+      {
         name = "nix";
         auto-format = true;
         formatter.command = "alejandra";

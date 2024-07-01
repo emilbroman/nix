@@ -43,6 +43,8 @@ in {
 
         # Enter GPG password using this TTY
         export GPG_TTY=(tty)
+
+        export COLORTERM=truecolor
       ''
       + builtins.concatStringsSep "\n" (
         map

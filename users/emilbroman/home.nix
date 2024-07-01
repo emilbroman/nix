@@ -3,7 +3,10 @@
   zjstatus,
   ...
 }: {
-  imports = [./fish.nix];
+  imports = [
+    ./fish.nix
+    ./helix.nix
+  ];
 
   home.stateVersion = "23.05";
 
@@ -27,8 +30,6 @@
     # Markdown
     marksman
   ];
-  home.sessionVariables.EDITOR = "hx";
-  home.sessionVariables.COLORTERM = "truecolor";
 
   programs.home-manager.enable = true;
 
@@ -61,12 +62,6 @@
   home.file.".config/zellij/layouts/default.kdl".text = (import ./zellij.nix).defaultLayout {zjstatus = zjstatus;};
 
   home.file.".hushlogin".text = "";
-
-  programs.helix =
-    (import ./helix.nix)
-    // {
-      enable = true;
-    };
 
   programs.ssh.enable = true;
 

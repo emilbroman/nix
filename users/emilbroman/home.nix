@@ -29,6 +29,10 @@
 
     # Markdown
     marksman
+
+    # TypeScript
+    pkgs.nodePackages.typescript-language-server
+    pkgs.nodePackages.prettier
   ];
 
   programs.home-manager.enable = true;

@@ -27,15 +27,22 @@ in {
       {
         name = "markdown";
         auto-format = true;
-        formatter.command = "yarn";
-        formatter.args = ["prettier" "--parser" "markdown"];
+        formatter.command = "prettier";
+        formatter.args = ["--parser" "markdown"];
       }
 
       {
         name = "typescript";
         auto-format = true;
-        formatter.command = "yarn";
-        formatter.args = ["prettier" "--parser" "typescript"];
+        formatter.command = "prettier";
+        formatter.args = ["--parser" "typescript"];
+      }
+
+      {
+        name = "tsx";
+        auto-format = true;
+        formatter.command = "prettier";
+        formatter.args = ["--parser" "typescript"];
       }
 
       {
@@ -108,6 +115,19 @@ in {
         };
       };
 
+      "diagnostic.unnecessary" = {
+        fg = palette.gray."250";
+        modifiers = ["italic"];
+        underline = {
+          color = palette.blue."400";
+          style = "dot";
+        };
+      };
+
+      "diagnostic.deprecated" = {
+        modifiers = ["crossed_out"];
+      };
+
       # Syntax highlighting
 
       "keyword" = {
@@ -115,14 +135,14 @@ in {
         modifiers = ["bold"];
       };
 
+      "type" = palette.red."300";
+      "constructor" = palette.red."250";
+
       "variable.builtin" = {
         fg = palette.blue."250";
         modifiers = ["bold"];
       };
-      "variable.other" = {fg = palette.orange."200";};
-
-      "type" = palette.red."300";
-      "constructor" = palette.red."200";
+      "variable" = {fg = palette.orange."200";};
 
       "string" = palette.green."200";
 

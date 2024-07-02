@@ -5,7 +5,8 @@ in ''
 
   local config = wezterm.config_builder()
 
-  config.default_prog = { "zellij", "attach", "--create" }
+  -- FIXME
+  config.default_prog = { "/Users/emilbroman/.nix-profile/bin/zellij", "attach", "--create" }
 
   config.font = wezterm.font {
     family = 'Berkeley Mono',

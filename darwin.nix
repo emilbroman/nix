@@ -22,8 +22,8 @@
     skhd # macOS keyboard shortcuts
   ];
 
-  system.defaults.NSGlobalDomain.InitialKeyRepeat = 10;
-  system.defaults.NSGlobalDomain.KeyRepeat = 3;
+  system.defaults.NSGlobalDomain.InitialKeyRepeat = 7;
+  system.defaults.NSGlobalDomain.KeyRepeat = 2;
 
   home-manager.sharedModules = [
     {

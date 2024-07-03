@@ -398,15 +398,22 @@ in {
 
         pane size=1 borderless=true {
           plugin location="file:${zjstatus}" {
-            format_right  "{command_hostname}"
+            format_right  "{command_kubectx} {command_hostname}"
             border_enabled  "false"
 
-            command_hostname_command     "./hostname"
+            command_hostname_command     "hostname"
             command_hostname_format      "#[fg=#${palette.gray."250"},bold]{stdout}"
             command_hostname_interval    "0"
             command_hostname_rendermode  "static"
-            command_hostname_cwd         "/bin"
+            command_hostname_cwd         "/"
             command_hostname_env         {}
+
+            command_kubectx_command     "sh -c \"rg '^current-context: (.*)$' ~/.kube/config -r '$1'\""
+            command_kubectx_format      "#[bg=#326ce5,fg=#ffffff] k8s #[fg=#326ce5,bg=#ffffff] {stdout} "
+            command_kubectx_interval    "5"
+            command_kubectx_rendermode  "static"
+            command_kubectx_cwd         "/"
+            command_kubectx_env         {}
           }
         }
       }

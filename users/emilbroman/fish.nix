@@ -119,7 +119,7 @@ in {
         end
 
         set_color ${palette.gray."200"} --background ${palette.gray."300"}
-        printf ' '(prompt_pwd --dir-length 50)' '
+        printf ' '(prompt_pwd --full-length-dirs 4 --dir-length 3)' '
 
         if git status &>/dev/null
           set_color f14e32 --background fadfdb

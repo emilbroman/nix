@@ -118,14 +118,22 @@ in {
             printf ' %d ' $last_command_status
         end
 
-        set_color ${palette.orange."300"} --background ${palette.orange."150"}
-        printf ' '(hostname | awk -F\. '{print $1}')' '
-
         set_color ${palette.gray."200"} --background ${palette.gray."300"}
-        printf ' '(fish_prompt_pwd_dir_length=0 prompt_pwd)' '
+        printf ' '(prompt_pwd --dir-length 50)' '
 
-        set_color normal
-        printf ' '
+        if git status &>/dev/null
+          set_color f14e32 --background fadfdb
+          printf ' '(string shorten --left --max 30 (git branch --show-current))' '
+
+          set_color normal
+          echo
+
+          set_color ${palette.gray."250"}
+          printf ' ⊢ '
+        else
+          set_color normal
+          printf ' '
+        end
       '';
 
       fish_user_key_bindings = ''

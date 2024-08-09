@@ -114,8 +114,18 @@ in {
         set -l last_command_status $status
 
         if test $last_command_status -ne 0
-            set_color ${palette.red."100"} --background ${palette.red."350"}
-            printf ' %d ' $last_command_status
+          set_color ${palette.red."100"} --background ${palette.red."350"}
+          printf ' %d ' $last_command_status
+        end
+
+        set -l nix_shell_depth (pstree -p %self | rg '\+[^!]*nix-shell' -c)
+        if test -n "$nix_shell_depth"
+          set_color ${palette.blue."350"} --background ${palette.blue."100"}
+          printf ' '
+          for i in (seq $nix_shell_depth)
+            printf '+'
+          end
+          printf ' '
         end
 
         set_color ${palette.gray."200"} --background ${palette.gray."300"}

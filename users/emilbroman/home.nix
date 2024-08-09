@@ -22,6 +22,7 @@
     openssh # SSH
     gnupg # PGP
     wget
+    pstree
 
     # Nix
     nil

@@ -93,7 +93,7 @@
     "zjstatus": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-mUOTSVgUncYPU8ms6ohzM6A4fEpL84IbUyW0+zOvoo8=",
+        "narHash": "sha256-iQfmySoW6MCqG2qV1TzJlFceLR6qMsa0oPrkxxPCya4=",
         "type": "file",
         "url": "https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm"
       },

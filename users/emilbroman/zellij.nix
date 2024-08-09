@@ -10,6 +10,13 @@ in {
         }
         locked {
             bind "Ctrl g" { SwitchToMode "Normal"; }
+
+            bind "Alt h" { MoveFocus "Left"; }
+            bind "Alt l" { MoveFocus "Right"; }
+            bind "Alt j" { MoveFocus "Down"; }
+            bind "Alt k" { MoveFocus "Up"; }
+
+            bind "Alt f" { ToggleFloatingPanes; }
         }
         resize {
             bind "Ctrl n" { SwitchToMode "Normal"; }

@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
 
     nix-darwin.url = "github:LnL7/nix-darwin";
 
@@ -15,6 +16,7 @@
   outputs = {
     self,
     nixpkgs,
+    nixos-wsl,
     nix-darwin,
     home-manager,
     zjstatus,
@@ -50,11 +52,68 @@
       inherit specialArgs;
       system = "x86_64-linux";
       modules = [
+        ./configuration.nix
+        ./users/nixos.nix
         /etc/nixos/hardware-configuration.nix
         home-manager.nixosModules.home-manager
-        ./nixos.nix
         {
           networking.hostName = "nuc";
+          system.stateVersion = "24.11";
+
+          # Use the systemd-boot EFI boot loader.
+          boot.loader.systemd-boot.enable = true;
+          boot.loader.efi.canTouchEfiVariables = true;
+
+          networking.wireless.enable = true;
+
+          time.timeZone = "Europe/Stockholm";
+
+          virtualisation.docker.enable = true;
+
+          # Select internationalisation properties.
+          i18n.defaultLocale = "en_US.UTF-8";
+          console = {
+            font = "Lat2-Terminus16";
+            keyMap = "us";
+          };
+
+          # Enable the OpenSSH daemon.
+          services.openssh.enable = true;
+
+          # Disable firewall (use firewall in router).
+          networking.firewall.enable = false;
+
+          home-manager.sharedModules = [
+            {
+              programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
+            }
+          ];
+        }
+      ];
+    };
+
+    nixosConfigurations."srv" = nixpkgs.lib.nixosSystem {
+      inherit specialArgs;
+      system = "x86_64-linux";
+      modules = [
+        ./configuration.nix
+        ./users/nixos.nix
+        nixos-wsl.nixosModules.default
+        home-manager.nixosModules.home-manager
+        {
+          system.stateVersion = "24.05";
+          wsl.enable = true;
+          wsl.defaultUser = "emilbroman";
+          networking.hostName = "srv";
+          services.openssh.enable = true;
+
+          virtualisation.docker.enable = true;
+
+          home-manager.sharedModules = [
+            {
+              programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix";
+            }
+          ];
         }
       ];
     };

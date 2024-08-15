@@ -89,4 +89,9 @@
     host = "srv";
     hostname = "10.0.0.4";
   };
+
+  programs.ssh.matchBlocks.macbook = {
+    host = "macbook";
+    hostname = "10.0.0.6";
+  };
 }

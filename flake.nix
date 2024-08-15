@@ -54,6 +54,7 @@
       modules = [
         ./configuration.nix
         ./users/nixos.nix
+        ./kubernetes/master.nix
         /etc/nixos/hardware-configuration.nix
         home-manager.nixosModules.home-manager
         {
@@ -98,12 +99,14 @@
       modules = [
         ./configuration.nix
         ./users/nixos.nix
+        ./kubernetes/node.nix
         nixos-wsl.nixosModules.default
         home-manager.nixosModules.home-manager
         {
           system.stateVersion = "24.05";
           wsl.enable = true;
           wsl.defaultUser = "emilbroman";
+          wsl.wslConf.network.generateHosts = false;
           networking.hostName = "srv";
           services.openssh.enable = true;
 

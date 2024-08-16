@@ -118,8 +118,8 @@ in {
           printf ' %d ' $last_command_status
         end
 
-        set -l nix_shell_depth (pstree -p %self | rg '\+[^!]*nix-shell' -c)
-        if test -n "$nix_shell_depth"
+        set -l nix_shell_depth (pstree -p %self | rg '\bfish' -c | xargs expr -1 +)
+        if test $nix_shell_depth -gt 0
           set_color ${palette.blue."350"} --background ${palette.blue."100"}
           printf ' '
           for i in (seq $nix_shell_depth)

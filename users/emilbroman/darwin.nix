@@ -4,4 +4,8 @@
   users.users.emilbroman = {
     home = "/Users/emilbroman";
   };
+
+  homebrew.casks = [
+    "figma"
+  ];
 }

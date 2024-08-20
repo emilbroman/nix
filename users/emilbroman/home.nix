@@ -56,7 +56,10 @@
       fetch.prunt = true;
       diff.colorMoved = "zebra";
       push.autoSetupRemote = true;
-      rerere.enabled = true;
+      rerere = {
+        enabled = true;
+        autoupdate = true;
+      };
     };
   };
 

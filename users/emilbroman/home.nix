@@ -56,6 +56,7 @@
       fetch.prunt = true;
       diff.colorMoved = "zebra";
       push.autoSetupRemote = true;
+      rerere.enabled = true;
     };
   };
 

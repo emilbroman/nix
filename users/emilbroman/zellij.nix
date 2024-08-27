@@ -9,7 +9,7 @@ in {
             // bind "Alt c" { Copy; }
         }
         locked {
-            bind "Ctrl g" { SwitchToMode "Normal"; }
+            bind "Alt q" { SwitchToMode "Normal"; }
 
             bind "Alt h" { MoveFocus "Left"; }
             bind "Alt l" { MoveFocus "Right"; }
@@ -17,6 +17,12 @@ in {
             bind "Alt k" { MoveFocus "Up"; }
 
             bind "Alt f" { ToggleFloatingPanes; }
+            bind "Alt z" { ToggleFocusFullscreen; }
+
+            bind "Alt H" { NewPane "Left"; }
+            bind "Alt L" { NewPane "Right"; }
+            bind "Alt J" { NewPane "Down"; }
+            bind "Alt K" { NewPane "Up"; }
         }
         resize {
             bind "Ctrl n" { SwitchToMode "Normal"; }
@@ -156,7 +162,7 @@ in {
             bind "x" { CloseFocus; SwitchToMode "Normal"; }
         }
         shared_except "locked" {
-            bind "Ctrl g" { SwitchToMode "Locked"; }
+            bind "Alt q" { SwitchToMode "Locked"; }
             bind "Ctrl q" { Quit; }
             bind "Alt n" { NewPane; }
             bind "Alt i" { MoveTab "Left"; }

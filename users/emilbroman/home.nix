@@ -50,6 +50,10 @@
     signing.signByDefault = true;
     signing.key = null;
 
+    ignores = [
+      ".DS_Store"
+    ];
+
     extraConfig = {
       init.defaultBranch = "main";
       pull.rebase = true;

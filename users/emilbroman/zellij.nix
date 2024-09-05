@@ -9,8 +9,6 @@ in {
             // bind "Alt c" { Copy; }
         }
         locked {
-            bind "Alt q" { SwitchToMode "Normal"; }
-
             bind "Alt h" { MoveFocus "Left"; }
             bind "Alt l" { MoveFocus "Right"; }
             bind "Alt j" { MoveFocus "Down"; }
@@ -23,6 +21,11 @@ in {
             bind "Alt L" { NewPane "Right"; }
             bind "Alt J" { NewPane "Down"; }
             bind "Alt K" { NewPane "Up"; }
+
+            bind "Alt t" { NewTab; }
+            bind "Alt n" { GoToNextTab; }
+            bind "Alt p" { GoToPreviousTab; }
+            bind "Alt q" { CloseTab; }
         }
         resize {
             bind "Ctrl n" { SwitchToMode "Normal"; }

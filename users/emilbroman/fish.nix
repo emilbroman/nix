@@ -90,7 +90,8 @@ in {
               {
                 sub("=", "__SPACE__")
               }
-              /^[[:space:]]*[^ ]+[[:space:]]+"/ {
+              /^[[:space:]]*[^ ]+[[:space:]]*"/ {
+                sub("__SPACE__", " ")
                 print "set -gx " $0
                 next
               }

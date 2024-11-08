@@ -12,6 +12,9 @@
   homebrew.casks = [
     "wezterm"
     "docker"
+    "google-chrome"
+    "slack"
+    "mongodb-compass"
   ];
   homebrew.onActivation = {
     autoUpdate = false;

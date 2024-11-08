@@ -23,6 +23,7 @@
     gnupg # PGP
     wget
     pstree
+    watch
 
     # Nix
     nil
@@ -34,6 +35,10 @@
     # TypeScript
     pkgs.nodePackages.typescript-language-server
     pkgs.nodePackages.prettier
+
+    # Cloud Management
+    awscli
+    google-cloud-sdk
   ];
 
   programs.home-manager.enable = true;

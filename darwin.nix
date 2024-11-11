@@ -8,14 +8,12 @@
 
   services.nix-daemon.enable = true;
 
+  nix-homebrew = {
+    enable = true;
+    user = "emilbroman";
+  };
+
   homebrew.enable = true;
-  homebrew.casks = [
-    "wezterm"
-    "docker"
-    "google-chrome"
-    "slack"
-    "mongodb-compass"
-  ];
   homebrew.onActivation = {
     autoUpdate = false;
     cleanup = "zap";
@@ -27,6 +25,29 @@
 
   system.defaults.NSGlobalDomain.InitialKeyRepeat = 9;
   system.defaults.NSGlobalDomain.KeyRepeat = 2;
+
+  system.defaults.NSGlobalDomain."com.apple.mouse.tapBehavior" = let
+    tapToClick = 1;
+  in
+    tapToClick;
+
+  system.defaults.CustomUserPreferences."com.apple.WindowManager" = {
+    EnableTiledWindowMargins = 0;
+  };
+
+  system.defaults.dock = {
+    persistent-apps = [];
+    autohide = true;
+  };
+
+  power.sleep = {
+    computer = "never";
+    harddisk = "never";
+    display = 20;
+  };
+
+  system.keyboard.enableKeyMapping = true;
+  system.keyboard.remapCapsLockToEscape = true;
 
   home-manager.sharedModules = [
     {

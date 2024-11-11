@@ -7,5 +7,10 @@
 
   homebrew.casks = [
     "figma"
+    "wezterm"
+    "docker"
+    "google-chrome"
+    "slack"
+    "mongodb-compass"
   ];
 }

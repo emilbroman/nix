@@ -6,6 +6,7 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
 
     nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
 
     home-manager.url = "github:nix-community/home-manager";
 
@@ -17,6 +18,7 @@
     self,
     nixpkgs,
     nixos-wsl,
+    nix-homebrew,
     nix-darwin,
     home-manager,
     zjstatus,
@@ -31,8 +33,10 @@
       modules = [
         {
           nixpkgs.hostPlatform = "aarch64-darwin";
+          networking.hostName = "emils-macbook";
         }
         home-manager.darwinModules.home-manager
+        nix-homebrew.darwinModules.nix-homebrew
         ./darwin.nix
       ];
     };
@@ -42,8 +46,10 @@
       modules = [
         {
           nixpkgs.hostPlatform = "aarch64-darwin";
+          networking.hostName = "emils-mini";
         }
         home-manager.darwinModules.home-manager
+        nix-homebrew.darwinModules.nix-homebrew
         ./darwin.nix
       ];
     };

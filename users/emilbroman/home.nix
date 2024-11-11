@@ -33,8 +33,8 @@
     marksman
 
     # TypeScript
-    pkgs.nodePackages.typescript-language-server
-    pkgs.nodePackages.prettier
+    nodePackages.typescript-language-server
+    biome
 
     # Cloud Management
     awscli

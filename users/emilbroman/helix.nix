@@ -27,22 +27,36 @@ in {
       {
         name = "markdown";
         auto-format = true;
-        formatter.command = "prettier";
-        formatter.args = ["--parser" "markdown"];
+        formatter.command = "biome";
+        formatter.args = ["format" "--stdin-file-path" "buffer.md"];
+      }
+
+      {
+        name = "javascript";
+        auto-format = true;
+        formatter.command = "biome";
+        formatter.args = ["format" "--stdin-file-path" "buffer.js"];
+      }
+
+      {
+        name = "jsx";
+        auto-format = true;
+        formatter.command = "biome";
+        formatter.args = ["format" "--stdin-file-path" "buffer.jsx"];
       }
 
       {
         name = "typescript";
         auto-format = true;
-        formatter.command = "prettier";
-        formatter.args = ["--parser" "typescript"];
+        formatter.command = "biome";
+        formatter.args = ["format" "--stdin-file-path" "buffer.ts"];
       }
 
       {
         name = "tsx";
         auto-format = true;
-        formatter.command = "prettier";
-        formatter.args = ["--parser" "typescript"];
+        formatter.command = "biome";
+        formatter.args = ["format" "--stdin-file-path" "buffer.tsx"];
       }
 
       {

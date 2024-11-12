@@ -34,7 +34,6 @@
 
     # TypeScript
     nodePackages.typescript-language-server
-    biome
 
     # Cloud Management
     awscli

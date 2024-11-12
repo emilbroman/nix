@@ -5,6 +5,10 @@
     home = "/Users/emilbroman";
   };
 
+  homebrew.brews = [
+    "biome"
+  ];
+
   homebrew.casks = [
     "figma"
     "wezterm"

@@ -73,7 +73,39 @@ in {
         auto-format = true;
         formatter.command = "alejandra";
       }
+
+      # My own languages :)
+      {
+        name = "aspen";
+        scope = "source.aspen";
+        file-types = ["aspen"];
+        injection-regex = "^aspen$";
+        comment-tokens = "//";
+        indent = {
+          tab-width = 2;
+          unit = "  ";
+        };
+        language-servers = ["aspen-lsp"];
+        grammar = "aspen";
+        formatter = {
+          command = "/Users/emilbroman/code/aspen-lang/target/release/aspen";
+          args = ["format"];
+        };
+        auto-format = true;
+      }
     ];
+
+    languages.grammar = [
+      {
+        name = "aspen";
+        source.path = "/Users/emilbroman/code/aspen-lang/tree-sitter-aspen";
+      }
+    ];
+
+    languages.language-server.aspen-lsp = {
+      command = "/Users/emilbroman/code/aspen-lang/target/release/aspen";
+      args = ["lsp"];
+    };
 
     themes.${themeName} = {
       "ui.window" = palette.gray."250";

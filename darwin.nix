@@ -31,6 +31,8 @@
   in
     tapToClick;
 
+  system.defaults.universalaccess.closeViewScrollWheelToggle = true;
+
   system.defaults.CustomUserPreferences."com.apple.WindowManager" = {
     EnableTiledWindowMargins = 0;
   };

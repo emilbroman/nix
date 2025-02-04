@@ -23,6 +23,11 @@ in {
       editor.true-color = true;
     };
 
+    languages.language-server.biome = {
+      command = "biome";
+      args = ["lsp-proxy"];
+    };
+
     languages.language = [
       {
         name = "markdown";
@@ -36,6 +41,7 @@ in {
         auto-format = true;
         formatter.command = "biome";
         formatter.args = ["format" "--stdin-file-path" "buffer.js"];
+        language-servers = ["typescript-language-server" "biome"];
       }
 
       {
@@ -43,6 +49,7 @@ in {
         auto-format = true;
         formatter.command = "biome";
         formatter.args = ["format" "--stdin-file-path" "buffer.jsx"];
+        language-servers = ["typescript-language-server" "biome"];
       }
 
       {
@@ -50,6 +57,7 @@ in {
         auto-format = true;
         formatter.command = "biome";
         formatter.args = ["format" "--stdin-file-path" "buffer.ts"];
+        language-servers = ["typescript-language-server" "biome"];
       }
 
       {
@@ -57,6 +65,7 @@ in {
         auto-format = true;
         formatter.command = "biome";
         formatter.args = ["format" "--stdin-file-path" "buffer.tsx"];
+        language-servers = ["typescript-language-server" "biome"];
       }
 
       {
@@ -125,7 +134,7 @@ in {
       "diagnostic.hint" = {
         underline = {
           color = palette.blue."400";
-          style = "dot";
+          style = "dashed";
         };
       };
 
@@ -134,7 +143,7 @@ in {
         modifiers = ["italic"];
         underline = {
           color = palette.blue."400";
-          style = "dot";
+          style = "dashed";
         };
       };
 
@@ -159,6 +168,7 @@ in {
       "variable" = {fg = palette.orange."200";};
 
       "string" = palette.green."200";
+      "string.special.symbol" = palette.blue."200";
 
       "function" = palette.blue."200";
 

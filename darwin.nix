@@ -23,8 +23,18 @@
     skhd # macOS keyboard shortcuts
   ];
 
-  system.defaults.NSGlobalDomain.InitialKeyRepeat = 9;
-  system.defaults.NSGlobalDomain.KeyRepeat = 2;
+  # Keyboard Settings
+  system.defaults.NSGlobalDomain = {
+    InitialKeyRepeat = 9;
+    KeyRepeat = 2;
+
+    NSAutomaticCapitalizationEnabled = false;
+    NSAutomaticDashSubstitutionEnabled = false;
+    NSAutomaticInlinePredictionEnabled = false;
+    NSAutomaticPeriodSubstitutionEnabled = false;
+    NSAutomaticQuoteSubstitutionEnabled = false;
+    NSAutomaticSpellingCorrectionEnabled = false;
+  };
 
   system.defaults.NSGlobalDomain."com.apple.mouse.tapBehavior" = let
     tapToClick = 1;

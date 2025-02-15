@@ -24,6 +24,7 @@
     wget
     pstree
     watch
+    jq
 
     # Nix
     nil

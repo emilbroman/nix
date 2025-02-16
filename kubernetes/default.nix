@@ -5,7 +5,9 @@
   ];
 
   networking.hosts.nuc = ["10.0.0.2"];
+  networking.hosts."10.0.0.2" = ["nuc"];
   networking.hosts.srv = ["10.0.0.4"];
+  networking.hosts."10.0.0.4" = ["srv"];
 
   services.kubernetes = {
     masterAddress = "nuc";

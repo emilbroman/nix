@@ -130,7 +130,6 @@
 
           # Disable firewall (use firewall in router).
           networking.firewall.enable = false;
-          networking.hosts.kubernetes = ["10.0.0.2"];
 
           home-manager.sharedModules = [
             {

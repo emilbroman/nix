@@ -5,6 +5,6 @@
 
   services.kubernetes = {
     roles = ["node"];
-    kubelet.kubeconfig.server = "https://kubernetes:6443";
+    kubelet.kubeconfig.server = "https://nuc:6443";
   };
 }

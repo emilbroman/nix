@@ -96,12 +96,24 @@
 
           services.caddy.enable = true;
 
-          services.caddy.virtualHosts."kvm.home.emilbroman.me".extraConfig = ''
-            reverse_proxy http://10.0.0.3
+          services.caddy.virtualHosts."home.emilbroman.me".extraConfig = ''
+            reverse_proxy http://10.0.0.4:30080
           '';
 
-          services.caddy.virtualHosts."home.emilbroman.me".extraConfig = ''
-            reverse_proxy http://10.0.0.4
+          services.caddy.virtualHosts."kvm.home.emilbroman.me".extraConfig = ''
+            reverse_proxy https://10.0.0.3 {
+              transport http {
+                tls_insecure_skip_verify
+              }
+            }
+          '';
+
+          services.caddy.virtualHosts."omada.home.emilbroman.me".extraConfig = ''
+            reverse_proxy https://localhost:8043 {
+              transport http {
+                tls_insecure_skip_verify
+              }
+            }
           '';
         }
       ];

@@ -100,6 +100,14 @@
             reverse_proxy http://10.0.0.4:30080
           '';
 
+          services.caddy.virtualHosts."ollama.home.emilbroman.me".extraConfig = ''
+            basic_auth {
+              emil $2y$10$eViJe8Yioo.Qb.oPSohXm.A.kB0GI3pBEahtGkPM/d0DwLD.crApK
+            }
+
+            reverse_proxy http://10.0.0.4:11434
+          '';
+
           services.caddy.virtualHosts."kvm.home.emilbroman.me".extraConfig = ''
             reverse_proxy https://10.0.0.3 {
               transport http {

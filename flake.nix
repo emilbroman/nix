@@ -93,6 +93,16 @@
               programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
             }
           ];
+
+          services.caddy.enable = true;
+
+          services.caddy.virtualHosts."kvm.home.emilbroman.me".extraConfig = ''
+            reverse_proxy http://10.0.0.3
+          '';
+
+          services.caddy.virtualHosts."home.emilbroman.me".extraConfig = ''
+            reverse_proxy http://10.0.0.4
+          '';
         }
       ];
     };

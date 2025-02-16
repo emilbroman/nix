@@ -128,7 +128,11 @@
         ./kubernetes/node.nix
         /etc/nixos/hardware-configuration.nix
         home-manager.nixosModules.home-manager
-        {
+        ({
+          config,
+          pkgs,
+          ...
+        }: {
           system.stateVersion = "24.11";
           networking.hostName = "srv";
 
@@ -148,6 +152,28 @@
             keyMap = "us";
           };
 
+          nixpkgs.config.allowUnfree = true;
+          nixpkgs.config.cudaSupport = true;
+          nixpkgs.config.cudaCapability = "8.9";
+          services.xserver.videoDrivers = ["nvidia"];
+
+          # Enable OpenGL
+          hardware.graphics = {
+            enable = true;
+          };
+
+          hardware.nvidia = {
+            modesetting.enable = true;
+
+            nvidiaSettings = true;
+
+            package = config.boot.kernelPackages.nvidiaPackages.stable;
+          };
+
+          services.ollama = {
+            enable = true;
+          };
+
           # Enable the OpenSSH daemon.
           services.openssh.enable = true;
 
@@ -159,7 +185,7 @@
               programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
             }
           ];
-        }
+        })
       ];
     };
   };

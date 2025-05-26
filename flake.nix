@@ -194,6 +194,18 @@
               programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
             }
           ];
+
+          security.sudo.extraRules = [
+            {
+              groups = ["wheel"];
+              commands = [
+                {
+                  command = "/run/current-system/sw/bin/systemctl reboot --boot-loader-entry=auto-windows";
+                  options = ["NOPASSWD"];
+                }
+              ];
+            }
+          ];
         })
       ];
     };

@@ -21,11 +21,23 @@ in {
       };
 
       editor.true-color = true;
+
+      editor.soft-wrap.wrap-at-text-width = true;
+      editor.soft-wrap.enable = false;
+      keys.normal.space.W = ":toggle soft-wrap.enable";
     };
 
     languages.language-server.biome = {
       command = "biome";
       args = ["lsp-proxy"];
+    };
+
+    languages.language-server.gpt = {
+      command = "deno";
+      args = ["run" "--allow-net" "--allow-env" "https://raw.githubusercontent.com/sigmaSd/helix-gpt/0.34-deno/src/app.ts"];
+      # environment.HANDLER = "openai";
+      # environment.OPENAI_MODEL = "gpt-4o-mini";
+      environment.HANDLER = "codeium";
     };
 
     languages.language = [
@@ -41,7 +53,7 @@ in {
         auto-format = true;
         formatter.command = "biome";
         formatter.args = ["format" "--stdin-file-path" "buffer.js"];
-        language-servers = ["typescript-language-server" "biome"];
+        language-servers = ["typescript-language-server" "biome" "gpt"];
       }
 
       {
@@ -49,7 +61,7 @@ in {
         auto-format = true;
         formatter.command = "biome";
         formatter.args = ["format" "--stdin-file-path" "buffer.jsx"];
-        language-servers = ["typescript-language-server" "biome"];
+        language-servers = ["typescript-language-server" "biome" "gpt"];
       }
 
       {
@@ -57,7 +69,7 @@ in {
         auto-format = true;
         formatter.command = "biome";
         formatter.args = ["format" "--stdin-file-path" "buffer.ts"];
-        language-servers = ["typescript-language-server" "biome"];
+        language-servers = ["typescript-language-server" "biome" "gpt"];
       }
 
       {
@@ -65,7 +77,7 @@ in {
         auto-format = true;
         formatter.command = "biome";
         formatter.args = ["format" "--stdin-file-path" "buffer.tsx"];
-        language-servers = ["typescript-language-server" "biome"];
+        language-servers = ["typescript-language-server" "biome" "gpt"];
       }
 
       {

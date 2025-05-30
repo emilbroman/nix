@@ -32,6 +32,7 @@
         {
           nixpkgs.hostPlatform = "aarch64-darwin";
           networking.hostName = "emils-macbook";
+          ids.gids.nixbld = 350;
         }
         home-manager.darwinModules.home-manager
         nix-homebrew.darwinModules.nix-homebrew

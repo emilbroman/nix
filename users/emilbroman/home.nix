@@ -26,6 +26,10 @@
     watch
     jq
 
+    # LLM stuff
+    # helix-gpt
+    deno
+
     # Nix
     nil
     alejandra

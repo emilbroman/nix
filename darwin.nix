@@ -6,7 +6,7 @@
 
   system.stateVersion = 4;
 
-  services.nix-daemon.enable = true;
+  system.primaryUser = "emilbroman";
 
   nix-homebrew = {
     enable = true;
@@ -72,8 +72,7 @@
       '';
 
       programs.fish.functions.nix-rebuild = ''
-        sudo true
-        and darwin-rebuild switch --flake ~/code/nix
+        sudo darwin-rebuild switch --flake ~/code/nix
       '';
     }
   ];

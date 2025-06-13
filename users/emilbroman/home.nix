@@ -97,14 +97,14 @@
     hostname = "10.0.0.2";
   };
 
-  programs.ssh.matchBlocks.mini = {
-    host = "mini";
-    hostname = "10.0.0.3";
-  };
-
   programs.ssh.matchBlocks.srv = {
     host = "srv";
     hostname = "10.0.0.4";
+  };
+
+  programs.ssh.matchBlocks.mini = {
+    host = "mini";
+    hostname = "10.0.0.5";
   };
 
   programs.ssh.matchBlocks.macbook = {

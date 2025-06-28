@@ -131,6 +131,40 @@
     nixosConfigurations."srv" = nixpkgs.lib.nixosSystem {
       inherit specialArgs;
       system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+
+        config.allowUnfree = true;
+        config.cudaSupport = true;
+        config.cudaCapability = "8.9";
+
+        overlays = [
+          # (final: prev: {
+          #   gamescope = prev.gamescope.overrideAttrs (old: {
+          #     src = final.fetchgit {
+          #       url = "https://github.com/ValveSoftware/gamescope.git";
+          #       rev = "81e40911e425c41071f3f684eba76b154b25f7af"; # latest as of now
+          #       sha256 = "sha256-C2MMutgPoMWZJwO/Sq4FoZxble3/W08kLHQs9WdTgYg=";
+          #       fetchSubmodules = true;
+          #     };
+          #     version = "master";
+          #     mesonFlags =
+          #       old.mesonFlags or []
+          #       ++ [
+          #         "-Denable_openvr_support=false"
+          #       ];
+
+          #     nativeBuildInputs =
+          #       old.nativeBuildInputs
+          #       ++ [
+          #         final.pkg-config
+          #         final.meson
+          #         final.ninja
+          #       ];
+          #   });
+          # })
+        ];
+      };
       modules = [
         ./configuration.nix
         ./users/nixos.nix
@@ -144,11 +178,13 @@
         }: {
           system.stateVersion = "24.11";
           networking.hostName = "srv";
+          networking.networkmanager.enable = true;
 
           # Use the systemd-boot EFI boot loader.
           boot.loader.systemd-boot.enable = true;
           boot.loader.systemd-boot.configurationLimit = 1;
           boot.loader.efi.canTouchEfiVariables = true;
+          boot.loader.timeout = 1;
 
           time.timeZone = "Europe/Stockholm";
 
@@ -161,24 +197,93 @@
             keyMap = "us";
           };
 
-          nixpkgs.config.allowUnfree = true;
-          nixpkgs.config.cudaSupport = true;
-          nixpkgs.config.cudaCapability = "8.9";
-          services.xserver.videoDrivers = ["nvidia"];
+          services.displayManager = {
+            autoLogin = {
+              enable = true;
+              user = "emilbroman";
+            };
+
+            # sddm = {
+            #   enable = true;
+            #   wayland = {
+            #     enable = true;
+            #   };
+            # };
+            gdm = {
+              enable = false;
+              wayland = false;
+            };
+          };
+          # services.displayManager.gdm.enable = false;
+
+          # services.desktopManager.plasma6.enable = true;
+          # services.desktopManager.gnome.enable = false;
+
+          # security.pam.services.gdm-password.enableGnomeKeyring = true;
+
+          # displayManager.startx.enable = true;
+          # displayManager.xpra.enable = true;
+          # desktopManager.budgie.enable = true;
+
+          home-manager.users.emilbroman = {
+            home.file.".config/openbox/autostart".text = ''
+              exec ${pkgs.steam}/bin/steam -steamos -tenfoot
+            '';
+          };
+
+          environment.sessionVariables = {
+            # __GL_MaxFramesAllowed = "1";
+            # __GL_YIELD = "USLEEP";
+          };
+
+          # services.seatd.enable = true;
+          services.xserver = {
+            enable = true;
+
+            displayManager.lightdm.enable = true;
+            # windowManager.dwm.enable = true;
+            windowManager.openbox.enable = true;
+
+            # displayManager.session = [
+            #   {
+            #     manage = "window";
+            #     name = "steam";
+            #     start = ''
+            #       ${pkgs.steam}/bin/steam -steamos -tenfoot &
+            #       waitPID=$!
+            #     '';
+            #   }
+            # ];
+
+            videoDrivers = ["nvidia"];
+            resolutions = [
+              {
+                x = 1920;
+                y = 1080;
+              }
+              {
+                x = 1280;
+                y = 720;
+              }
+            ];
+          };
 
           # Enable OpenGL
           hardware.graphics = {
             enable = true;
           };
 
+          boot.kernelPackages = pkgs.linuxPackages_6_12;
+          boot.blacklistedKernelModules = ["nouveau"];
           hardware.nvidia = {
             open = false;
             modesetting.enable = true;
 
             nvidiaSettings = true;
 
-            package = config.boot.kernelPackages.nvidiaPackages.stable;
+            package = config.boot.kernelPackages.nvidiaPackages.beta;
           };
+          boot.kernelParams = ["nvidia-drm.modeset=1"];
 
           services.ollama = {
             enable = true;
@@ -188,24 +293,144 @@
           # Enable the OpenSSH daemon.
           services.openssh.enable = true;
 
+          # Steam
+          programs.gamescope = {
+            enable = true;
+            capSysNice = true;
+          };
+          programs.steam = {
+            enable = true;
+
+            package = pkgs.steam.override {
+              extraPkgs = pkgs:
+                with pkgs; [
+                  xorg.libXcursor
+                  xorg.libXi
+                  xorg.libXinerama
+                  xorg.libXScrnSaver
+                  xorg.xinput
+                  xorg.xf86inputmouse
+                  xorg.xf86inputvmmouse
+                  libpng
+                  libpulseaudio
+                  libvorbis
+                  stdenv.cc.cc.lib
+                  libkrb5
+                  keyutils
+                  gamescope-wsi
+                  vulkan-loader
+                  zenity
+                  wayland
+                ];
+            };
+
+            # gamescopeSession = {
+            #   enable = true;
+
+            #   env = {
+            #     WLR_NO_HARDWARE_CURSORS = "1";
+            # GBM_BACKEND = "nvidia-drm";
+            # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+            # };
+
+            # args = [
+            # "-w"
+            # "1920"
+            # "-h"
+            # "1080"
+            # "-W"
+            # "1920"
+            # "-H"
+            # "1080"
+            # "--backend"
+            # "drm"
+            # "--debug-layers"
+            # "--debug-focus"
+            # "--synchronous-x11"
+            # "--adaptive-sync"
+            # "--hdr-enabled"
+            # "--rt"
+            #     "-b"
+            #     "--steam"
+            #     "--force-grab-cursor"
+            #     "--expose-wayland"
+            #   ];
+
+            #   steamArgs = [
+            #     "-tenfoot"
+            #     "-pipewire"
+            #     "-pipewire-dmabuf"
+            #     "-steamos"
+            #   ];
+            # };
+          };
+
+          programs.xwayland.enable = true;
+          programs.gamemode.enable = true;
+
+          environment.systemPackages = with pkgs; [
+            gamescope
+            vulkan-loader
+            vulkan-tools
+            libdrm
+            libglvnd
+            egl-wayland
+            libva
+            libva-utils
+            # xdg-desktop-portal
+            # xdg-desktop-portal-kde
+            # xdg-desktop-portal-gnome
+            #   # mangohud
+            protonup-qt
+            #   # lutris
+            #   # bottles
+            #   # heroic
+          ];
+
+          # environment.loginShellInit = ''
+          #   [[ "$(tty)" = "/dev/tty1" ]] && ./gs.sh
+          # '';
+
+          environment.sessionVariables = {
+            # WAYLAND_DISPLAY = "wayland-0";
+          };
+
+          # systemd.user.services.xdg-desktop-portal-wlr.serviceConfig.Environment = [
+          #   "WAYLAND_DISPLAY=gamescope-0"
+          # ];
+          # xdg.portal = {
+          #   enable = true;
+          # wlr = {
+          #   enable = true;
+          # };
+          # };
+
+          services.dbus.enable = true;
+
+          security.rtkit.enable = true;
+          services.pipewire = {
+            enable = true; # if not already enabled
+            alsa.enable = true;
+            alsa.support32Bit = true;
+            pulse.enable = true;
+            wireplumber.enable = true;
+            jack.enable = true;
+          };
+
           # Disable firewall (use firewall in router).
           networking.firewall.enable = false;
+
+          users.users.emilbroman = {
+            extraGroups = [
+              "input"
+              "video"
+              "seat"
+            ];
+          };
 
           home-manager.sharedModules = [
             {
               programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
-            }
-          ];
-
-          security.sudo.extraRules = [
-            {
-              groups = ["wheel"];
-              commands = [
-                {
-                  command = "/run/current-system/sw/bin/systemctl reboot --boot-loader-entry=auto-windows";
-                  options = ["NOPASSWD"];
-                }
-              ];
             }
           ];
         })

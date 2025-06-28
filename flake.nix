@@ -137,33 +137,6 @@
         config.allowUnfree = true;
         config.cudaSupport = true;
         config.cudaCapability = "8.9";
-
-        overlays = [
-          # (final: prev: {
-          #   gamescope = prev.gamescope.overrideAttrs (old: {
-          #     src = final.fetchgit {
-          #       url = "https://github.com/ValveSoftware/gamescope.git";
-          #       rev = "81e40911e425c41071f3f684eba76b154b25f7af"; # latest as of now
-          #       sha256 = "sha256-C2MMutgPoMWZJwO/Sq4FoZxble3/W08kLHQs9WdTgYg=";
-          #       fetchSubmodules = true;
-          #     };
-          #     version = "master";
-          #     mesonFlags =
-          #       old.mesonFlags or []
-          #       ++ [
-          #         "-Denable_openvr_support=false"
-          #       ];
-
-          #     nativeBuildInputs =
-          #       old.nativeBuildInputs
-          #       ++ [
-          #         final.pkg-config
-          #         final.meson
-          #         final.ninja
-          #       ];
-          #   });
-          # })
-        ];
       };
       modules = [
         ./configuration.nix
@@ -197,66 +170,15 @@
             keyMap = "us";
           };
 
-          services.displayManager = {
-            autoLogin = {
-              enable = true;
-              user = "emilbroman";
-            };
-
-            # sddm = {
-            #   enable = true;
-            #   wayland = {
-            #     enable = true;
-            #   };
-            # };
-            gdm = {
-              enable = false;
-              wayland = false;
-            };
-          };
-          # services.displayManager.gdm.enable = false;
-
-          # services.desktopManager.plasma6.enable = true;
-          # services.desktopManager.gnome.enable = false;
-
-          # security.pam.services.gdm-password.enableGnomeKeyring = true;
-
-          # displayManager.startx.enable = true;
-          # displayManager.xpra.enable = true;
-          # desktopManager.budgie.enable = true;
-
-          home-manager.users.emilbroman = {
-            home.file.".config/openbox/autostart".text = ''
-              exec ${pkgs.steam}/bin/steam -steamos -tenfoot
-            '';
-          };
-
-          environment.sessionVariables = {
-            # __GL_MaxFramesAllowed = "1";
-            # __GL_YIELD = "USLEEP";
-          };
-
-          # services.seatd.enable = true;
+          # X
           services.xserver = {
             enable = true;
 
-            displayManager.lightdm.enable = true;
-            # windowManager.dwm.enable = true;
-            windowManager.openbox.enable = true;
-
-            # displayManager.session = [
-            #   {
-            #     manage = "window";
-            #     name = "steam";
-            #     start = ''
-            #       ${pkgs.steam}/bin/steam -steamos -tenfoot &
-            #       waitPID=$!
-            #     '';
-            #   }
-            # ];
-
-            videoDrivers = ["nvidia"];
             resolutions = [
+              {
+                x = 3840;
+                y = 2160;
+              }
               {
                 x = 1920;
                 y = 1080;
@@ -268,30 +190,51 @@
             ];
           };
 
+          # LightDM as display manager
+          services.xserver.displayManager.lightdm.enable = true;
+          services.displayManager = {
+            autoLogin = {
+              enable = true;
+              user = "emilbroman";
+            };
+          };
+
+          # Openbox as window manager -> autostart Steam
+          services.xserver.windowManager.openbox.enable = true;
+          home-manager.users.emilbroman = {
+            home.file.".config/openbox/autostart".text = ''
+              exec ${pkgs.steam}/bin/steam -steamos -tenfoot
+            '';
+          };
+
           # Enable OpenGL
           hardware.graphics = {
             enable = true;
           };
 
+          # NVIDIA stuff...
           boot.kernelPackages = pkgs.linuxPackages_6_12;
           boot.blacklistedKernelModules = ["nouveau"];
+          services.xserver.videoDrivers = ["nvidia"];
           hardware.nvidia = {
             open = false;
             modesetting.enable = true;
-
             nvidiaSettings = true;
-
             package = config.boot.kernelPackages.nvidiaPackages.beta;
           };
           boot.kernelParams = ["nvidia-drm.modeset=1"];
 
-          services.ollama = {
-            enable = true;
-            host = "0.0.0.0";
-          };
-
-          # Enable the OpenSSH daemon.
-          services.openssh.enable = true;
+          environment.systemPackages = with pkgs; [
+            gamescope
+            vulkan-loader
+            vulkan-tools
+            libdrm
+            libglvnd
+            egl-wayland
+            libva
+            libva-utils
+            protonup-qt
+          ];
 
           # Steam
           programs.gamescope = {
@@ -323,93 +266,14 @@
                   wayland
                 ];
             };
-
-            # gamescopeSession = {
-            #   enable = true;
-
-            #   env = {
-            #     WLR_NO_HARDWARE_CURSORS = "1";
-            # GBM_BACKEND = "nvidia-drm";
-            # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-            # };
-
-            # args = [
-            # "-w"
-            # "1920"
-            # "-h"
-            # "1080"
-            # "-W"
-            # "1920"
-            # "-H"
-            # "1080"
-            # "--backend"
-            # "drm"
-            # "--debug-layers"
-            # "--debug-focus"
-            # "--synchronous-x11"
-            # "--adaptive-sync"
-            # "--hdr-enabled"
-            # "--rt"
-            #     "-b"
-            #     "--steam"
-            #     "--force-grab-cursor"
-            #     "--expose-wayland"
-            #   ];
-
-            #   steamArgs = [
-            #     "-tenfoot"
-            #     "-pipewire"
-            #     "-pipewire-dmabuf"
-            #     "-steamos"
-            #   ];
-            # };
           };
 
           programs.xwayland.enable = true;
           programs.gamemode.enable = true;
-
-          environment.systemPackages = with pkgs; [
-            gamescope
-            vulkan-loader
-            vulkan-tools
-            libdrm
-            libglvnd
-            egl-wayland
-            libva
-            libva-utils
-            # xdg-desktop-portal
-            # xdg-desktop-portal-kde
-            # xdg-desktop-portal-gnome
-            #   # mangohud
-            protonup-qt
-            #   # lutris
-            #   # bottles
-            #   # heroic
-          ];
-
-          # environment.loginShellInit = ''
-          #   [[ "$(tty)" = "/dev/tty1" ]] && ./gs.sh
-          # '';
-
-          environment.sessionVariables = {
-            # WAYLAND_DISPLAY = "wayland-0";
-          };
-
-          # systemd.user.services.xdg-desktop-portal-wlr.serviceConfig.Environment = [
-          #   "WAYLAND_DISPLAY=gamescope-0"
-          # ];
-          # xdg.portal = {
-          #   enable = true;
-          # wlr = {
-          #   enable = true;
-          # };
-          # };
-
           services.dbus.enable = true;
-
           security.rtkit.enable = true;
           services.pipewire = {
-            enable = true; # if not already enabled
+            enable = true;
             alsa.enable = true;
             alsa.support32Bit = true;
             pulse.enable = true;
@@ -417,16 +281,24 @@
             jack.enable = true;
           };
 
-          # Disable firewall (use firewall in router).
-          networking.firewall.enable = false;
-
           users.users.emilbroman = {
             extraGroups = [
               "input"
               "video"
-              "seat"
             ];
           };
+
+          # Ollama
+          services.ollama = {
+            enable = true;
+            host = "0.0.0.0";
+          };
+
+          # Enable the OpenSSH daemon.
+          services.openssh.enable = true;
+
+          # Disable firewall (use firewall in router).
+          networking.firewall.enable = false;
 
           home-manager.sharedModules = [
             {

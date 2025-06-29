@@ -170,42 +170,7 @@
             keyMap = "us";
           };
 
-          # X
-          services.xserver = {
-            enable = true;
-
-            resolutions = [
-              {
-                x = 3840;
-                y = 2160;
-              }
-              {
-                x = 1920;
-                y = 1080;
-              }
-              {
-                x = 1280;
-                y = 720;
-              }
-            ];
-          };
-
-          # LightDM as display manager
-          services.xserver.displayManager.lightdm.enable = true;
-          services.displayManager = {
-            autoLogin = {
-              enable = true;
-              user = "emilbroman";
-            };
-          };
-
-          # Openbox as window manager -> autostart Steam
-          services.xserver.windowManager.openbox.enable = true;
-          home-manager.users.emilbroman = {
-            home.file.".config/openbox/autostart".text = ''
-              exec ${pkgs.steam}/bin/steam -steamos -tenfoot
-            '';
-          };
+          services.getty.autologinUser = "emilbroman";
 
           # Enable OpenGL
           hardware.graphics = {
@@ -224,68 +189,49 @@
           };
           boot.kernelParams = ["nvidia-drm.modeset=1"];
 
-          environment.systemPackages = with pkgs; [
-            gamescope
-            vulkan-loader
-            vulkan-tools
-            libdrm
-            libglvnd
-            egl-wayland
-            libva
-            libva-utils
-            protonup-qt
-          ];
-
           # Steam
+          programs.steam = {
+            enable = true;
+            gamescopeSession.enable = true;
+          };
+          programs.xwayland.enable = true;
+
           programs.gamescope = {
             enable = true;
             capSysNice = true;
-          };
-          programs.steam = {
-            enable = true;
-
-            package = pkgs.steam.override {
-              extraPkgs = pkgs:
-                with pkgs; [
-                  xorg.libXcursor
-                  xorg.libXi
-                  xorg.libXinerama
-                  xorg.libXScrnSaver
-                  xorg.xinput
-                  xorg.xf86inputmouse
-                  xorg.xf86inputvmmouse
-                  libpng
-                  libpulseaudio
-                  libvorbis
-                  stdenv.cc.cc.lib
-                  libkrb5
-                  keyutils
-                  gamescope-wsi
-                  vulkan-loader
-                  zenity
-                  wayland
-                ];
-            };
-          };
-
-          programs.xwayland.enable = true;
-          programs.gamemode.enable = true;
-          services.dbus.enable = true;
-          security.rtkit.enable = true;
-          services.pipewire = {
-            enable = true;
-            alsa.enable = true;
-            alsa.support32Bit = true;
-            pulse.enable = true;
-            wireplumber.enable = true;
-            jack.enable = true;
           };
 
           users.users.emilbroman = {
             extraGroups = [
               "input"
               "video"
+              "audio"
             ];
+          };
+
+          environment = let
+            gameSession = pkgs.writeShellScriptBin "game-session" (builtins.readFile ./game-session);
+          in {
+            systemPackages = with pkgs; [mangohud gameSession];
+            loginShellInit = ''
+              [[ "$(tty)" = "/dev/tty1" ]] && ${gameSession}/bin/game-session
+            '';
+          };
+
+          services.sunshine = {
+            enable = true;
+            capSysAdmin = true;
+            autoStart = true;
+          };
+
+          security.rtkit.enable = true;
+          services.pipewire = {
+            enable = true;
+            alsa.enable = true;
+            alsa.support32Bit = true;
+            pulse.enable = true;
+            jack.enable = true;
+            wireplumber.enable = true;
           };
 
           # Ollama

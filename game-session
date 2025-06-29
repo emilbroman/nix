@@ -10,8 +10,10 @@ gamescopeArgs=(
     # --mangoapp
     --rt
     --steam
-    -W 1920
-    -H 1080
+    # -W 1920
+    # -H 1080
+    -W 3840
+    -H 2160
 )
 steamArgs=(
     -tenfoot
@@ -23,7 +25,7 @@ mangoConfig=(
     vram
 )
 mangoVars=(
-    MANGOHUD=1
+    MANGOHUD=0
     MANGOHUD_CONFIG="$(IFS=,; echo "${mangoConfig[*]}")"
 )
 

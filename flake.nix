@@ -187,8 +187,8 @@
 
           # NVIDIA stuff...
           boot.kernelPackages = pkgs.linuxPackages_6_12;
-          boot.blacklistedKernelModules = ["nouveau"];
-          services.xserver.videoDrivers = ["nvidia"];
+          boot.blacklistedKernelModules = ["nouveau" "amdgpu"];
+          services.xserver.videoDrivers = ["nvidia" "amdgpu"];
           hardware.nvidia = {
             open = false;
             modesetting.enable = true;

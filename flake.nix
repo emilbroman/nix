@@ -124,6 +124,14 @@
               }
             }
           '';
+
+          services.caddy.virtualHosts."sunshine.home.emilbroman.me".extraConfig = ''
+            reverse_proxy https://10.0.0.4:47990 {
+              transport http {
+                tls_insecure_skip_verify
+              }
+            }
+          '';
         }
       ];
     };

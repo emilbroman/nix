@@ -12,8 +12,10 @@ gamescopeArgs=(
     --steam
     # -W 1920
     # -H 1080
-    -W 3840
-    -H 2160
+    -w 3840
+    -h 2160
+    -W 2560
+    -H 1440
 )
 steamArgs=(
     -tenfoot

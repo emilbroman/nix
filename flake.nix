@@ -195,7 +195,20 @@
             nvidiaSettings = true;
             package = config.boot.kernelPackages.nvidiaPackages.beta;
           };
-          boot.kernelParams = ["nvidia-drm.modeset=1"];
+          boot.kernelParams = [
+            "nvidia-drm.modeset=1"
+
+            "drm.edid_firmware=HDMI-A-1:edid/edid.bin"
+          ];
+
+          hardware.firmware = [
+            (
+              pkgs.runCommand "edid.bin" {compressFirmware = false;} ''
+                mkdir -p $out/lib/firmware/edid
+                cp ${./lg-oled55b6v-hdmi.edid} $out/lib/firmware/edid/edid.bin
+              ''
+            )
+          ];
 
           # Steam
           programs.steam = {

@@ -199,6 +199,9 @@ in {
     //
     // default_layout "compact"
 
+    // Disable startup tips
+    show_startup_tips false
+
     // Choose the mode that zellij uses when starting up.
     // Default: normal
     //

@@ -223,6 +223,7 @@
           };
 
           users.users.emilbroman = {
+            linger = true;
             extraGroups = [
               "input"
               "video"
@@ -230,13 +231,9 @@
             ];
           };
 
-          environment = let
-            gameSession = pkgs.writeShellScriptBin "game-session" (builtins.readFile ./game-session);
-          in {
-            systemPackages = with pkgs; [mangohud gameSession];
-            loginShellInit = ''
-              [[ "$(tty)" = "/dev/tty1" ]] && ${gameSession}/bin/game-session
-            '';
+          environment = {
+            systemPackages = with pkgs; [mangohud];
+            loginShellInit = "systemctl --user start drm-session.target";
           };
 
           services.sunshine = {
@@ -244,6 +241,62 @@
             capSysAdmin = true;
             autoStart = true;
           };
+
+          home-manager.sharedModules = [
+            {
+              home.file.".config/sunshine/apps.json".text = builtins.toJSON {
+                env = {};
+                apps = [
+                  {
+                    name = "Steam";
+                    detached = [
+                      "setsid steam steam://open/bigpicture"
+                    ];
+                    image-path = "steam.png";
+                  }
+                ];
+              };
+            }
+            {
+              systemd.user.targets.drm-session = {
+                Unit.Description = "TTY + DRM";
+              };
+
+              systemd.user.services.steam = {
+                Unit = {
+                  Description = "Steam in Gamescope with HDR and Metrics";
+                  After = ["graphical.target" "systemd-user-sessions.service" "dev-dri-card0.device" "sunshine.service"];
+                  Wants = ["graphical.target" "sunshine.service"];
+                  Requires = ["sunshine.service"];
+                };
+
+                Service = {
+                  Environment = [
+                    "MANGOHUD=0"
+                    "MANGOHUD_CONFIG=cpu_temp,gpu_temp,ram,vram"
+                  ];
+                  ExecStart = ''
+                    ${pkgs.gamescope}/bin/gamescope \
+                      --adaptive-sync \
+                      --hdr-enabled \
+                      --rt \
+                      --steam \
+                      -w 3840 -h 2160 \
+                      -W 2560 -H 1440 \
+                      -- ${pkgs.steam}/bin/steam -tenfoot -steamos
+                  '';
+                  Restart = "on-failure";
+                };
+
+                Install = {
+                  WantedBy = ["drm-session.target"];
+                };
+              };
+            }
+            {
+              programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
+            }
+          ];
 
           security.rtkit.enable = true;
           services.pipewire = {
@@ -266,12 +319,6 @@
 
           # Disable firewall (use firewall in router).
           networking.firewall.enable = false;
-
-          home-manager.sharedModules = [
-            {
-              programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
-            }
-          ];
         })
       ];
     };

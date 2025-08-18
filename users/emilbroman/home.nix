@@ -25,6 +25,7 @@
     pstree
     watch
     jq
+    moreutils
 
     # LLM stuff
     # helix-gpt

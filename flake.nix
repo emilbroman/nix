@@ -216,6 +216,7 @@
             gamescopeSession.enable = true;
           };
           programs.xwayland.enable = true;
+          programs.gamemode.enable = true;
 
           programs.gamescope = {
             enable = true;
@@ -257,7 +258,7 @@
                 ];
               };
             }
-            {
+            ({lib, ...}: {
               systemd.user.targets.drm-session = {
                 Unit.Description = "TTY + DRM";
               };
@@ -280,10 +281,13 @@
                       --adaptive-sync \
                       --hdr-enabled \
                       --rt \
+                      --force-grab-cursor \
                       --steam \
                       -w 3840 -h 2160 \
                       -W 2560 -H 1440 \
-                      -- ${pkgs.steam}/bin/steam -tenfoot -steamos
+                      -- \
+                      ${pkgs.coreutils}/bin/env PATH=$PATH:${lib.makeBinPath [pkgs.gamemode]} \
+                      ${pkgs.steam}/bin/steam -tenfoot -steamos
                   '';
                   Restart = "on-failure";
                 };
@@ -292,7 +296,7 @@
                   WantedBy = ["drm-session.target"];
                 };
               };
-            }
+            })
             {
               programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
             }

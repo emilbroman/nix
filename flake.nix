@@ -213,15 +213,8 @@
           # Steam
           programs.steam = {
             enable = true;
-            gamescopeSession.enable = true;
           };
-          programs.xwayland.enable = true;
           programs.gamemode.enable = true;
-
-          programs.gamescope = {
-            enable = true;
-            capSysNice = true;
-          };
 
           users.users.emilbroman = {
             linger = true;
@@ -233,7 +226,7 @@
           };
 
           environment = {
-            systemPackages = with pkgs; [mangohud];
+            systemPackages = with pkgs; [mangohud gamescope gamescope-wsi];
             loginShellInit = "systemctl --user start drm-session.target";
           };
 
@@ -275,6 +268,8 @@
                   Environment = [
                     "MANGOHUD=0"
                     "MANGOHUD_CONFIG=cpu_temp,gpu_temp,ram,vram"
+                    "PROTON_ENABLE_HDR=1"
+                    "DXVK_HDR=1"
                   ];
                   ExecStart = ''
                     ${pkgs.gamescope}/bin/gamescope \

@@ -9,7 +9,7 @@
 
     home-manager.url = "github:nix-community/home-manager";
 
-    zjstatus.url = "https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm";
+    zjstatus.url = "https://github.com/dj95/zjstatus/releases/download/v0.21.0/zjstatus.wasm";
     zjstatus.flake = false;
   };
 

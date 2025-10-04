@@ -20,7 +20,6 @@
     git
     ripgrep # Fuzzy finder
     openssh # SSH
-    gnupg # PGP
     wget
     pstree
     watch
@@ -75,6 +74,12 @@
         autoupdate = true;
       };
     };
+  };
+
+  programs.gpg = {
+    enable = true;
+    mutableKeys = true;
+    mutableTrust = true;
   };
 
   home.file.".gnupg/gpg-agent.conf".text = ''

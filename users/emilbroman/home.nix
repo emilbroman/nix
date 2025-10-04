@@ -40,6 +40,9 @@
     # TypeScript
     nodePackages.typescript-language-server
 
+    # Typst
+    tinymist
+
     # Cloud Management
     awscli
     google-cloud-sdk

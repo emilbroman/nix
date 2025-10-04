@@ -16,5 +16,6 @@
     "google-chrome"
     "slack"
     "mongodb-compass"
+    "notion"
   ];
 }

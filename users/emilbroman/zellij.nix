@@ -287,7 +287,7 @@ in {
         pane size=1 borderless=true {
           plugin location="file:${zjstatus}" {
             format_left   "{tabs}"
-            format_right  "{mode} {datetime} "
+            format_right  "{command_gcloud} {command_kubectx} {mode} {datetime} "
 
             border_enabled  "false"
 
@@ -303,15 +303,6 @@ in {
             datetime          "#[fg=#${palette.gray."250"}] {format}"
             datetime_format   "%H:%M"
             datetime_timezone "Europe/Stockholm"
-          }
-        }
-
-        children
-
-        pane size=1 borderless=true {
-          plugin location="file:${zjstatus}" {
-            format_right  "{command_gcloud} {command_kubectx}"
-            border_enabled  "false"
 
             command_kubectx_command     "sh -c \"~/.nix-profile/bin/rg '^current-context: (.*)$' ~/.kube/config -r '$1'\""
             command_kubectx_format      "#[bg=#326ce5,fg=#ffffff] k8s #[fg=#326ce5,bg=#ffffff] {stdout}{stderr} "
@@ -328,6 +319,8 @@ in {
             command_gcloud_env         {}
           }
         }
+
+        children
       }
     }
   '';

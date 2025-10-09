@@ -52,7 +52,7 @@
 
   programs.wezterm = {
     enable = true;
-    extraConfig = import ./wezterm.lua.nix;
+    extraConfig = (import ./wezterm.lua.nix) {inherit pkgs;};
   };
 
   programs.git = {

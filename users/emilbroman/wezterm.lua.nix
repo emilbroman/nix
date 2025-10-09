@@ -6,7 +6,7 @@ in
 
     local config = wezterm.config_builder()
 
-    config.default_prog = { "${pkgs.zellij}/bin/zellij", "attach", "--create" }
+    config.default_prog = { "/bin/sh", "-c", "exec ${pkgs.zellij}/bin/zellij attach --create $WEZTERM_PANE" }
 
     config.font = wezterm.font {
       family = 'Berkeley Mono',
@@ -31,8 +31,6 @@ in
           top = 33,
           bottom = 0,
         }
-        overrides.window_background_opacity = 1
-        overrides.macos_window_background_blur = 0
       else
         overrides.window_decorations = 'RESIZE'
         overrides.window_padding = {
@@ -41,8 +39,6 @@ in
           top = 20,
           bottom = 20,
         }
-        overrides.window_background_opacity = 0.98
-        overrides.macos_window_background_blur = 50
       end
       window:set_config_overrides(overrides)
     end)

@@ -1,11 +1,13 @@
 let
   themeName = "emil";
-  palette = builtins.mapAttrs (_: color: builtins.mapAttrs (_: hex: "#${hex}") color) (import ./palette.nix);
 in {
   programs.helix = {
     enable = true;
 
     defaultEditor = true;
+
+    themes.${themeName} =
+      (import ./themes.nix).current.helix;
 
     settings = {
       theme = themeName;
@@ -51,33 +53,25 @@ in {
       {
         name = "javascript";
         auto-format = true;
-        formatter.command = "biome";
-        formatter.args = ["format" "--stdin-file-path" "buffer.js"];
-        language-servers = ["typescript-language-server" "biome" "gpt"];
+        language-servers = ["typescript-language-server" "gpt"];
       }
 
       {
         name = "jsx";
         auto-format = true;
-        formatter.command = "biome";
-        formatter.args = ["format" "--stdin-file-path" "buffer.jsx"];
-        language-servers = ["typescript-language-server" "biome" "gpt"];
+        language-servers = ["typescript-language-server" "gpt"];
       }
 
       {
         name = "typescript";
         auto-format = true;
-        formatter.command = "biome";
-        formatter.args = ["format" "--stdin-file-path" "buffer.ts"];
-        language-servers = ["typescript-language-server" "biome" "gpt"];
+        language-servers = ["typescript-language-server" "gpt"];
       }
 
       {
         name = "tsx";
         auto-format = true;
-        formatter.command = "biome";
-        formatter.args = ["format" "--stdin-file-path" "buffer.tsx"];
-        language-servers = ["typescript-language-server" "biome" "gpt"];
+        language-servers = ["typescript-language-server" "gpt"];
       }
 
       {
@@ -117,116 +111,6 @@ in {
     languages.language-server.aspen-lsp = {
       command = "/Users/emilbroman/code/aspen-lang/target/release/aspen";
       args = ["lsp"];
-    };
-
-    themes.${themeName} = {
-      "ui.window" = palette.gray."250";
-      "ui.background" = palette.gray."250";
-
-      "ui.text" = palette.gray."150";
-      "ui.selection" = {bg = palette.gray."300";};
-
-      "ui.linenr" = palette.gray."300";
-      "ui.linenr.selected" = palette.gray."250";
-      "ui.cursor.primary" = {bg = palette.gray."150";};
-      "ui.popup" = {
-        bg = palette.gray."300";
-        fg = palette.gray."150";
-      };
-      "ui.menu" = {
-        bg = palette.gray."300";
-        fg = palette.gray."150";
-      };
-      "ui.menu.selected" = {bg = palette.gray."250";};
-      "ui.help" = {
-        bg = palette.gray."300";
-        fg = palette.gray."150";
-      };
-
-      "diff.plus.gutter" = {fg = palette.green."300";};
-      "diff.minus.gutter" = {fg = palette.red."300";};
-      "diff.delta.gutter" = {fg = palette.orange."300";};
-
-      "ui.statusline" = {
-        bg = palette.gray."200";
-        fg = palette.gray."300";
-      };
-      "ui.statusline.inactive" = {
-        bg = palette.gray."300";
-        fg = palette.gray."200";
-      };
-
-      "ui.virtual.ruler" = palette.gray."300";
-
-      "special" = palette.orange."300";
-      "error" = palette.red."400";
-      "diagnostic.error" = {
-        fg = palette.red."400";
-        underline = {
-          color = palette.red."400";
-          style = "curl";
-        };
-      };
-      "warning" = palette.yellow."400";
-      "diagnostic.warning" = {
-        underline = {
-          color = palette.yellow."400";
-          style = "dashed";
-        };
-      };
-      "hint" = palette.blue."400";
-      "diagnostic.hint" = {
-        underline = {
-          color = palette.blue."400";
-          style = "dashed";
-        };
-      };
-
-      "diagnostic.unnecessary" = {
-        fg = palette.gray."250";
-        modifiers = ["italic"];
-        underline = {
-          color = palette.blue."400";
-          style = "dashed";
-        };
-      };
-
-      "diagnostic.deprecated" = {
-        modifiers = ["crossed_out"];
-      };
-
-      # Syntax highlighting
-
-      "keyword" = {
-        fg = palette.blue."350";
-        modifiers = ["bold"];
-      };
-
-      "type" = palette.red."300";
-      "constructor" = palette.red."250";
-
-      "variable.builtin" = {
-        fg = palette.blue."250";
-        modifiers = ["bold"];
-      };
-      "variable" = {fg = palette.orange."200";};
-
-      "string" = palette.green."200";
-      "string.special.symbol" = palette.blue."200";
-
-      "function" = palette.blue."200";
-
-      "comment" = {
-        bg = palette.gray."300";
-        fg = palette.gray."100";
-        modifiers = ["italic"];
-      };
-
-      "punctuation" = palette.gray."250";
-      "operator" = palette.gray."200";
-      "namespace" = palette.magenta."100";
-      "constant" = palette.yellow."200";
-      "label" = palette.blue."250";
     };
   };
 }

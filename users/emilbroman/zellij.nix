@@ -1,7 +1,5 @@
-let
-  palette = import ./palette.nix;
-in {
-  config = ''
+{
+  config = {theme}: ''
     keybinds clear-defaults=true {
         shared_except "normal" {
             bind "Esc" { SwitchToMode "Normal"; }
@@ -175,17 +173,17 @@ in {
     //
     themes {
         emil {
-            fg "#${palette.gray."250"}"
-            bg "#${palette.gray."350"}"
-            black "#${palette.gray."400"}"
-            red "#${palette.red."400"}"
-            green "#${palette.green."350"}"
-            yellow "#${palette.yellow."350"}"
-            blue "#${palette.blue."350"}"
-            magenta "#${palette.magenta."350"}"
-            cyan "#${palette.cyan."350"}"
-            white "#${palette.gray."250"}"
-            orange "#${palette.orange."350"}"
+            fg "#${theme.fg}"
+            bg "#${theme.bg}"
+            black "#${theme.black}"
+            red "#${theme.red}"
+            green "#${theme.green}"
+            yellow "#${theme.yellow}"
+            blue "#${theme.blue}"
+            magenta "#${theme.magenta}"
+            cyan "#${theme.cyan}"
+            white "#${theme.white}"
+            orange "#${theme.orange}"
         }
     }
 
@@ -281,7 +279,10 @@ in {
     // disable_session_metadata true
   '';
 
-  defaultLayout = {zjstatus}: ''
+  defaultLayout = {
+    zjstatus,
+    theme,
+  }: ''
     layout {
       default_tab_template {
         pane size=1 borderless=true {
@@ -293,14 +294,13 @@ in {
 
             // hide_frame_for_single_pane "true"
 
-            mode_normal   "#[fg=#${palette.gray."200"},bg=#${palette.gray."300"}] {name} "
-            mode_locked   "#[fg=#${palette.orange."300"},bg=#${palette.orange."200"}] {name} "
+            mode_normal   "#[fg=#${theme.pill.inactive.foreground},bg=#${theme.pill.inactive.background}] {name} "
             mode_default_to_mode "normal"
 
-            tab_normal   "#[fg=#${palette.gray."200"},bg=#${palette.gray."300"}] {name} #[normal] "
-            tab_active   "#[bg=#${palette.gray."200"},fg=#${palette.gray."300"}] {name} #[normal] "
+            tab_normal   "#[bg=#${theme.pill.inactive.background},fg=#${theme.pill.inactive.foreground}] {name} #[normal] "
+            tab_active   "#[bg=#${theme.pill.active.background},fg=#${theme.pill.active.foreground}] {name} #[normal] "
 
-            datetime          "#[fg=#${palette.gray."250"}] {format}"
+            datetime          "#[fg=#${theme.clock.foreground}] {format}"
             datetime_format   "%H:%M"
             datetime_timezone "Europe/Stockholm"
 

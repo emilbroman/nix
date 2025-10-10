@@ -1,32 +1,11 @@
 let
-  palette = import ./palette.nix;
+  themes = import ./themes.nix;
 
-  variables = {
-    fish_term24bit = "1";
-    fish_color_autosuggestion = palette.gray."250";
-    fish_color_cancel = "-r";
-    fish_color_command = "${palette.yellow."350"} --bold";
-    fish_color_comment = "${palette.gray."250"} --italics";
-    fish_color_cwd = palette.orange."250";
-    fish_color_cwd_root = palette.orange."350";
-    fish_color_end = palette.gray."250";
-    fish_color_error = palette.red."350";
-    fish_color_escape = palette.orange."250";
-    fish_color_history_current = "normal";
-    fish_color_host = "normal";
-    fish_color_host_remote = "normal";
-    fish_color_match = palette.gray."300";
-    fish_color_normal = palette.gray."150";
-    fish_color_operator = palette.magenta."200";
-    fish_color_param = palette.yellow."200";
-    fish_color_quote = palette.green."200";
-    fish_color_redirection = "${palette.magenta."100"} --italics";
-    fish_color_search_match = "--background=${palette.gray."300"}";
-    fish_color_selection = "--background=${palette.gray."300"}";
-    fish_color_status = "${palette.yellow."350"} --underline";
-    fish_color_user = palette.orange."350";
-    fish_color_valid_path = "${palette.yellow."200"} --underline";
-  };
+  variables =
+    themes.current.fish.variables
+    // {
+      fish_term24bit = "1";
+    };
 in {
   programs.fish = {
     enable = true;
@@ -76,7 +55,7 @@ in {
             set_color red --bold
             echo -n $file
             set_color normal
-            set_color ${palette.gray."250"} --italic
+            set_color ${themes.current.fish.muted} --italic
             echo " does not exist"
             return 1
           end
@@ -106,7 +85,7 @@ in {
 
           set_color yellow
           echo -n "$file "
-          set_color ${palette.gray."250"}
+          set_color ${themes.current.fish.muted}
           echo "↩"
         '';
       };
@@ -115,13 +94,13 @@ in {
         set -l last_command_status $status
 
         if test $last_command_status -ne 0
-          set_color ${palette.red."100"} --background ${palette.red."350"}
+          set_color ${themes.current.fish.prompt.errorStatus.foreground} --background ${themes.current.fish.prompt.errorStatus.background}
           printf ' %d ' $last_command_status
         end
 
         set -l nix_shell_depth (pstree -p %self | rg '\bfish' -c | xargs expr -1 +)
         if test $nix_shell_depth -gt 0
-          set_color ${palette.blue."350"} --background ${palette.blue."100"}
+          set_color ${themes.current.fish.prompt.shellDepth.foreground} --background ${themes.current.fish.prompt.shellDepth.background}
           printf ' '
           for i in (seq $nix_shell_depth)
             printf '+'
@@ -129,7 +108,7 @@ in {
           printf ' '
         end
 
-        set_color ${palette.gray."200"} --background ${palette.gray."300"}
+        set_color ${themes.current.zellij.pill.inactive.foreground} --background ${themes.current.zellij.pill.inactive.background}
         printf ' '(prompt_pwd --full-length-dirs 4 --dir-length 3)' '
 
         if git status &>/dev/null
@@ -139,7 +118,7 @@ in {
           set_color normal
           echo
 
-          set_color ${palette.gray."250"}
+          set_color ${themes.current.fish.muted}
           printf ' ⊢ '
         else
           set_color normal

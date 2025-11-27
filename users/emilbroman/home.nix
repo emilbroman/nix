@@ -9,6 +9,7 @@ in
     imports = [
       ./fish.nix
       ./helix.nix
+      ./zed.nix
     ];
 
     home.stateVersion = "23.05";
@@ -28,10 +29,6 @@ in
       watch
       jq
       moreutils
-
-      # LLM stuff
-      # helix-gpt
-      deno
 
       # Nix
       nil
@@ -63,16 +60,12 @@ in
 
     programs.git = {
       enable = true;
-      userName = "Emil Broman";
-      userEmail = "emil@emilbroman.me";
       signing.signByDefault = true;
       signing.key = null;
 
-      ignores = [
-        ".DS_Store"
-      ];
-
-      extraConfig = {
+      settings = {
+        user.name = "Emil Broman";
+        user.email = "emil@emilbroman.me";
         init.defaultBranch = "main";
         pull.rebase = true;
         fetch.prunt = true;
@@ -83,6 +76,10 @@ in
           autoupdate = true;
         };
       };
+
+      ignores = [
+        ".DS_Store"
+      ];
     };
 
     programs.gpg = {
@@ -103,30 +100,33 @@ in
 
     home.file.".hushlogin".text = "";
 
-    programs.ssh.enable = true;
+    programs.ssh = {
+      enable = true;
+      enableDefaultConfig = false;
 
-    programs.ssh.matchBlocks.home = {
-      host = "home";
-      hostname = "home.emilbroman.me";
-    };
+      matchBlocks.home = {
+        host = "home";
+        hostname = "home.emilbroman.me";
+      };
 
-    programs.ssh.matchBlocks.nuc = {
-      host = "nuc";
-      hostname = "10.0.0.2";
-    };
+      matchBlocks.nuc = {
+        host = "nuc";
+        hostname = "10.0.0.2";
+      };
 
-    programs.ssh.matchBlocks.srv = {
-      host = "srv";
-      hostname = "10.0.0.4";
-    };
+      matchBlocks.srv = {
+        host = "srv";
+        hostname = "10.0.0.4";
+      };
 
-    programs.ssh.matchBlocks.mini = {
-      host = "mini";
-      hostname = "10.0.0.5";
-    };
+      matchBlocks.mini = {
+        host = "mini";
+        hostname = "10.0.0.5";
+      };
 
-    programs.ssh.matchBlocks.macbook = {
-      host = "macbook";
-      hostname = "10.0.0.6";
+      matchBlocks.macbook = {
+        host = "macbook";
+        hostname = "10.0.0.6";
+      };
     };
   }

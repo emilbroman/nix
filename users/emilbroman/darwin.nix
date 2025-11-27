@@ -17,5 +17,7 @@
     "slack"
     "mongodb-compass"
     "notion"
+    "zed"
+    "firefox"
   ];
 }

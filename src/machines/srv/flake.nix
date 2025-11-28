@@ -6,6 +6,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     terminal-stack.url = ../../terminal-stack;
+    kubernetes.url = ../../kubernetes;
   };
 
   outputs = {
@@ -13,6 +14,7 @@
     nixpkgs,
     home-manager,
     terminal-stack,
+    kubernetes,
   }: {
     nixosConfigurations."srv" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -27,7 +29,7 @@
 
       modules = [
         ./hardware-configuration.nix
-        ../../../kubernetes/node.nix
+        kubernetes.node-module
         home-manager.nixosModules.home-manager
         terminal-stack.system-module
         ({

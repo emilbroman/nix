@@ -56,6 +56,8 @@
 
             home.stateVersion = "23.05";
 
+            home.file.".hushlogin".text = "";
+
             programs.home-manager.enable = true;
 
             programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix/src/machines/nuc";

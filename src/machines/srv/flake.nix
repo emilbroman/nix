@@ -1,61 +1,22 @@
 {
-  description = "Emil's Nix Flake for macOS & Linux";
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    nix-darwin.url = "github:LnL7/nix-darwin";
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
-
     home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    zjstatus.url = "https://github.com/dj95/zjstatus/releases/download/v0.21.0/zjstatus.wasm";
-    zjstatus.flake = false;
+    terminal-stack.url = ../../terminal-stack;
   };
 
   outputs = {
     self,
     nixpkgs,
-    nix-homebrew,
-    nix-darwin,
     home-manager,
-    zjstatus,
-  }: let
-    specialArgs = {
-      inherit zjstatus;
-      flake = self;
-    };
-  in {
-    darwinConfigurations."emils-macbook" = nix-darwin.lib.darwinSystem {
-      inherit specialArgs;
-      modules = [
-        {
-          nixpkgs.hostPlatform = "aarch64-darwin";
-          networking.hostName = "emils-macbook";
-          ids.gids.nixbld = 350;
-        }
-        home-manager.darwinModules.home-manager
-        nix-homebrew.darwinModules.nix-homebrew
-        ./darwin.nix
-      ];
-    };
-
-    darwinConfigurations."emils-mini" = nix-darwin.lib.darwinSystem {
-      inherit specialArgs;
-      modules = [
-        {
-          nixpkgs.hostPlatform = "aarch64-darwin";
-          networking.hostName = "emils-mini";
-        }
-        home-manager.darwinModules.home-manager
-        nix-homebrew.darwinModules.nix-homebrew
-        ./darwin.nix
-      ];
-    };
-
+    terminal-stack,
+  }: {
     nixosConfigurations."srv" = nixpkgs.lib.nixosSystem {
-      inherit specialArgs;
       system = "x86_64-linux";
+
       pkgs = import nixpkgs {
         system = "x86_64-linux";
 
@@ -63,20 +24,57 @@
         config.cudaSupport = true;
         config.cudaCapability = "8.9";
       };
+
       modules = [
-        ./configuration.nix
-        ./users/nixos.nix
-        ./kubernetes/node.nix
-        /etc/nixos/hardware-configuration.nix
+        ./hardware-configuration.nix
+        ../../../kubernetes/node.nix
         home-manager.nixosModules.home-manager
+        terminal-stack.system-module
         ({
           config,
           pkgs,
           ...
         }: {
-          system.stateVersion = "24.11";
+          nix.settings.experimental-features = "nix-command flakes";
+          nix.settings.download-buffer-size = 524288000;
+
+          system.configurationRevision = self.rev or self.dirtyRev or null;
+
           networking.hostName = "srv";
           networking.networkmanager.enable = true;
+          system.stateVersion = "24.11";
+
+          nix.settings.trusted-users = ["emilbroman"];
+
+          users.users.emilbroman = {
+            name = "emilbroman";
+            shell = pkgs.fish;
+            home = "/home/emilbroman";
+            isNormalUser = true;
+            linger = true;
+            extraGroups = [
+              "wheel" # Enable ‘sudo’.
+              "docker"
+              "input"
+              "video"
+              "audio"
+            ];
+          };
+
+          home-manager.backupFileExtension = "old";
+          home-manager.useGlobalPkgs = true;
+
+          home-manager.users.emilbroman = {
+            imports = [
+              terminal-stack.home-module
+            ];
+
+            home.stateVersion = "23.05";
+
+            programs.home-manager.enable = true;
+
+            programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix/src/machines/nuc";
+          };
 
           # Use the systemd-boot EFI boot loader.
           boot.loader.systemd-boot.enable = true;
@@ -132,15 +130,6 @@
             enable = true;
           };
           programs.gamemode.enable = true;
-
-          users.users.emilbroman = {
-            linger = true;
-            extraGroups = [
-              "input"
-              "video"
-              "audio"
-            ];
-          };
 
           environment = {
             systemPackages = with pkgs; [mangohud gamescope gamescope-wsi];
@@ -210,7 +199,7 @@
               };
             })
             {
-              programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix --impure";
+              programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix/src/machines/srv";
             }
           ];
 

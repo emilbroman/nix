@@ -88,6 +88,17 @@
         "type": "github"
       }
     },
+    "kubernetes": {
+      "locked": {
+        "path": "../../kubernetes",
+        "type": "path"
+      },
+      "original": {
+        "path": "../../kubernetes",
+        "type": "path"
+      },
+      "parent": []
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1764242076,
@@ -121,6 +132,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "kubernetes": "kubernetes",
         "nixpkgs": "nixpkgs",
         "terminal-stack": "terminal-stack"
       }

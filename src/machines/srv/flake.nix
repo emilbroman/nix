@@ -71,11 +71,13 @@
               terminal-stack.home-module
             ];
 
+            home.file.".hushlogin".text = "";
+
             home.stateVersion = "23.05";
 
             programs.home-manager.enable = true;
 
-            programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix/src/machines/nuc";
+            programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix/src/machines/srv";
           };
 
           # Use the systemd-boot EFI boot loader.
@@ -200,9 +202,6 @@
                 };
               };
             })
-            {
-              programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix/src/machines/srv";
-            }
           ];
 
           security.rtkit.enable = true;

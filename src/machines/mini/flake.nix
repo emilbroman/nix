@@ -13,12 +13,13 @@
 
   outputs = {
     self,
-    home-manager,
+    nixpkgs,
     nix-darwin,
+    home-manager,
     mac,
     terminal-stack,
   }: {
-    darwinConfigurations."emils-macbook" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."emils-mini" = nix-darwin.lib.darwinSystem {
       modules = [
         ({pkgs, ...}: {
           nix.settings.experimental-features = "nix-command flakes";
@@ -28,7 +29,7 @@
 
           nixpkgs.hostPlatform = "aarch64-darwin";
           networking.hostName = "emils-mini";
-          ids.gids.nixbld = 350;
+          ids.gids.nixbld = 30000;
 
           system.stateVersion = 4;
           system.primaryUser = "emilbroman";

@@ -21,7 +21,7 @@
         ../../../kubernetes/master.nix
         home-manager.nixosModules.home-manager
         terminal-stack.system-module
-        {
+        ({pkgs, ...}: {
           nix.settings.experimental-features = "nix-command flakes";
           nix.settings.download-buffer-size = 524288000;
 
@@ -33,6 +33,8 @@
           nix.settings.trusted-users = ["emilbroman"];
 
           users.users.emilbroman = {
+            name = "emilbroman";
+            shell = pkgs.fish;
             home = "/home/emilbroman";
             isNormalUser = true;
             extraGroups = [
@@ -116,7 +118,7 @@
               }
             }
           '';
-        }
+        })
       ];
     };
   };

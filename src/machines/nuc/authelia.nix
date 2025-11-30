@@ -74,7 +74,7 @@
         rules = [
           {
             domain = "id.home.emilbroman.me";
-            policy = "one_factor";
+            policy = "two_factor";
           }
           {
             domain = "sunshine.home.emilbroman.me";
@@ -82,15 +82,15 @@
           }
           {
             domain = "ldap.home.emilbroman.me";
-            policy = "one_factor";
+            policy = "two_factor";
           }
           {
             domain = "omada.home.emilbroman.me";
-            policy = "one_factor";
+            policy = "two_factor";
           }
           {
             domain = "kvm.home.emilbroman.me";
-            policy = "one_factor";
+            policy = "two_factor";
           }
           {
             domain = "ollama.home.emilbroman.me";

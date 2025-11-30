@@ -108,6 +108,8 @@
           '';
 
           services.caddy.virtualHosts."ollama.home.emilbroman.me".extraConfig = ''
+            @ext not client_ip private_ranges
+            abort @ext
             forward_auth 127.0.0.1:9091 {
               uri /api/authz/forward-auth
               copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
@@ -116,6 +118,8 @@
           '';
 
           services.caddy.virtualHosts."kvm.home.emilbroman.me".extraConfig = ''
+            @ext not client_ip private_ranges
+            abort @ext
             forward_auth 127.0.0.1:9091 {
               uri /api/authz/forward-auth
               copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
@@ -128,6 +132,8 @@
           '';
 
           services.caddy.virtualHosts."omada.home.emilbroman.me".extraConfig = ''
+            @ext not client_ip private_ranges
+            abort @ext
             forward_auth 127.0.0.1:9091 {
               uri /api/authz/forward-auth
               copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
@@ -140,6 +146,8 @@
           '';
 
           services.caddy.virtualHosts."sunshine.home.emilbroman.me".extraConfig = ''
+            @ext not client_ip private_ranges
+            abort @ext
             forward_auth 127.0.0.1:9091 {
               uri /api/authz/forward-auth
               copy_headers Remote-User Remote-Groups Remote-Name Remote-Email

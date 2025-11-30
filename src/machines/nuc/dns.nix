@@ -5,6 +5,7 @@
     settings.local = "/home.emilbroman.me/";
 
     settings.address = [
+      "/.home.emilbroman.me/10.0.0.2"
     ];
 
     settings.server = [

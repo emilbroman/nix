@@ -19,12 +19,23 @@
   }: {
     nixosConfigurations."nuc" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = {
+        secrets = import ./secrets.nix;
+      };
       modules = [
         ./hardware-configuration.nix
+        ./ldap.nix
+        ./authelia.nix
+        ./vpn.nix
+        ./dns.nix
         kubernetes.master-module
         home-manager.nixosModules.home-manager
         terminal-stack.system-module
-        ({pkgs, ...}: {
+        ({
+          pkgs,
+          secrets,
+          ...
+        }: {
           nix.settings.experimental-features = "nix-command flakes";
           nix.settings.download-buffer-size = 524288000;
 
@@ -89,18 +100,26 @@
           services.caddy.enable = true;
 
           services.caddy.virtualHosts."home.emilbroman.me".extraConfig = ''
+            forward_auth 127.0.0.1:9091 {
+              uri /api/authz/forward-auth
+              copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+            }
             reverse_proxy http://10.0.0.4:30080
           '';
 
           services.caddy.virtualHosts."ollama.home.emilbroman.me".extraConfig = ''
-            basic_auth {
-              emil $2y$10$eViJe8Yioo.Qb.oPSohXm.A.kB0GI3pBEahtGkPM/d0DwLD.crApK
+            forward_auth 127.0.0.1:9091 {
+              uri /api/authz/forward-auth
+              copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
             }
-
             reverse_proxy http://10.0.0.4:11434
           '';
 
           services.caddy.virtualHosts."kvm.home.emilbroman.me".extraConfig = ''
+            forward_auth 127.0.0.1:9091 {
+              uri /api/authz/forward-auth
+              copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+            }
             reverse_proxy https://10.0.0.3 {
               transport http {
                 tls_insecure_skip_verify
@@ -109,6 +128,10 @@
           '';
 
           services.caddy.virtualHosts."omada.home.emilbroman.me".extraConfig = ''
+            forward_auth 127.0.0.1:9091 {
+              uri /api/authz/forward-auth
+              copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+            }
             reverse_proxy https://localhost:8043 {
               transport http {
                 tls_insecure_skip_verify
@@ -117,7 +140,12 @@
           '';
 
           services.caddy.virtualHosts."sunshine.home.emilbroman.me".extraConfig = ''
+            forward_auth 127.0.0.1:9091 {
+              uri /api/authz/forward-auth
+              copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+            }
             reverse_proxy https://10.0.0.4:47990 {
+              header_up Authorization "Basic ${secrets.sunshine.basicAuth}"
               transport http {
                 tls_insecure_skip_verify
               }

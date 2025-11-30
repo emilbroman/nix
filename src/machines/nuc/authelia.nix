@@ -15,6 +15,9 @@
     settings = {
       server.address = "tcp://127.0.0.1:9091";
 
+      default_2fa_method = "webauthn";
+      totp.disable = true;
+
       theme = "light";
 
       storage = {

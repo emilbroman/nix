@@ -73,37 +73,7 @@
       };
 
       access_control = {
-        default_policy = "deny";
-        rules = [
-          {
-            domain = "id.home.emilbroman.me";
-            policy = "two_factor";
-          }
-          {
-            domain = "sunshine.home.emilbroman.me";
-            policy = "one_factor";
-          }
-          {
-            domain = "ldap.home.emilbroman.me";
-            policy = "two_factor";
-          }
-          {
-            domain = "omada.home.emilbroman.me";
-            policy = "two_factor";
-          }
-          {
-            domain = "kvm.home.emilbroman.me";
-            policy = "two_factor";
-          }
-          {
-            domain = "ollama.home.emilbroman.me";
-            policy = "one_factor";
-          }
-          {
-            domain = "home.emilbroman.me";
-            policy = "one_factor";
-          }
-        ];
+        default_policy = "two_factor";
       };
     };
   };

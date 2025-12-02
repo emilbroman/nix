@@ -18,6 +18,7 @@
             enabled = true;
             autoupdate = true;
           };
+          url."ssh://git@github.com/".insteadOf = "https://github.com/";
         };
 
         ignores = [

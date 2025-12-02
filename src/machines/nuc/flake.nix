@@ -99,7 +99,7 @@
 
           services.caddy.enable = true;
 
-          services.caddy.virtualHosts."home.emilbroman.me".extraConfig = ''
+          services.caddy.virtualHosts."bb3.site".extraConfig = ''
             forward_auth 127.0.0.1:9091 {
               uri /api/authz/forward-auth
               copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
@@ -107,7 +107,7 @@
             reverse_proxy http://10.0.0.4:30080
           '';
 
-          services.caddy.virtualHosts."ollama.home.emilbroman.me".extraConfig = ''
+          services.caddy.virtualHosts."ollama.bb3.site".extraConfig = ''
             @ext not client_ip private_ranges
             abort @ext
             forward_auth 127.0.0.1:9091 {
@@ -117,7 +117,7 @@
             reverse_proxy http://10.0.0.4:11434
           '';
 
-          services.caddy.virtualHosts."kvm.home.emilbroman.me".extraConfig = ''
+          services.caddy.virtualHosts."kvm.bb3.site".extraConfig = ''
             @ext not client_ip private_ranges
             abort @ext
             forward_auth 127.0.0.1:9091 {
@@ -131,7 +131,7 @@
             }
           '';
 
-          services.caddy.virtualHosts."omada.home.emilbroman.me".extraConfig = ''
+          services.caddy.virtualHosts."omada.bb3.site".extraConfig = ''
             @ext not client_ip private_ranges
             abort @ext
             forward_auth 127.0.0.1:9091 {
@@ -145,7 +145,7 @@
             }
           '';
 
-          services.caddy.virtualHosts."sunshine.home.emilbroman.me".extraConfig = ''
+          services.caddy.virtualHosts."sunshine.bb3.site".extraConfig = ''
             @ext not client_ip private_ranges
             abort @ext
             forward_auth 127.0.0.1:9091 {

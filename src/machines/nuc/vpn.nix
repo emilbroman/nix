@@ -45,7 +45,7 @@
   environment.etc."openvpn/auth-ldap.conf".text = ''
     <LDAP>
       URL ldap://127.0.0.1:3890
-      BindDN "uid=service,ou=people,dc=home,dc=emilbroman,dc=me"
+      BindDN "uid=service,ou=people,dc=bb3,dc=site"
       Password "${secrets.ldap.serviceAccount.password}"
       Timeout 15
       TLSEnable no
@@ -53,7 +53,7 @@
     </LDAP>
 
     <Authorization>
-      BaseDN "ou=people,dc=home,dc=emilbroman,dc=me"
+      BaseDN "ou=people,dc=bb3,dc=site"
       SearchFilter "(uid=%u)"
       RequireGroup false
     </Authorization>

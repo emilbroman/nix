@@ -1,5 +1,5 @@
 {secrets, ...}: {
-  services.caddy.virtualHosts."id.home.emilbroman.me".extraConfig = ''
+  services.caddy.virtualHosts."id.bb3.site".extraConfig = ''
     reverse_proxy http://127.0.0.1:9091
   '';
 
@@ -33,9 +33,9 @@
             same_site = "lax";
             expiration = "1h";
             inactivity = "5m";
-            domain = "home.emilbroman.me";
-            default_redirection_url = "https://id.home.emilbroman.me/";
-            authelia_url = "https://id.home.emilbroman.me";
+            domain = "bb3.site";
+            default_redirection_url = "https://id.bb3.site/";
+            authelia_url = "https://id.bb3.site";
           }
         ];
       };
@@ -55,9 +55,9 @@
         ldap = {
           implementation = "custom";
           address = "ldap://127.0.0.1:3890";
-          base_dn = "dc=home,dc=emilbroman,dc=me";
+          base_dn = "dc=bb3,dc=site";
 
-          user = "uid=service,ou=people,dc=home,dc=emilbroman,dc=me";
+          user = "uid=service,ou=people,dc=bb3,dc=site";
           password = secrets.ldap.serviceAccount.password;
 
           users_filter = "(&(|({username_attribute}={input})({mail_attribute}={input}))(objectClass=person))";

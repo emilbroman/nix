@@ -6,28 +6,28 @@
         enableDefaultConfig = false;
 
         matchBlocks.home = {
-          host = "home";
-          hostname = "home.emilbroman.me";
+          host = "bb3";
+          hostname = "bb3.site";
         };
 
         matchBlocks.nuc = {
           host = "nuc";
-          hostname = "10.0.0.2";
+          hostname = "nuc.bb3.site";
         };
 
         matchBlocks.srv = {
           host = "srv";
-          hostname = "10.0.0.4";
+          hostname = "srv.bb3.site";
         };
 
         matchBlocks.mini = {
           host = "mini";
-          hostname = "10.0.0.5";
+          hostname = "mini.bb3.site";
         };
 
         matchBlocks.macbook = {
           host = "macbook";
-          hostname = "10.0.0.6";
+          hostname = "macbook.bb3.site";
         };
       };
     };

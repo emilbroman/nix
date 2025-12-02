@@ -3,7 +3,7 @@
   secrets,
   ...
 }: {
-  services.caddy.virtualHosts."ldap.home.emilbroman.me".extraConfig = ''
+  services.caddy.virtualHosts."ldap.bb3.site".extraConfig = ''
     @ext not client_ip private_ranges
     abort @ext
     forward_auth 127.0.0.1:9091 {
@@ -20,7 +20,7 @@
     package = pkgs.lldap;
 
     settings = let
-      baseDn = "dc=home,dc=emilbroman,dc=me";
+      baseDn = "dc=bb3,dc=site";
     in {
       ldap_host = "127.0.0.1";
       ldap_port = 3890;

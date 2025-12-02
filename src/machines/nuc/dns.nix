@@ -2,10 +2,14 @@
   services.dnsmasq = {
     enable = true;
 
-    settings.local = "/home.emilbroman.me/";
+    settings.local = "/bb3.site/";
 
     settings.address = [
-      "/.home.emilbroman.me/10.0.0.2"
+      "/srv.bb3.site/10.0.0.4"
+      "/mini.bb3.site/10.0.0.5"
+      "/macbook.bb3.site/10.0.0.6"
+      "/nuc.bb3.site/10.0.0.2"
+      "/.bb3.site/10.0.0.2"
     ];
 
     settings.server = [

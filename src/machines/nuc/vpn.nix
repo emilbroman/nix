@@ -14,10 +14,14 @@
       user nobody
       group nogroup
 
-      ca   /var/lib/openvpn/pki/ca.crt
-      cert /var/lib/openvpn/pki/server.crt
-      key  /var/lib/openvpn/pki/server.key
+      #ca   /var/lib/openvpn/pki/ca.crt
+      #cert /var/lib/openvpn/pki/server.crt
+      #key  /var/lib/openvpn/pki/server.key
       dh   /var/lib/openvpn/pki/dh.pem
+
+      ca   /home/emilbroman/code/turnstile/ca.pem
+      cert /home/emilbroman/code/turnstile/server.crt
+      key  /home/emilbroman/code/turnstile/server.key
 
       server 10.8.0.0 255.255.255.0
       keepalive 10 120
@@ -28,10 +32,10 @@
       push "route 10.0.0.0 255.255.255.0"
       push "dhcp-option DNS 10.0.0.2"
 
-      plugin ${pkgs.openvpn-auth-ldap}/lib/openvpn/openvpn-auth-ldap.so "/etc/openvpn/auth-ldap.conf"
+      # plugin ${pkgs.openvpn-auth-ldap}/lib/openvpn/openvpn-auth-ldap.so "/etc/openvpn/auth-ldap.conf"
 
-      verify-client-cert none
-      username-as-common-name
+      # verify-client-cert none
+      # username-as-common-name
 
       tls-version-min 1.2
       cipher AES-256-GCM

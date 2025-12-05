@@ -24,8 +24,6 @@
       };
       modules = [
         ./hardware-configuration.nix
-        ./ldap.nix
-        ./authelia.nix
         ./vpn.nix
         ./dns.nix
         kubernetes.master-module
@@ -109,8 +107,8 @@
           services.caddy.enable = true;
 
           services.caddy.virtualHosts."bb3.site".extraConfig = ''
-            forward_auth 127.0.0.1:9091 {
-              uri /api/authz/forward-auth
+            forward_auth 127.0.0.1:7571 {
+              uri /forward-auth
               copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
             }
             reverse_proxy http://10.0.0.4:30080
@@ -119,8 +117,8 @@
           services.caddy.virtualHosts."ollama.bb3.site".extraConfig = ''
             @ext not client_ip private_ranges
             abort @ext
-            forward_auth 127.0.0.1:9091 {
-              uri /api/authz/forward-auth
+            forward_auth 127.0.0.1:7571 {
+              uri /forward-auth
               copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
             }
             reverse_proxy http://10.0.0.4:11434
@@ -129,8 +127,8 @@
           services.caddy.virtualHosts."ddns.bb3.site".extraConfig = ''
             @ext not client_ip private_ranges
             abort @ext
-            forward_auth 127.0.0.1:9091 {
-              uri /api/authz/forward-auth
+            forward_auth 127.0.0.1:7571 {
+              uri /forward-auth
               copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
             }
             reverse_proxy http://127.0.0.1:8000
@@ -139,8 +137,8 @@
           services.caddy.virtualHosts."kvm.bb3.site".extraConfig = ''
             @ext not client_ip private_ranges
             abort @ext
-            forward_auth 127.0.0.1:9091 {
-              uri /api/authz/forward-auth
+            forward_auth 127.0.0.1:7571 {
+              uri /forward-auth
               copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
             }
             reverse_proxy https://10.0.0.3 {
@@ -153,8 +151,8 @@
           services.caddy.virtualHosts."omada.bb3.site".extraConfig = ''
             @ext not client_ip private_ranges
             abort @ext
-            forward_auth 127.0.0.1:9091 {
-              uri /api/authz/forward-auth
+            forward_auth 127.0.0.1:7571 {
+              uri /forward-auth
               copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
             }
             reverse_proxy https://localhost:8043 {
@@ -167,8 +165,8 @@
           services.caddy.virtualHosts."sunshine.bb3.site".extraConfig = ''
             @ext not client_ip private_ranges
             abort @ext
-            forward_auth 127.0.0.1:9091 {
-              uri /api/authz/forward-auth
+            forward_auth 127.0.0.1:7571 {
+              uri /forward-auth
               copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
             }
             reverse_proxy https://10.0.0.4:47990 {

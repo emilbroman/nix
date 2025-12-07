@@ -26,6 +26,7 @@
         ./hardware-configuration.nix
         ./vpn.nix
         ./dns.nix
+        ./turnstile.nix
         kubernetes.master-module
         home-manager.nixosModules.home-manager
         terminal-stack.system-module

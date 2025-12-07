@@ -14,14 +14,10 @@
       user nobody
       group nogroup
 
-      #ca   /var/lib/openvpn/pki/ca.crt
-      #cert /var/lib/openvpn/pki/server.crt
-      #key  /var/lib/openvpn/pki/server.key
-      dh   /var/lib/openvpn/pki/dh.pem
-
-      ca   /home/emilbroman/code/turnstile/ca.pem
-      cert /home/emilbroman/code/turnstile/server.crt
-      key  /home/emilbroman/code/turnstile/server.key
+      dh   /var/lib/turnstile/dh.pem
+      ca   /var/lib/turnstile/ca.crt
+      cert /var/lib/turnstile/server.crt
+      key  /var/lib/turnstile/server.key
 
       server 10.8.0.0 255.255.255.0
       keepalive 10 120
@@ -32,11 +28,6 @@
       push "route 10.0.0.0 255.255.255.0"
       push "dhcp-option DNS 10.0.0.2"
 
-      # plugin ${pkgs.openvpn-auth-ldap}/lib/openvpn/openvpn-auth-ldap.so "/etc/openvpn/auth-ldap.conf"
-
-      # verify-client-cert none
-      # username-as-common-name
-
       tls-version-min 1.2
       cipher AES-256-GCM
       data-ciphers AES-256-GCM:AES-128-GCM:CHACHA20-POLY1305
@@ -45,21 +36,4 @@
       verb 3
     '';
   };
-
-  environment.etc."openvpn/auth-ldap.conf".text = ''
-    <LDAP>
-      URL ldap://127.0.0.1:3890
-      BindDN "uid=service,ou=people,dc=bb3,dc=site"
-      Password "${secrets.ldap.serviceAccount.password}"
-      Timeout 15
-      TLSEnable no
-      FollowReferrals yes
-    </LDAP>
-
-    <Authorization>
-      BaseDN "ou=people,dc=bb3,dc=site"
-      SearchFilter "(uid=%u)"
-      RequireGroup false
-    </Authorization>
-  '';
 }

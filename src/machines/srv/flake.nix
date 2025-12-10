@@ -32,7 +32,7 @@
         kubernetes.node-module
         home-manager.nixosModules.home-manager
         terminal-stack.system-module
-        ./smb.nix
+        ./nfs.nix
         ({
           config,
           pkgs,

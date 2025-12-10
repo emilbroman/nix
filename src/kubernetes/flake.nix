@@ -16,7 +16,7 @@
         easyCerts = true;
         addons.dns.enable = true;
         clusterCidr = "10.2.0.0/16";
-        kubelet.extraOpts = "--fail-swap-on=false --hostname-override=${dnsHostname}";
+        kubelet.extraOpts = "--fail-swap-on=false --node-labels kubernetes.io/hostname=${dnsHostname}";
       };
     };
 

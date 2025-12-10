@@ -6,14 +6,9 @@
         kubectl
       ];
 
-      networking.hosts.nuc = ["10.0.0.2"];
-      networking.hosts."10.0.0.2" = ["nuc"];
-      networking.hosts.srv = ["10.0.0.4"];
-      networking.hosts."10.0.0.4" = ["srv"];
-
       services.kubernetes = {
-        masterAddress = "nuc";
-        apiserverAddress = "https://nuc:6443";
+        masterAddress = "nuc.bb3.site";
+        apiserverAddress = "https://nuc.bb3.site:6443";
         easyCerts = true;
         addons.dns.enable = true;
         clusterCidr = "10.2.0.0/16";
@@ -42,7 +37,7 @@
 
       services.kubernetes = {
         roles = ["node"];
-        kubelet.kubeconfig.server = "https://nuc:6443";
+        kubelet.kubeconfig.server = "https://nuc.bb3.site:6443";
       };
     };
   };

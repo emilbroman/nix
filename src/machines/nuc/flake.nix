@@ -19,9 +19,12 @@
   }: {
     nixosConfigurations."nuc" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+
       specialArgs = {
         secrets = import ./secrets.nix;
+        dnsHostname = "nuc.bb3.site";
       };
+
       modules = [
         ./hardware-configuration.nix
         ./vpn.nix

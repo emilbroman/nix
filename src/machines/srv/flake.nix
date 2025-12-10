@@ -27,6 +27,10 @@
         config.cudaCapability = "8.9";
       };
 
+      specialArgs = {
+        dnsHostname = "srv.bb3.site";
+      };
+
       modules = [
         ./hardware-configuration.nix
         kubernetes.node-module

@@ -26,6 +26,7 @@
         apiserver = {
           securePort = 6443;
           advertiseAddress = "10.0.0.2";
+          allowPrivileged = true;
         };
       };
     };

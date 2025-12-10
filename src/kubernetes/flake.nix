@@ -11,7 +11,7 @@
         apiserverAddress = "https://nuc.bb3.site:6443";
         easyCerts = true;
         clusterCidr = "10.2.0.0/16";
-        kubelet.extraOpts = "--fail-swap-on=false";
+        kubelet.extraOpts = "--root-dir=/var/lib/kubelet --fail-swap-on=false";
       };
     };
 

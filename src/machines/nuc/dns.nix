@@ -1,4 +1,8 @@
 {
+  networking.hosts = {
+    "10.0.0.2" = ["nuc.bb3.site" "nuc"];
+  };
+
   services.dnsmasq = {
     enable = true;
 

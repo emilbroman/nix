@@ -10,7 +10,6 @@
         masterAddress = "nuc.bb3.site";
         apiserverAddress = "https://nuc.bb3.site:6443";
         easyCerts = true;
-        addons.dns.enable = true;
         clusterCidr = "10.2.0.0/16";
         kubelet.extraOpts = "--fail-swap-on=false";
       };

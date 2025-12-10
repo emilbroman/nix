@@ -12,6 +12,7 @@
         easyCerts = true;
         clusterCidr = "10.2.0.0/16";
         kubelet.extraOpts = "--root-dir=/var/lib/kubelet --fail-swap-on=false";
+        flannel.enable = true;
       };
     };
 

@@ -27,10 +27,6 @@
         config.cudaCapability = "8.9";
       };
 
-      specialArgs = {
-        dnsHostname = "srv.bb3.site";
-      };
-
       modules = [
         ./hardware-configuration.nix
         kubernetes.node-module
@@ -48,6 +44,7 @@
           system.configurationRevision = self.rev or self.dirtyRev or null;
 
           networking.hostName = "srv";
+          networking.domain = "bb3.site";
           networking.networkmanager.enable = true;
           system.stateVersion = "24.11";
 

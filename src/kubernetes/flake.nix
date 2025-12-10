@@ -1,10 +1,6 @@
 {
   outputs = {self}: {
-    common-module = {
-      pkgs,
-      dnsHostname,
-      ...
-    }: {
+    common-module = {pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         kubernetes
         kubectl
@@ -16,7 +12,7 @@
         easyCerts = true;
         addons.dns.enable = true;
         clusterCidr = "10.2.0.0/16";
-        kubelet.extraOpts = "--fail-swap-on=false --node-labels kubernetes.io/hostname=${dnsHostname}";
+        kubelet.extraOpts = "--fail-swap-on=false";
       };
     };
 

@@ -22,7 +22,6 @@
 
       specialArgs = {
         secrets = import ./secrets.nix;
-        dnsHostname = "nuc.bb3.site";
       };
 
       modules = [
@@ -44,6 +43,7 @@
           system.configurationRevision = self.rev or self.dirtyRev or null;
 
           networking.hostName = "nuc";
+          networking.domain = "bb3.site";
           system.stateVersion = "24.11";
 
           nix.settings.trusted-users = ["emilbroman"];

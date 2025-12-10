@@ -1,4 +1,4 @@
-{...}: {
+{secrets, ...}: {
   services.caddy.virtualHosts."id.bb3.site".extraConfig = ''
     reverse_proxy http://127.0.0.1:7571
   '';
@@ -15,6 +15,15 @@
     [pki]
     "ca.crt" = "/var/lib/turnstile/ca.crt"
     "ca.key" = "/var/lib/turnstile/ca.key"
+
+    [email.smtp]
+    hostname = "${secrets.smtp.hostname}"
+    username = "${secrets.smtp.username}"
+    password = "${secrets.smtp.password}"
+
+    [email.sender]
+    email = "bb3@emilbroman.me"
+    name = "BB3"
   '';
 
   systemd.services.turnstile = {

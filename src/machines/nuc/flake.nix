@@ -40,6 +40,8 @@
           nix.settings.experimental-features = "nix-command flakes";
           nix.settings.download-buffer-size = 524288000;
 
+          boot.supportedFilesystems = ["nfs"];
+
           system.configurationRevision = self.rev or self.dirtyRev or null;
 
           networking.hostName = "nuc";
@@ -55,7 +57,6 @@
             isNormalUser = true;
             extraGroups = [
               "wheel" # Enable ‘sudo’.
-              "docker"
             ];
           };
 
@@ -83,8 +84,6 @@
           networking.wireless.enable = true;
 
           time.timeZone = "Europe/Stockholm";
-
-          virtualisation.docker.enable = true;
 
           # Select internationalisation properties.
           i18n.defaultLocale = "en_US.UTF-8";

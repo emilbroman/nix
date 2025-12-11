@@ -11,7 +11,7 @@
         apiserverAddress = "https://nuc.bb3.site:6443";
         easyCerts = true;
         clusterCidr = "10.2.0.0/16";
-        kubelet.extraOpts = "--root-dir=/var/lib/kubelet";
+        kubelet.extraOpts = "--fail-swap-on=false --root-dir=/var/lib/kubelet";
         flannel.enable = true;
       };
     };
@@ -27,6 +27,7 @@
           securePort = 6443;
           advertiseAddress = "10.0.0.2";
           allowPrivileged = true;
+          serviceClusterIpRange = "10.3.0.0/24";
         };
       };
     };

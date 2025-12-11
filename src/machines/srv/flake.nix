@@ -38,6 +38,15 @@
           pkgs,
           ...
         }: {
+          virtualisation.containerd = {
+            enable = true;
+            settings = {
+              plugins."io.containerd.grpc.v1.cri".containerd = {
+                snapshotter = "overlayfs";
+              };
+            };
+          };
+
           nix.settings.experimental-features = "nix-command flakes";
           nix.settings.download-buffer-size = 524288000;
 
@@ -58,7 +67,6 @@
             linger = true;
             extraGroups = [
               "wheel" # Enable ‘sudo’.
-              "docker"
               "input"
               "video"
               "audio"
@@ -89,8 +97,6 @@
           boot.loader.timeout = 1;
 
           time.timeZone = "Europe/Stockholm";
-
-          virtualisation.docker.enable = true;
 
           # Select internationalisation properties.
           i18n.defaultLocale = "en_US.UTF-8";

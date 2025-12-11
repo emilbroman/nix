@@ -12,6 +12,7 @@
         easyCerts = true;
         clusterCidr = "10.2.0.0/16";
         kubelet.extraOpts = "--fail-swap-on=false --root-dir=/var/lib/kubelet";
+        kubelet.clusterDns = ["10.3.0.254"];
         flannel.enable = true;
       };
     };

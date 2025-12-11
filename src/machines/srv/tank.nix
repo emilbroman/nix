@@ -1,21 +1,54 @@
-{
+{pkgs, ...}: {
   networking.hostId = "4c7d5c8d";
 
+  boot.supportedFilesystems = ["zfs"];
   services.zfs.autoScrub.enable = true;
 
-  boot.supportedFilesystems = ["zfs"];
+  systemd.services."tank-import" = {
+    description = "Import ZFS pool tank";
+    wantedBy = ["multi-user.target"];
+    after = ["local-fs.target"];
+    requires = ["local-fs.target"];
 
-  # boot.zfs.extraPools = ["tank"];
-  # boot.zfs.devNodes = "/var/disk/by-id";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = ''
+        /bin/sh -c '${pkgs.zfs}/bin/zpool import -d /var tank || true'
+      '';
+      RemainAfterExit = true;
+    };
+  };
 
-  # fileSystems."/srv/nfs" = {
-  #   device = "tank/data/nfs";
-  #   fsType = "zfs";
-  #   options = ["nofail"];
-  # };
+  systemd.services.nfs-server.requires = ["tank-import.service"];
+  systemd.services.nfs-server.after = ["tank-import.service"];
 
   services.nfs.server.enable = true;
   services.nfs.server.exports = ''
     /srv/nfs       10.0.0.0/8(rw,sync,fsid=0,crossmnt,no_subtree_check,insecure) 127.0.0.0/8(rw,sync,fsid=0,crossmnt,no_subtree_check,insecure)
   '';
+
+  systemd.services."zfs-snapshot" = {
+    description = "Create timestamped ZFS snapshots";
+    serviceConfig = {
+      Type = "oneshot";
+
+      User = "root";
+      Group = "root";
+      CapabilityBoundingSet = ["CAP_SYS_ADMIN"];
+      AmbientCapabilities = ["CAP_SYS_ADMIN"];
+
+      ExecStart = ''
+        /bin/sh -c '${pkgs.zfs}/bin/zfs snapshot "tank/data/nfs@$(date --utc +%%Y-%%m-%%d_%%H)"'
+      '';
+    };
+  };
+
+  systemd.timers."zfs-snapshot" = {
+    description = "Run periodic ZFS snapshots";
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnCalendar = "*:5";
+      Persistent = true;
+    };
+  };
 }

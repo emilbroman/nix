@@ -100,64 +100,7 @@
           # Disable firewall (use firewall in router).
           networking.firewall.enable = false;
 
-          services.ddns-updater = {
-            enable = true;
-            package = pkgs.ddns-updater;
-            environment = {
-              LOG_LEVEL = "debug";
-              RESOLVER_ADDRESS = "1.1.1.1:53";
-            };
-          };
-
           services.caddy.enable = true;
-
-          services.caddy.virtualHosts."ollama.bb3.site".extraConfig = ''
-            @ext not client_ip private_ranges
-            abort @ext
-            forward_auth 127.0.0.1:7571 {
-              uri /forward-auth
-              copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-            }
-            reverse_proxy http://10.0.0.4:11434
-          '';
-
-          services.caddy.virtualHosts."ddns.bb3.site".extraConfig = ''
-            @ext not client_ip private_ranges
-            abort @ext
-            forward_auth 127.0.0.1:7571 {
-              uri /forward-auth
-              copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-            }
-            reverse_proxy http://127.0.0.1:8000
-          '';
-
-          services.caddy.virtualHosts."kvm.bb3.site".extraConfig = ''
-            @ext not client_ip private_ranges
-            abort @ext
-            forward_auth 127.0.0.1:7571 {
-              uri /forward-auth
-              copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-            }
-            reverse_proxy https://10.0.0.3 {
-              transport http {
-                tls_insecure_skip_verify
-              }
-            }
-          '';
-
-          services.caddy.virtualHosts."omada.bb3.site".extraConfig = ''
-            @ext not client_ip private_ranges
-            abort @ext
-            forward_auth 127.0.0.1:7571 {
-              uri /forward-auth
-              copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-            }
-            reverse_proxy https://localhost:8043 {
-              transport http {
-                tls_insecure_skip_verify
-              }
-            }
-          '';
 
           services.caddy.virtualHosts."sunshine.bb3.site".extraConfig = ''
             @ext not client_ip private_ranges

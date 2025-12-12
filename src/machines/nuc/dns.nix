@@ -10,8 +10,10 @@
       "/mini.bb3.site/10.0.0.5"
       "/macbook.bb3.site/10.0.0.6"
       "/nuc.bb3.site/10.0.0.2"
-      "/www.bb3.site/10.0.0.4"
-      "/.bb3.site/10.0.0.2"
+      "/kvm.bb3.site/10.0.0.3"
+      "/sunshine.bb3.site/10.0.0.2"
+      "/id.bb3.site/10.0.0.2"
+      "/.bb3.site/10.0.0.4"
     ];
 
     settings.server = [

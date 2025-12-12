@@ -2,25 +2,10 @@
   networking.hostId = "4c7d5c8d";
 
   boot.supportedFilesystems = ["zfs"];
+  boot.zfs.forceImportAll = true;
+  boot.zfs.extraPools = ["tank"];
+
   services.zfs.autoScrub.enable = true;
-
-  systemd.services."tank-import" = {
-    description = "Import ZFS pool tank";
-    wantedBy = ["multi-user.target"];
-    after = ["local-fs.target"];
-    requires = ["local-fs.target"];
-
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = ''
-        /bin/sh -c '${pkgs.zfs}/bin/zpool import -d /var tank || true'
-      '';
-      RemainAfterExit = true;
-    };
-  };
-
-  systemd.services.nfs-server.requires = ["tank-import.service"];
-  systemd.services.nfs-server.after = ["tank-import.service"];
 
   services.nfs.server.enable = true;
   services.nfs.server.exports = ''

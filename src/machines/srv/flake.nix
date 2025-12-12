@@ -81,6 +81,8 @@
               terminal-stack.home-module
             ];
 
+            showHostnameInFishPrompt = true;
+
             home.file.".hushlogin".text = "";
 
             home.stateVersion = "23.05";

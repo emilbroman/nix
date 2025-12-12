@@ -10,6 +10,10 @@
       background = self.palette.blue."100";
       foreground = self.palette.blue."350";
     };
+    hostname = {
+      background = self.palette.orange."100";
+      foreground = self.palette.orange."350";
+    };
   };
 
   variables = {

@@ -109,14 +109,6 @@
 
           services.caddy.enable = true;
 
-          services.caddy.virtualHosts."bb3.site".extraConfig = ''
-            forward_auth 127.0.0.1:7571 {
-              uri /forward-auth
-              copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-            }
-            reverse_proxy http://10.0.0.4:30080
-          '';
-
           services.caddy.virtualHosts."ollama.bb3.site".extraConfig = ''
             @ext not client_ip private_ranges
             abort @ext

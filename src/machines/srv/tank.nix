@@ -9,7 +9,7 @@
 
   services.nfs.server.enable = true;
   services.nfs.server.exports = ''
-    /srv/nfs       10.0.0.0/8(rw,sync,fsid=0,crossmnt,no_subtree_check,insecure) 127.0.0.0/8(rw,sync,fsid=0,crossmnt,no_subtree_check,insecure)
+    /srv/nfs       10.0.0.0/8(rw,sync,fsid=0,crossmnt,no_subtree_check,insecure,no_root_squash) 127.0.0.0/8(rw,sync,fsid=0,crossmnt,no_subtree_check,insecure,no_root_squash)
   '';
 
   systemd.services."zfs-snapshot" = {

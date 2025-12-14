@@ -47,6 +47,8 @@
             };
           };
 
+          virtualisation.docker.enable = true;
+
           nix.settings.experimental-features = "nix-command flakes";
           nix.settings.download-buffer-size = 524288000;
 
@@ -70,6 +72,7 @@
               "input"
               "video"
               "audio"
+              "docker"
             ];
           };
 

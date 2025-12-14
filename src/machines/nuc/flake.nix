@@ -29,6 +29,7 @@
         ./vpn.nix
         ./dns.nix
         ./turnstile.nix
+        ./etcd-backups.nix
         kubernetes.master-module
         home-manager.nixosModules.home-manager
         terminal-stack.system-module

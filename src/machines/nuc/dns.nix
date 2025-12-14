@@ -12,6 +12,7 @@
       "/nuc.bb3.site/10.0.0.2"
       "/kvm.bb3.site/10.0.0.3"
       "/sunshine.bb3.site/10.0.0.2"
+      "/vpn.bb3.site/10.0.0.2"
       "/.bb3.site/10.0.0.4"
     ];
 

@@ -1,8 +1,4 @@
 {
-  pkgs,
-  secrets,
-  ...
-}: {
   services.openvpn.servers.homenet = {
     autoStart = true;
 
@@ -14,10 +10,10 @@
       user nobody
       group nogroup
 
-      dh   /var/lib/turnstile/dh.pem
-      ca   /var/lib/turnstile/ca.crt
-      cert /var/lib/turnstile/server.crt
-      key  /var/lib/turnstile/server.key
+      dh   /etc/openvpn/dh.pem
+      ca   /etc/openvpn/ca.crt
+      cert /etc/openvpn/server.crt
+      key  /etc/openvpn/server.key
 
       server 10.8.0.0 255.255.255.0
       keepalive 10 120

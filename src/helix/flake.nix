@@ -21,6 +21,9 @@
 
         # Typst
         tinymist
+
+        # Go
+        gopls
       ];
 
       programs.helix = {

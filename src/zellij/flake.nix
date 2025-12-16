@@ -298,7 +298,7 @@
           default_tab_template {
             pane size=1 borderless=true {
               plugin location="file:${zjstatus}" {
-                format_left   "{tabs}"
+                format_left   "{command_hostname} {tabs}"
                 format_right  "{command_gcloud} {command_kubectx} {mode} {datetime} "
 
                 border_enabled  "false"
@@ -314,6 +314,13 @@
                 datetime          "#[fg=#${theme.zellij.clock.foreground}] {format}"
                 datetime_format   "%H:%M"
                 datetime_timezone "Europe/Stockholm"
+
+                command_hostname_command     "sh -c \"hostname\""
+                command_hostname_format      "#[bg=#${theme.fish.prompt.hostname.background},fg=#${theme.fish.prompt.hostname.foreground}] {stdout} #[normal]"
+                command_hostname_interval    "60"
+                command_hostname_rendermode  "static"
+                command_hostname_cwd         "/"
+                command_hostname_env         {}
 
                 command_kubectx_command     "sh -c \"~/.nix-profile/bin/rg '^current-context: (.*)$' ~/.kube/config -r '$1'\""
                 command_kubectx_format      "#[bg=#326ce5,fg=#ffffff] k8s #[fg=#326ce5,bg=#ffffff] {stdout}{stderr} "

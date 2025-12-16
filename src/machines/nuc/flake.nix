@@ -27,7 +27,6 @@
       modules = [
         ./hardware-configuration.nix
         ./vpn.nix
-        ./dns.nix
         ./etcd-backups.nix
         kubernetes.master-module
         home-manager.nixosModules.home-manager

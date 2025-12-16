@@ -22,7 +22,7 @@
       topology subnet
 
       push "route 10.0.0.0 255.255.255.0"
-      push "dhcp-option DNS 10.0.2.1"
+      push "dhcp-option DNS 10.0.0.2"
 
       tls-version-min 1.2
       cipher AES-256-GCM

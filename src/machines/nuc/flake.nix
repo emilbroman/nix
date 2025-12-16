@@ -48,12 +48,6 @@
           networking.domain = "bb3.site";
           system.stateVersion = "24.11";
 
-          systemd.network.links."10-lan0" = {
-            matchConfig.MACAddress = "94:c6:91:a9:4f:e5";
-            linkConfig.Name = "lan0";
-          };
-          networking.hosts."10.0.0.2" = ["nuc" "nuc.bb3.site"];
-
           nix.settings.trusted-users = ["emilbroman"];
 
           users.users.emilbroman = {

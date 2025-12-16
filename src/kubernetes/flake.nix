@@ -15,6 +15,9 @@
         kubelet.clusterDns = ["10.3.0.254"];
         flannel.enable = true;
       };
+
+      networking.hosts."10.0.0.4" = ["srv" "srv.bb3.site"];
+      networking.hosts."10.0.0.2" = ["nuc" "nuc.bb3.site"];
     };
 
     master-module = {

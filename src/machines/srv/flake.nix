@@ -49,12 +49,6 @@
 
           virtualisation.docker.enable = true;
 
-          systemd.network.links."10-lan0" = {
-            matchConfig.MACAddress = "58:11:22:cf:22:75";
-            linkConfig.Name = "lan0";
-          };
-          networking.hosts."10.0.0.4" = ["srv" "srv.bb3.site"];
-
           nix.settings.experimental-features = "nix-command flakes";
           nix.settings.download-buffer-size = 524288000;
 

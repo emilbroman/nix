@@ -7,8 +7,8 @@
       ];
 
       services.kubernetes = {
-        masterAddress = "nuc.bb3.site";
-        apiserverAddress = "https://nuc.bb3.site:6443";
+        masterAddress = "10.0.0.2";
+        apiserverAddress = "https://10.0.0.2:6443";
         easyCerts = true;
         clusterCidr = "10.2.0.0/16";
         kubelet.extraOpts = "--fail-swap-on=false --root-dir=/var/lib/kubelet";

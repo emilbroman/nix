@@ -26,7 +26,6 @@
 
       modules = [
         ./hardware-configuration.nix
-        ./vpn.nix
         ./etcd-backups.nix
         kubernetes.master-module
         home-manager.nixosModules.home-manager
@@ -98,23 +97,6 @@
 
           # Disable firewall (use firewall in router).
           networking.firewall.enable = false;
-
-          services.caddy.enable = true;
-
-          services.caddy.virtualHosts."sunshine.bb3.site".extraConfig = ''
-            @ext not client_ip private_ranges
-            abort @ext
-            forward_auth 127.0.0.1:7571 {
-              uri /forward-auth
-              copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-            }
-            reverse_proxy https://10.0.0.4:47990 {
-              header_up Authorization "Basic ${secrets.sunshine.basicAuth}"
-              transport http {
-                tls_insecure_skip_verify
-              }
-            }
-          '';
         })
       ];
     };

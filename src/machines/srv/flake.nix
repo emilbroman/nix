@@ -38,15 +38,6 @@
           pkgs,
           ...
         }: {
-          virtualisation.containerd = {
-            enable = true;
-            settings = {
-              plugins."io.containerd.grpc.v1.cri".containerd = {
-                snapshotter = "overlayfs";
-              };
-            };
-          };
-
           virtualisation.docker.enable = true;
 
           nix.settings.experimental-features = "nix-command flakes";

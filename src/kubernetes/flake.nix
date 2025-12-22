@@ -17,8 +17,8 @@
       };
 
       virtualisation.containerd.settings.plugins."io.containerd.grpc.v1.cri".registry.configs."cr.bb3.site".tls = {
-        cert_file = "/var/lib/containerd/io.containerd.grpc.v1.cri/registries/cr.bb3.site/client.crt";
-        key_file = "/var/lib/containerd/io.containerd.grpc.v1.cri/registries/cr.bb3.site/client.key";
+        cert_file = "/var/lib/containerd/io.containerd.grpc.v1.cri/registries/cr.bb3.site/tls.crt";
+        key_file = "/var/lib/containerd/io.containerd.grpc.v1.cri/registries/cr.bb3.site/tls.key";
         ca_file = "/var/lib/containerd/io.containerd.grpc.v1.cri/registries/cr.bb3.site/ca.crt";
       };
 

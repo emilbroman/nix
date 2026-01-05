@@ -26,8 +26,8 @@
 
       modules = [
         ./hardware-configuration.nix
-        ./etcd-backups.nix
-        kubernetes.master-module
+        # ./etcd-backups.nix
+        # kubernetes.master-module
         home-manager.nixosModules.home-manager
         terminal-stack.system-module
         ({

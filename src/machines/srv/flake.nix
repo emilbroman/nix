@@ -29,7 +29,7 @@
 
       modules = [
         ./hardware-configuration.nix
-        kubernetes.node-module
+        # kubernetes.node-module
         home-manager.nixosModules.home-manager
         terminal-stack.system-module
         ./tank.nix

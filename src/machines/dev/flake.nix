@@ -52,8 +52,14 @@
             isNormalUser = true;
             extraGroups = [
               "wheel" # Enable ‘sudo’.
+              "podman"
             ];
           };
+
+          virtualisation.podman.enable = true;
+          environment.systemPackages = with pkgs; [
+            podman-compose
+          ];
 
           home-manager.backupFileExtension = "old";
           home-manager.useGlobalPkgs = true;

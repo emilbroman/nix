@@ -37,6 +37,9 @@
           system.stateVersion = 4;
           system.primaryUser = "emilbroman";
 
+          security.pki.installCACerts = true;
+          security.pki.certificateFiles = [../../../bb3_root_ca.crt];
+
           home-manager.backupFileExtension = "old";
           home-manager.useGlobalPkgs = true;
 
@@ -62,7 +65,7 @@
 
             home.packages = with pkgs; [
               # Cloud Management
-              awscli
+              awscli2
               google-cloud-sdk
             ];
           };

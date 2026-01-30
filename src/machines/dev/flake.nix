@@ -6,8 +6,6 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     terminal-stack.url = ../../terminal-stack;
-
-    kubernetes.url = ../../kubernetes;
   };
 
   outputs = {
@@ -15,9 +13,8 @@
     nixpkgs,
     home-manager,
     terminal-stack,
-    kubernetes,
   }: {
-    nixosConfigurations."nuc" = nixpkgs.lib.nixosSystem {
+    nixosConfigurations."dev" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
 
       specialArgs = {
@@ -26,8 +23,6 @@
 
       modules = [
         ./hardware-configuration.nix
-        # ./etcd-backups.nix
-        # kubernetes.master-module
         home-manager.nixosModules.home-manager
         terminal-stack.system-module
         ({
@@ -42,11 +37,13 @@
 
           system.configurationRevision = self.rev or self.dirtyRev or null;
 
-          networking.hostName = "nuc";
-          networking.domain = "bb3.site";
+          networking.hostName = "dev";
+          networking.domain = "vm.bb3.internal";
           system.stateVersion = "24.11";
 
           nix.settings.trusted-users = ["emilbroman"];
+
+          security.pki.certificateFiles = [../../../bb3_root_ca.crt];
 
           users.users.emilbroman = {
             name = "emilbroman";
@@ -74,7 +71,7 @@
 
             programs.home-manager.enable = true;
 
-            programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix/src/machines/nuc";
+            programs.fish.shellAliases.nix-rebuild = "sudo nixos-rebuild switch --flake ~/code/nix/src/machines/dev";
           };
 
           # Use the systemd-boot EFI boot loader.

@@ -12,7 +12,7 @@
     zed,
     wezterm,
   }: {
-    system-module = {user}: {
+    system-module = {user}: {pkgs, ...}: {
       imports = [
         nix-homebrew.darwinModules.nix-homebrew
         zed.system-module
@@ -30,14 +30,22 @@
         cleanup = "zap";
       };
 
+      environment.systemPackages = with pkgs; [
+        podman
+        podman-compose
+        (writeShellScriptBin "docker" ''
+          exec podman "$@"
+        '')
+      ];
+
       homebrew.casks = [
         "figma"
-        "docker"
         "google-chrome"
         "slack"
         "mongodb-compass"
         "notion"
         "firefox"
+        "podman-desktop"
       ];
     };
 

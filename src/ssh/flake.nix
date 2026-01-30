@@ -1,34 +1,44 @@
 {
   outputs = {self}: {
-    home-module = {
+    home-module = {lib, ...}: {
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
 
-        matchBlocks.home = {
-          host = "bb3";
-          hostname = "bb3.site";
-        };
+        matchBlocks =
+          {
+            cp = {
+              host = "cp";
+              hostname = "cp.bb3.internal";
+              extraOptions.StrictHostKeyChecking = "no";
+              extraOptions.UserKnownHostsFile = "/dev/null";
+              user = "root";
+            };
 
-        matchBlocks.nuc = {
-          host = "nuc";
-          hostname = "nuc.bb3.site";
-        };
-
-        matchBlocks.srv = {
-          host = "srv";
-          hostname = "srv.bb3.site";
-        };
-
-        matchBlocks.mini = {
-          host = "mini";
-          hostname = "mini.bb3.site";
-        };
-
-        matchBlocks.macbook = {
-          host = "macbook";
-          hostname = "macbook.bb3.site";
-        };
+            tower = {
+              host = "tower";
+              hostname = "tower.hw.bb3.internal";
+              user = "root";
+            };
+          }
+          // builtins.listToAttrs (map (i: {
+            name = "tc${toString i}";
+            value.host = "tc${toString i}";
+            value.hostname = "tc${toString i}.hw.bb3.internal";
+            value.user = "root";
+          }) (lib.lists.range 1 3))
+          // builtins.listToAttrs (map (i: {
+            name = "cp${toString i}";
+            value.host = "cp${toString i}";
+            value.hostname = "cp${toString i}.vm.bb3.internal";
+            value.user = "root";
+          }) (lib.lists.range 1 3))
+          // builtins.listToAttrs (map (i: {
+            name = "node${toString i}";
+            value.host = "node${toString i}";
+            value.hostname = "node${toString i}.vm.bb3.internal";
+            value.user = "root";
+          }) (lib.lists.range 1 4));
       };
     };
   };

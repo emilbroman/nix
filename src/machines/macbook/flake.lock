@@ -1,5 +1,16 @@
 {
   "nodes": {
+    "agents": {
+      "locked": {
+        "path": "../../agents",
+        "type": "path"
+      },
+      "original": {
+        "path": "../../agents",
+        "type": "path"
+      },
+      "parent": []
+    },
     "apps": {
       "inputs": {
         "nix-homebrew": "nix-homebrew",
@@ -202,6 +213,7 @@
     },
     "root": {
       "inputs": {
+        "agents": "agents",
         "apps": "apps",
         "home-manager": "home-manager",
         "mac": "mac",

@@ -7,16 +7,31 @@
       };
     };
 
-    home-module = {pkgs, ...}: {
-      programs.gpg = {
-        enable = true;
-        mutableKeys = true;
-        mutableTrust = true;
+    home-module = {
+      config,
+      lib,
+      pkgs,
+      ...
+    }: let
+      cfg = config.programs.gpg;
+    in {
+      options.programs.gpg.pinentryPkg = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.pinentry-curses;
+        description = "Pinentry package used by gpg-agent.";
       };
 
-      home.file.".gnupg/gpg-agent.conf".text = ''
-        pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
-      '';
+      config = {
+        programs.gpg = {
+          enable = true;
+          mutableKeys = true;
+          mutableTrust = true;
+        };
+
+        home.file.".gnupg/gpg-agent.conf".text = ''
+          pinentry-program ${lib.getExe cfg.pinentryPkg}
+        '';
+      };
     };
   };
 }

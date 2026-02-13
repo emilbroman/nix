@@ -78,6 +78,8 @@
                 awscli2
                 google-cloud-sdk
               ];
+
+              programs.gpg.pinentryPkg = pkgs.pinentry_mac;
             };
           }
         )

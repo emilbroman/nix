@@ -15,6 +15,12 @@
               user = "root";
             };
 
+            dev = {
+              host = "dev";
+              hostname = "dev.vm.bb3.internal";
+              user = "emilbroman";
+            };
+
             tower = {
               host = "tower";
               hostname = "tower.hw.bb3.internal";

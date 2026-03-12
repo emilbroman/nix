@@ -106,7 +106,26 @@
             auto-format = true;
             formatter.command = "alejandra";
           }
+
+          {
+            name = "scl";
+            language-servers = ["scl"];
+            scope = "source.scl";
+            file-types = ["scl"];
+            injection-regex = "^(scl|skyr)$";
+            comment-tokens = "//";
+            auto-format = true;
+            indent = {
+              tab-width = 2;
+              unit = "  ";
+            };
+          }
         ];
+
+        languages.language-server.scl = {
+          command = "/Users/emilbroman/code/skyr/target/release/skyr";
+          args = ["lsp"];
+        };
       };
     });
   };

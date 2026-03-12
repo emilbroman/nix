@@ -1,5 +1,16 @@
 {
   "nodes": {
+    "agents": {
+      "locked": {
+        "path": "../../agents",
+        "type": "path"
+      },
+      "original": {
+        "path": "../../agents",
+        "type": "path"
+      },
+      "parent": []
+    },
     "dark-theme": {
       "locked": {
         "path": "../themes/dark",
@@ -120,6 +131,7 @@
     },
     "root": {
       "inputs": {
+        "agents": "agents",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "terminal-stack": "terminal-stack"

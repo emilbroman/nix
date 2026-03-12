@@ -52,12 +52,6 @@
               home = "/Users/emilbroman";
             };
 
-            nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) ["claude-code"];
-
-            environment.systemPackages = with pkgs; [
-              claude-code
-            ];
-
             home-manager.users.emilbroman = {
               imports = [
                 terminal-stack.home-module
@@ -87,6 +81,7 @@
         (apps.system-module {user = "emilbroman";})
         mac.system-module
         terminal-stack.system-module
+        agents.system-module
       ];
     };
   };

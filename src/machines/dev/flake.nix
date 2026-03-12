@@ -6,6 +6,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     terminal-stack.url = ../../terminal-stack;
+    agents.url = ../../agents;
   };
 
   outputs = {
@@ -13,6 +14,7 @@
     nixpkgs,
     home-manager,
     terminal-stack,
+    agents,
   }: {
     nixosConfigurations."dev" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -25,6 +27,7 @@
         ./hardware-configuration.nix
         home-manager.nixosModules.home-manager
         terminal-stack.system-module
+        agents.system-module
         ({
           pkgs,
           secrets,
@@ -67,6 +70,7 @@
           home-manager.users.emilbroman = {
             imports = [
               terminal-stack.home-module
+              agents.home-module
             ];
 
             showHostnameInFishPrompt = true;

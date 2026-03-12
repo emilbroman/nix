@@ -1,5 +1,9 @@
 {
   outputs = {self}: {
+    system-module = {lib, ...}: {
+      nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) ["claude-code"];
+    };
+
     home-module = {
       pkgs,
       lib,

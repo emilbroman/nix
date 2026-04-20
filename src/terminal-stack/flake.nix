@@ -47,6 +47,7 @@
         jq
         moreutils
         tree
+        gh
       ];
     };
   };

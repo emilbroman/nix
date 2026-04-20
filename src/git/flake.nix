@@ -3,8 +3,12 @@
     home-module = {
       programs.git = {
         enable = true;
-        signing.signByDefault = true;
-        signing.key = null;
+
+        signing = {
+          format = "openpgp";
+          signByDefault = true;
+          key = null;
+        };
 
         settings = {
           user.name = "Emil Broman";

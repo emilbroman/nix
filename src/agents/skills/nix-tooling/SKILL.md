@@ -37,7 +37,6 @@ need it to persist in the shell:
 nix run nixpkgs#jq -- '.name' data.json
 nix run nixpkgs#ripgrep -- -r 'TODO' src/
 nix run nixpkgs#black -- --check .
-nix run nixpkgs#nodePackages.prettier -- --write "**/*.ts"
 nix run nixpkgs#ffmpeg -- -i input.mp4 output.gif
 ```
 
@@ -90,8 +89,6 @@ Some common mappings where the package name differs from the command name:
 | `python`   | `nixpkgs#python3`                  |
 | `node`     | `nixpkgs#nodejs`                   |
 | `tsc`      | `nixpkgs#typescript`               |
-| `prettier` | `nixpkgs#nodePackages.prettier`    |
-| `eslint`   | `nixpkgs#nodePackages.eslint`      |
 | `rg`       | `nixpkgs#ripgrep`                  |
 | `fd`       | `nixpkgs#fd`                       |
 | `bat`      | `nixpkgs#bat`                      |

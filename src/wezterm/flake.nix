@@ -29,6 +29,14 @@
           config.initial_cols = 150
           config.initial_rows = 50
 
+          config.keys = {
+            {
+              key = "Enter",
+              mods = "SHIFT",
+              action = wezterm.action.SendString("\x1b[200~\n\x1b[201~"),
+            },
+          }
+
           -- Enable when released:
           -- config.macos_fullscreen_extend_behind_notch = true
           config.native_macos_fullscreen_mode = false

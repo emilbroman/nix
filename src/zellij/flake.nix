@@ -8,7 +8,59 @@
     self,
     zjstatus,
   }: {
-    home-module = {theme}: {pkgs, ...}: {
+    home-module = {theme}: {pkgs, ...}: let
+      layout = contents: ''
+        layout {
+          default_tab_template {
+            pane size=1 borderless=true {
+              plugin location="file:${zjstatus}" {
+                format_left   "{command_hostname} {tabs}"
+                format_right  "{command_gcloud} {command_kubectx} {mode} {datetime} "
+
+                border_enabled  "false"
+
+                // hide_frame_for_single_pane "true"
+
+                mode_normal   "#[fg=#${theme.zellij.pill.inactive.foreground},bg=#${theme.zellij.pill.inactive.background}] {name} "
+                mode_default_to_mode "normal"
+
+                tab_normal   "#[bg=#${theme.zellij.pill.inactive.background},fg=#${theme.zellij.pill.inactive.foreground}] {name} #[normal] "
+                tab_active   "#[bg=#${theme.zellij.pill.active.background},fg=#${theme.zellij.pill.active.foreground}] {name} #[normal] "
+
+                datetime          "#[fg=#${theme.zellij.clock.foreground}] {format}"
+                datetime_format   "%H:%M"
+                datetime_timezone "Europe/Stockholm"
+
+                command_hostname_command     "sh -c \"hostname\""
+                command_hostname_format      "#[bg=#${theme.fish.prompt.hostname.background},fg=#${theme.fish.prompt.hostname.foreground}] {stdout} #[normal]"
+                command_hostname_interval    "60"
+                command_hostname_rendermode  "static"
+                command_hostname_cwd         "/"
+                command_hostname_env         {}
+
+                command_kubectx_command     "sh -c \"~/.nix-profile/bin/rg '^current-context: (.*)$' ~/.kube/config -r '$1'\""
+                command_kubectx_format      "#[bg=#326ce5,fg=#ffffff] k8s #[fg=#326ce5,bg=#ffffff] {stdout}{stderr} "
+                command_kubectx_interval    "5"
+                command_kubectx_rendermode  "static"
+                command_kubectx_cwd         "/"
+                command_kubectx_env         {}
+
+                command_gcloud_command     "./fish -c \"~/.nix-profile/bin/rg '^project = (.*)$' -r '$1' ~/.config/gcloud/configurations/config_(cat ~/.config/gcloud/active_config)\""
+                command_gcloud_format      "#[bg=#4285f4,fg=#ffffff] gcp #[fg=#4285f4,bg=#ffffff] {stdout}{stderr} "
+                command_gcloud_interval    "5"
+                command_gcloud_rendermode  "static"
+                command_gcloud_cwd         "/run/current-system/sw/bin"
+                command_gcloud_env         {}
+              }
+            }
+
+            children
+          }
+
+          ${contents}
+        }
+      '';
+    in {
       home.packages = with pkgs; [
         zellij
       ];
@@ -33,7 +85,22 @@
                 bind "Alt J" { NewPane "Down"; }
                 bind "Alt K" { NewPane "Up"; }
 
-                bind "Alt t" { NewTab; }
+                bind "Alt t" {
+                  NewTab {
+                    cwd "~"
+                  }
+                }
+                bind "Alt T" {
+                  NewTab {
+                    cwd "~"
+                    layout "${pkgs.writeText "layout.kdl" (layout ''
+          tab {
+            pane command="~/.nix-profile/bin/new-claude"
+          }
+        '')}"
+                  }
+                }
+
                 bind "Alt n" { GoToNextTab; }
                 bind "Alt p" { GoToPreviousTab; }
                 bind "Alt q" { CloseTab; }
@@ -293,55 +360,7 @@
         // disable_session_metadata true
       '';
 
-      home.file.".config/zellij/layouts/default.kdl".text = ''
-        layout {
-          default_tab_template {
-            pane size=1 borderless=true {
-              plugin location="file:${zjstatus}" {
-                format_left   "{command_hostname} {tabs}"
-                format_right  "{command_gcloud} {command_kubectx} {mode} {datetime} "
-
-                border_enabled  "false"
-
-                // hide_frame_for_single_pane "true"
-
-                mode_normal   "#[fg=#${theme.zellij.pill.inactive.foreground},bg=#${theme.zellij.pill.inactive.background}] {name} "
-                mode_default_to_mode "normal"
-
-                tab_normal   "#[bg=#${theme.zellij.pill.inactive.background},fg=#${theme.zellij.pill.inactive.foreground}] {name} #[normal] "
-                tab_active   "#[bg=#${theme.zellij.pill.active.background},fg=#${theme.zellij.pill.active.foreground}] {name} #[normal] "
-
-                datetime          "#[fg=#${theme.zellij.clock.foreground}] {format}"
-                datetime_format   "%H:%M"
-                datetime_timezone "Europe/Stockholm"
-
-                command_hostname_command     "sh -c \"hostname\""
-                command_hostname_format      "#[bg=#${theme.fish.prompt.hostname.background},fg=#${theme.fish.prompt.hostname.foreground}] {stdout} #[normal]"
-                command_hostname_interval    "60"
-                command_hostname_rendermode  "static"
-                command_hostname_cwd         "/"
-                command_hostname_env         {}
-
-                command_kubectx_command     "sh -c \"~/.nix-profile/bin/rg '^current-context: (.*)$' ~/.kube/config -r '$1'\""
-                command_kubectx_format      "#[bg=#326ce5,fg=#ffffff] k8s #[fg=#326ce5,bg=#ffffff] {stdout}{stderr} "
-                command_kubectx_interval    "5"
-                command_kubectx_rendermode  "static"
-                command_kubectx_cwd         "/"
-                command_kubectx_env         {}
-
-                command_gcloud_command     "./fish -c \"~/.nix-profile/bin/rg '^project = (.*)$' -r '$1' ~/.config/gcloud/configurations/config_(cat ~/.config/gcloud/active_config)\""
-                command_gcloud_format      "#[bg=#4285f4,fg=#ffffff] gcp #[fg=#4285f4,bg=#ffffff] {stdout}{stderr} "
-                command_gcloud_interval    "5"
-                command_gcloud_rendermode  "static"
-                command_gcloud_cwd         "/run/current-system/sw/bin"
-                command_gcloud_env         {}
-              }
-            }
-
-            children
-          }
-        }
-      '';
+      home.file.".config/zellij/layouts/default.kdl".text = layout "tab";
     };
   };
 }

@@ -12,6 +12,19 @@
       home.packages = with pkgs; [
         codex
         claude-code
+        (writeShellScriptBin "new-claude" ''
+          dir="$(${lib.getExe fzf} --walker=dir,follow,hidden --walker-root="$HOME/code")"
+
+          [ -n "$dir" ] || exit 0
+
+          cd "$dir" || exit 1
+
+          export PATH="$HOME/.nix-profile/bin:/run/current-system/sw/bin:$PATH"
+
+          [ -f flake.nix ] && exec nix develop -c ${lib.getExe claude-code} --allow-dangerously-skip-permissions "$@"
+
+          exec ${lib.getExe claude-code} --allow-dangerously-skip-permissions "$@"
+        '')
       ];
 
       home.file.".claude/CLAUDE.md".source = ./AGENTS.md;
@@ -23,6 +36,9 @@
       home.file.".claude/settings.json".text = builtins.toJSON {
         enabledPlugins = {
           "tvm-aws-sso@tvm" = true;
+          "rust-analyzer-lsp@claude-plugins-official" = true;
+          "typescript-lsp@claude-plugins-official" = true;
+          "code-review@claude-plugins-official" = true;
         };
         extraKnownMarketplaces = {
           tvm.source = {

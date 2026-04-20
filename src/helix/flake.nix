@@ -2,7 +2,18 @@
   outputs = {self}: {
     home-module = let
       themeName = "custom";
-    in ({theme}: {pkgs, ...}: {
+    in ({theme}: {
+      pkgs,
+      config,
+      ...
+    }: {
+      home.file.".config/helix/runtime/queries/scl".source =
+        config.lib.file.mkOutOfStoreSymlink
+        "/Users/emilbroman/code/skyr/crates/sclc/tree-sitter-scl/queries";
+      home.file.".config/helix/runtime/queries/scle".source =
+        config.lib.file.mkOutOfStoreSymlink
+        "/Users/emilbroman/code/skyr/crates/sclc/tree-sitter-scle/queries";
+
       home.packages = with pkgs; [
         helix
 
@@ -15,9 +26,6 @@
 
         # Markdown
         marksman
-
-        # TypeScript
-        nodePackages.typescript-language-server
 
         # Typst
         tinymist
@@ -119,6 +127,33 @@
               tab-width = 2;
               unit = "  ";
             };
+            grammar = "scl";
+          }
+
+          {
+            name = "scle";
+            language-servers = ["scl"];
+            scope = "source.scle";
+            file-types = ["scle"];
+            injection-regex = "^(scle|skyr)$";
+            comment-tokens = "//";
+            auto-format = true;
+            indent = {
+              tab-width = 2;
+              unit = "  ";
+            };
+            grammar = "scle";
+          }
+        ];
+
+        languages.grammar = [
+          {
+            name = "scl";
+            source.path = "/Users/emilbroman/code/skyr/crates/sclc/tree-sitter-scl";
+          }
+          {
+            name = "scle";
+            source.path = "/Users/emilbroman/code/skyr/crates/sclc/tree-sitter-scle";
           }
         ];
 

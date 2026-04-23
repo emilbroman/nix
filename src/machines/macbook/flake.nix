@@ -67,6 +67,11 @@
                 sudo darwin-rebuild switch --flake ~/code/nix/src/machines/macbook
               '';
 
+              programs.fish.functions.nix-upgrade = ''
+                sudo nix flake update --flake ~/code/nix/src/machines/macbook
+                nix-rebuild
+              '';
+
               home.packages = with pkgs; [
                 # Cloud Management
                 awscli2

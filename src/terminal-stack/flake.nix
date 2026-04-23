@@ -6,7 +6,7 @@
     gpg.url = ../gpg;
     git.url = ../git;
     ssh.url = ../ssh;
-    dark-theme.url = ../themes/dark;
+    theme.url = ../themes/light;
   };
 
   outputs = {
@@ -17,9 +17,9 @@
     gpg,
     git,
     ssh,
-    dark-theme,
+    theme,
   }: {
-    theme = dark-theme;
+    inherit theme;
 
     system-module = {
       imports = [

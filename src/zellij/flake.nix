@@ -2,13 +2,26 @@
   inputs = {
     zjstatus.url = "https://github.com/dj95/zjstatus/releases/download/v0.21.0/zjstatus.wasm";
     zjstatus.flake = false;
+    nix-colors.url = "github:misterio77/nix-colors";
   };
 
   outputs = {
     self,
     zjstatus,
+    nix-colors,
   }: {
     home-module = {theme}: {pkgs, ...}: let
+      hexToRgb = nix-colors.lib.conversions.hexToRGBString " ";
+      frameBlock = name: hex: let rgb = hexToRgb hex; in ''
+                ${name} {
+                    base ${rgb}
+                    background 0
+                    emphasis_0 ${rgb}
+                    emphasis_1 ${rgb}
+                    emphasis_2 ${rgb}
+                    emphasis_3 ${rgb}
+                }
+      '';
       layout = contents: ''
         layout {
           default_tab_template {
@@ -24,8 +37,8 @@
                 mode_normal   "#[fg=#${theme.zellij.pill.inactive.foreground},bg=#${theme.zellij.pill.inactive.background}] {name} "
                 mode_default_to_mode "normal"
 
-                tab_normal   "#[bg=#${theme.zellij.pill.inactive.background},fg=#${theme.zellij.pill.inactive.foreground}] {name} #[normal] "
-                tab_active   "#[bg=#${theme.zellij.pill.active.background},fg=#${theme.zellij.pill.active.foreground}] {name} #[normal] "
+                tab_normal   "#[bg=#${theme.zellij.pill.inactive.background},fg=#${theme.zellij.pill.inactive.foreground}] {name} #[bg=#${theme.zellij.pill.inactive.tag.background},fg=#${theme.zellij.pill.inactive.tag.foreground}] †{floating_total_count} #[normal] "
+                tab_active   "#[bg=#${theme.zellij.pill.active.background},fg=#${theme.zellij.pill.active.foreground}] {name} #[bg=#${theme.zellij.pill.active.tag.background},fg=#${theme.zellij.pill.active.tag.foreground}] †{floating_total_count} #[normal] "
 
                 datetime          "#[fg=#${theme.zellij.clock.foreground}] {format}"
                 datetime_format   "%H:%M"
@@ -265,6 +278,9 @@
                 cyan "#${theme.zellij.cyan}"
                 white "#${theme.zellij.white}"
                 orange "#${theme.zellij.orange}"
+                ${frameBlock "frame_selected" theme.zellij.frame.selected}
+                ${frameBlock "frame_unselected" theme.zellij.frame.unselected}
+                ${frameBlock "frame_highlight" theme.zellij.frame.highlight}
             }
         }
 

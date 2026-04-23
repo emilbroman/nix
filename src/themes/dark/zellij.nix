@@ -15,14 +15,24 @@
     foreground = self.palette.gray."250";
   };
 
+  frame = {
+    selected = self.palette.gray."200";
+    unselected = self.palette.gray."300";
+    highlight = self.palette.gray."150";
+  };
+
   pill = {
     inactive = {
       background = self.palette.gray."300";
       foreground = self.palette.gray."200";
+      tag.background = self.palette.gray."250";
+      tag.foreground = self.palette.gray."150";
     };
     active = {
       background = self.palette.gray."200";
       foreground = self.palette.gray."300";
+      tag.background = self.palette.gray."150";
+      tag.foreground = self.palette.gray."250";
     };
   };
 }

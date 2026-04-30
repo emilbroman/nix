@@ -12,6 +12,7 @@
     mac.url = ../../mac;
     terminal-stack.url = ../../terminal-stack;
     agents.url = ../../agents;
+    theme.url = ../../themes/dark;
   };
 
   outputs = {
@@ -23,6 +24,7 @@
     mac,
     terminal-stack,
     agents,
+    theme,
   }: {
     darwinConfigurations."emils-macbook" = nix-darwin.lib.darwinSystem {
       modules = [
@@ -54,9 +56,9 @@
 
             home-manager.users.emilbroman = {
               imports = [
-                terminal-stack.home-module
-                (apps.home-module {theme = terminal-stack.theme;})
-                agents.home-module
+                (terminal-stack.home-module {inherit theme;})
+                (apps.home-module {inherit theme;})
+                (agents.home-module {inherit theme;})
               ];
 
               home.stateVersion = "23.05";

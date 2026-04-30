@@ -6,7 +6,6 @@
     gpg.url = ../gpg;
     git.url = ../git;
     ssh.url = ../ssh;
-    theme.url = ../themes/light;
   };
 
   outputs = {
@@ -17,10 +16,7 @@
     gpg,
     git,
     ssh,
-    theme,
   }: {
-    inherit theme;
-
     system-module = {
       imports = [
         fish.system-module
@@ -28,11 +24,11 @@
       ];
     };
 
-    home-module = {pkgs, ...}: {
+    home-module = {theme}: {pkgs, ...}: {
       imports = [
-        (fish.home-module {theme = self.theme;})
-        (helix.home-module {theme = self.theme;})
-        (zellij.home-module {theme = self.theme;})
+        (fish.home-module {inherit theme;})
+        (helix.home-module {inherit theme;})
+        (zellij.home-module {inherit theme;})
         gpg.home-module
         git.home-module
         ssh.home-module

@@ -10,17 +10,23 @@
     zjstatus,
     nix-colors,
   }: {
-    home-module = {theme}: {pkgs, ...}: let
+    home-module = {theme}: {
+      pkgs,
+      lib,
+      ...
+    }: let
       hexToRgb = nix-colors.lib.conversions.hexToRGBString " ";
-      frameBlock = name: hex: let rgb = hexToRgb hex; in ''
-                ${name} {
-                    base ${rgb}
-                    background 0
-                    emphasis_0 ${rgb}
-                    emphasis_1 ${rgb}
-                    emphasis_2 ${rgb}
-                    emphasis_3 ${rgb}
-                }
+      frameBlock = name: hex: let
+        rgb = hexToRgb hex;
+      in ''
+        ${name} {
+            base ${rgb}
+            background 0
+            emphasis_0 ${rgb}
+            emphasis_1 ${rgb}
+            emphasis_2 ${rgb}
+            emphasis_3 ${rgb}
+        }
       '';
       layout = contents: ''
         layout {
@@ -51,18 +57,18 @@
                 command_hostname_cwd         "/"
                 command_hostname_env         {}
 
-                command_kubectx_command     "sh -c \"~/.nix-profile/bin/rg '^current-context: (.*)$' ~/.kube/config -r '$1'\""
+                command_kubectx_command     "sh -c \"${lib.getExe pkgs.ripgrep} '^current-context: (.*)$' ~/.kube/config -r '$1'\""
                 command_kubectx_format      "#[bg=#326ce5,fg=#ffffff] k8s #[fg=#326ce5,bg=#ffffff] {stdout}{stderr} "
                 command_kubectx_interval    "5"
                 command_kubectx_rendermode  "static"
                 command_kubectx_cwd         "/"
                 command_kubectx_env         {}
 
-                command_gcloud_command     "./fish -c \"~/.nix-profile/bin/rg '^project = (.*)$' -r '$1' ~/.config/gcloud/configurations/config_(cat ~/.config/gcloud/active_config)\""
+                command_gcloud_command     "${lib.getExe pkgs.fish} -c \"${lib.getExe pkgs.ripgrep} '^project = (.*)$' -r '$1' ~/.config/gcloud/configurations/config_(cat ~/.config/gcloud/active_config)\""
                 command_gcloud_format      "#[bg=#4285f4,fg=#ffffff] gcp #[fg=#4285f4,bg=#ffffff] {stdout}{stderr} "
                 command_gcloud_interval    "5"
                 command_gcloud_rendermode  "static"
-                command_gcloud_cwd         "/run/current-system/sw/bin"
+                command_gcloud_cwd         "/"
                 command_gcloud_env         {}
               }
             }
@@ -101,16 +107,6 @@
                 bind "Alt t" {
                   NewTab {
                     cwd "~"
-                  }
-                }
-                bind "Alt T" {
-                  NewTab {
-                    cwd "~"
-                    layout "${pkgs.writeText "layout.kdl" (layout ''
-          tab {
-            pane command="~/.nix-profile/bin/new-claude"
-          }
-        '')}"
                   }
                 }
 

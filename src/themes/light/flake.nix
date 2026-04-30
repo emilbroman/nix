@@ -34,5 +34,6 @@
     fish = import ./fish.nix {inherit self;};
     helix = import ./helix.nix {inherit self;};
     zellij = import ./zellij.nix {inherit self;};
+    pi = "light";
   };
 }

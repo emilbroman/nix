@@ -7,6 +7,7 @@
 
     terminal-stack.url = ../../terminal-stack;
     agents.url = ../../agents;
+    theme.url = ../../themes/dark;
   };
 
   outputs = {
@@ -15,6 +16,7 @@
     home-manager,
     terminal-stack,
     agents,
+    theme,
   }: {
     nixosConfigurations."dev" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -69,8 +71,8 @@
 
           home-manager.users.emilbroman = {
             imports = [
-              terminal-stack.home-module
-              agents.home-module
+              (terminal-stack.home-module {inherit theme;})
+              (agents.home-module {inherit theme;})
             ];
 
             showHostnameInFishPrompt = true;

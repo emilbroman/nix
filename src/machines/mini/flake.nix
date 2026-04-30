@@ -9,6 +9,7 @@
 
     mac.url = ../../mac;
     terminal-stack.url = ../../terminal-stack;
+    theme.url = ../../themes/dark;
   };
 
   outputs = {
@@ -18,6 +19,7 @@
     home-manager,
     mac,
     terminal-stack,
+    theme,
   }: {
     darwinConfigurations."emils-mini" = nix-darwin.lib.darwinSystem {
       modules = [
@@ -45,7 +47,7 @@
 
           home-manager.users.emilbroman = {
             imports = [
-              terminal-stack.home-module
+              (terminal-stack.home-module {inherit theme;})
             ];
 
             showHostnameInFishPrompt = true;

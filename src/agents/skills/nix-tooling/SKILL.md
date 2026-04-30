@@ -7,7 +7,7 @@ description: >
   compiler, formatter, linter, or runtime, or whenever the user mentions Nix, nixpkgs,
   nix run, nix develop, or flake.nix. Also activate when you're about to reach for
   apt-get, brew, pip install --global, npm install -g, or cargo install — use the
-  Nix equivalent instead. This skill applies to Claude Code terminal usage.
+  Nix equivalent instead.
 ---
 
 # Nix Tooling

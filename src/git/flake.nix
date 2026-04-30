@@ -27,7 +27,6 @@
 
         ignores = [
           ".DS_Store"
-          ".claude/"
         ];
       };
     };

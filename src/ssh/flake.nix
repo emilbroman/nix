@@ -5,45 +5,39 @@
         enable = true;
         enableDefaultConfig = false;
 
-        matchBlocks =
+        settings =
           {
             cp = {
-              host = "cp";
-              hostname = "cp.bb3.internal";
-              extraOptions.StrictHostKeyChecking = "no";
-              extraOptions.UserKnownHostsFile = "/dev/null";
-              user = "root";
+              HostName = "cp.bb3.internal";
+              StrictHostKeyChecking = "no";
+              UserKnownHostsFile = "/dev/null";
+              User = "root";
             };
 
             dev = {
-              host = "dev";
-              hostname = "dev.vm.bb3.internal";
-              user = "emilbroman";
+              HostName = "dev.vm.bb3.internal";
+              User = "emilbroman";
             };
 
             tower = {
-              host = "tower";
-              hostname = "tower.hw.bb3.internal";
-              user = "root";
+              HostName = "tower.hw.bb3.internal";
+              User = "root";
             };
           }
           // builtins.listToAttrs (map (i: {
             name = "tc${toString i}";
-            value.host = "tc${toString i}";
-            value.hostname = "tc${toString i}.hw.bb3.internal";
-            value.user = "root";
+            value.HostName = "tc${toString i}.hw.bb3.internal";
+            value.User = "root";
           }) (lib.lists.range 1 3))
           // builtins.listToAttrs (map (i: {
             name = "cp${toString i}";
-            value.host = "cp${toString i}";
-            value.hostname = "cp${toString i}.vm.bb3.internal";
-            value.user = "root";
+            value.HostName = "cp${toString i}.vm.bb3.internal";
+            value.User = "root";
           }) (lib.lists.range 1 3))
           // builtins.listToAttrs (map (i: {
             name = "node${toString i}";
-            value.host = "node${toString i}";
-            value.hostname = "node${toString i}.vm.bb3.internal";
-            value.user = "root";
+            value.HostName = "node${toString i}.vm.bb3.internal";
+            value.User = "root";
           }) (lib.lists.range 1 4));
       };
     };

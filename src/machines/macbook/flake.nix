@@ -8,6 +8,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     apps.url = ./apps;
+    tv4.url = ./tv4;
 
     mac.url = ../../mac;
     terminal-stack.url = ../../terminal-stack;
@@ -21,6 +22,7 @@
     home-manager,
     nix-darwin,
     apps,
+    tv4,
     mac,
     terminal-stack,
     agents,
@@ -59,6 +61,7 @@
                 (terminal-stack.home-module {inherit theme;})
                 (apps.home-module {inherit theme;})
                 (agents.home-module {inherit theme;})
+                tv4.home-module
               ];
 
               home.stateVersion = "23.05";
@@ -89,6 +92,7 @@
         mac.system-module
         terminal-stack.system-module
         agents.system-module
+        tv4.system-module
       ];
     };
   };

@@ -11,18 +11,21 @@
       },
       "parent": []
     },
-    "dark-theme": {
+    "base16-schemes": {
+      "flake": false,
       "locked": {
-        "path": "../themes/dark",
-        "type": "path"
+        "lastModified": 1696158499,
+        "narHash": "sha256-5yIHgDTPjoX/3oDEfLSQ0eJZdFL1SaCfb9d6M0RmOTM=",
+        "owner": "tinted-theming",
+        "repo": "base16-schemes",
+        "rev": "a9112eaae86d9dd8ee6bb9445b664fba2f94037a",
+        "type": "github"
       },
       "original": {
-        "path": "../themes/dark",
-        "type": "path"
-      },
-      "parent": [
-        "terminal-stack"
-      ]
+        "owner": "tinted-theming",
+        "repo": "base16-schemes",
+        "type": "github"
+      }
     },
     "fish": {
       "inputs": {
@@ -86,11 +89,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769776025,
-        "narHash": "sha256-70a1kVC08AMTvPc7iqQsJbbD4Y1fukakMVudz4oY9SM=",
+        "lastModified": 1786031233,
+        "narHash": "sha256-TIDlLTLI1/pB7IqgjzcKQjpODQsZE2oII4XGG9B6KjI=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "0fba737f8d5571d41467f3d99a878e11b8c0f0f0",
+        "rev": "7834e82588860aaf780cec1366524456a70898d7",
         "type": "github"
       },
       "original": {
@@ -99,13 +102,45 @@
         "type": "github"
       }
     },
+    "kubectl": {
+      "locked": {
+        "path": "../kubectl",
+        "type": "path"
+      },
+      "original": {
+        "path": "../kubectl",
+        "type": "path"
+      },
+      "parent": [
+        "terminal-stack"
+      ]
+    },
+    "nix-colors": {
+      "inputs": {
+        "base16-schemes": "base16-schemes",
+        "nixpkgs-lib": "nixpkgs-lib"
+      },
+      "locked": {
+        "lastModified": 1707825078,
+        "narHash": "sha256-hTfge2J2W+42SZ7VHXkf4kjU+qzFqPeC9k66jAUBMHk=",
+        "owner": "misterio77",
+        "repo": "nix-colors",
+        "rev": "b01f024090d2c4fc3152cd0cf12027a7b8453ba1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "misterio77",
+        "repo": "nix-colors",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1769461804,
-        "narHash": "sha256-msG8SU5WsBUfVVa/9RPLaymvi5bI8edTavbIq3vRlhI=",
+        "lastModified": 1785967620,
+        "narHash": "sha256-IItrdb7Puk05RqOBWZYFC5X6Wl1sJmCfh5MWVHw5iMM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "bfc1b8a4574108ceef22f02bafcf6611380c100d",
+        "rev": "b7c2ada94fe99c15b0dbcf4d11fd7850b957a436",
         "type": "github"
       },
       "original": {
@@ -115,14 +150,28 @@
         "type": "github"
       }
     },
+    "nixpkgs-lib": {
+      "locked": {
+        "lastModified": 1697935651,
+        "narHash": "sha256-qOfWjQ2JQSQL15KLh6D7xQhx0qgZlYZTYlcEiRuAMMw=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "e1e11fdbb01113d85c7f41cada9d2847660e3902",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1769740369,
-        "narHash": "sha256-xKPyJoMoXfXpDM5DFDZDsi9PHArf2k5BJjvReYXoFpM=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "6308c3b21396534d8aaeac46179c14c439a89b8a",
-        "type": "github"
+        "lastModified": 1785747939,
+        "narHash": "sha256-NqaCaIITVSDaBYdcWcfCyEu1erL7paTPEQbISQp9xwQ=",
+        "rev": "104240a772428cc2e20d8fd86c9ddbb886bbaff2",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.11pre1046984.104240a77242/nixexprs.tar.xz"
       },
       "original": {
         "id": "nixpkgs",
@@ -134,7 +183,8 @@
         "agents": "agents",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "terminal-stack": "terminal-stack"
+        "terminal-stack": "terminal-stack",
+        "theme": "theme"
       }
     },
     "ssh": {
@@ -152,11 +202,11 @@
     },
     "terminal-stack": {
       "inputs": {
-        "dark-theme": "dark-theme",
         "fish": "fish",
         "git": "git",
         "gpg": "gpg",
         "helix": "helix",
+        "kubectl": "kubectl",
         "ssh": "ssh",
         "zellij": "zellij"
       },
@@ -170,8 +220,20 @@
       },
       "parent": []
     },
+    "theme": {
+      "locked": {
+        "path": "../../themes/dark",
+        "type": "path"
+      },
+      "original": {
+        "path": "../../themes/dark",
+        "type": "path"
+      },
+      "parent": []
+    },
     "zellij": {
       "inputs": {
+        "nix-colors": "nix-colors",
         "zjstatus": "zjstatus"
       },
       "locked": {

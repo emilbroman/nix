@@ -9,6 +9,7 @@
 
     apps.url = ./apps;
     tv4.url = ./tv4;
+    skyr.url = ./skyr;
 
     mac.url = ../../mac;
     terminal-stack.url = ../../terminal-stack;
@@ -23,6 +24,7 @@
     nix-darwin,
     apps,
     tv4,
+    skyr,
     mac,
     terminal-stack,
     agents,
@@ -31,7 +33,12 @@
     darwinConfigurations."emils-macbook" = nix-darwin.lib.darwinSystem {
       modules = [
         (
-          {pkgs, ...}: {
+          {
+            pkgs,
+            lib,
+            config,
+            ...
+          }: {
             nix.settings.experimental-features = "nix-command flakes";
             nix.settings.trusted-users = ["emilbroman"];
 
@@ -62,7 +69,12 @@
                 (apps.home-module {inherit theme;})
                 (agents.home-module {inherit theme;})
                 tv4.home-module
+                skyr.home-module
               ];
+
+              programs.codex.settings.projects."${config.users.users.emilbroman.home}/code/skyr".trust_level = "trusted";
+              programs.codex.settings.projects."${config.users.users.emilbroman.home}/code/skyr-constructs/Ingress".trust_level = "trusted";
+              programs.codex.settings.projects."${config.users.users.emilbroman.home}/code/skyr-constructs/IAM".trust_level = "trusted";
 
               home.stateVersion = "23.05";
 

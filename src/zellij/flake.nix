@@ -47,6 +47,7 @@
                 tab_active   "#[bg=#${theme.zellij.pill.active.background},fg=#${theme.zellij.pill.active.foreground}] {name} #[bg=#${theme.zellij.pill.active.tag.background},fg=#${theme.zellij.pill.active.tag.foreground}] †{floating_total_count} #[normal] "
 
                 datetime          "#[fg=#${theme.zellij.clock.foreground}] {format}"
+                datetime_interval "60"
                 datetime_format   "%H:%M"
                 datetime_timezone "Europe/Stockholm"
 

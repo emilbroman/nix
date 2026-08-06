@@ -45,7 +45,7 @@
             "frontend-design@claude-plugins-official" = true;
           };
           tui = "fullscreen";
-          hooks = {
+          hooks = lib.optionalAttrs pkgs.stdenv.isDarwin {
             Notification = [
               {
                 matcher = "";

@@ -6,6 +6,7 @@
     gpg.url = ../gpg;
     git.url = ../git;
     ssh.url = ../ssh;
+    kubectl.url = ../kubectl;
   };
 
   outputs = {
@@ -16,6 +17,7 @@
     gpg,
     git,
     ssh,
+    kubectl,
   }: {
     system-module = {
       imports = [
@@ -32,6 +34,7 @@
         gpg.home-module
         git.home-module
         ssh.home-module
+        kubectl.home-module
       ];
 
       home.packages = with pkgs; [

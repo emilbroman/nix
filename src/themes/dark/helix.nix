@@ -36,6 +36,7 @@
   };
 
   "ui.virtual.ruler" = self.hexpalette.gray."300";
+  "ui.virtual.wrap" = self.hexpalette.gray."300";
 
   "special" = self.hexpalette.orange."300";
   "error" = self.hexpalette.red."400";

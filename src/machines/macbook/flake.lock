@@ -46,16 +46,16 @@
     "brew-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1785146564,
-        "narHash": "sha256-Sa7/HrfB04H32OJ7/ofxXjiZEbkWtCNOriONYYTL1OA=",
+        "lastModified": 1786945682,
+        "narHash": "sha256-VBESSoJccikdhxh3vp3SQeG7cZXTOulMvVkoSqNDEhs=",
         "owner": "Homebrew",
         "repo": "brew",
-        "rev": "b2cfc03346d482f79886de108fee5dc49a6efc10",
+        "rev": "5b90e281d4e0c8fbd6ca4d8358276fb305b8d0bd",
         "type": "github"
       },
       "original": {
         "owner": "Homebrew",
-        "ref": "6.0.13",
+        "ref": "6.0.18",
         "repo": "brew",
         "type": "github"
       }
@@ -63,11 +63,11 @@
     "claude-plugins": {
       "flake": false,
       "locked": {
-        "lastModified": 1782740322,
-        "narHash": "sha256-RuOaK2eb42HJ6ZFtoUHohlWJcyl6I3vh+3/5o9xVBfc=",
+        "lastModified": 1787925408,
+        "narHash": "sha256-XKLkWHVllN1OVdXbOpugTjPyJBQONEbvnaZ+iDxfJiM=",
         "ref": "refs/heads/main",
-        "rev": "3cb2d353dc34ef12883cd5128bc8910349961379",
-        "revCount": 49,
+        "rev": "cba3020b2df9ebb810aad3328f527a971f9cedae",
+        "revCount": 53,
         "type": "git",
         "url": "ssh://git@github.com/TV4/claude-plugins"
       },
@@ -138,11 +138,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785958398,
-        "narHash": "sha256-5r/JgsoNMTx+qIh83WkxpujEKBR7PF5ssnh5vYCuSAw=",
+        "lastModified": 1788355065,
+        "narHash": "sha256-gAz5oTI7ur34CfuakQduiQd/2ZhO62Bn2XXg08nZYYQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "a7c70cc290290f373f50cd820403833d250459ac",
+        "rev": "d9d750e4fc11c10cab2da677bdd31e427f3a3a71",
         "type": "github"
       },
       "original": {
@@ -201,11 +201,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785389976,
-        "narHash": "sha256-0tLW8Ff5yt8AH97jw4ZpFJ0OCJ122zIlgWGDmOfU/VU=",
+        "lastModified": 1786845137,
+        "narHash": "sha256-oQFip+v0luP8NIxJzmiW4Wu8bILsbFWom5l0zonl8hQ=",
         "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "15abb8c98f336cd8bd840d71059adebabe60bf04",
+        "rev": "4cff07de74b50e64bdd68cd4e722ab5b6b35ee48",
         "type": "github"
       },
       "original": {
@@ -219,11 +219,11 @@
         "brew-src": "brew-src"
       },
       "locked": {
-        "lastModified": 1785544760,
-        "narHash": "sha256-qV6OoNuly4ntqpCg7esIeJjUboxSnQNlLPxz+y5h9/o=",
+        "lastModified": 1787330919,
+        "narHash": "sha256-LslMncqN7uOOH5S88WZtO/EVt2HwD8ltUnfyANk+mC0=",
         "owner": "zhaofengli-wip",
         "repo": "nix-homebrew",
-        "rev": "937ce52c7d046310571f3a070713804ead496843",
+        "rev": "b00218e4aec0e5bf07d61a0bb13f842faa582d7b",
         "type": "github"
       },
       "original": {
@@ -234,11 +234,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1785967620,
-        "narHash": "sha256-IItrdb7Puk05RqOBWZYFC5X6Wl1sJmCfh5MWVHw5iMM=",
+        "lastModified": 1788316716,
+        "narHash": "sha256-bc7rSpXIdn9QWGNqfWcPZWOhEVF8NoeAZkWq0XWnf/k=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b7c2ada94fe99c15b0dbcf4d11fd7850b957a436",
+        "rev": "3ed67ec0a4d3c7ab4ae1f04f8ee8df07bfa506a2",
         "type": "github"
       },
       "original": {
@@ -265,11 +265,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1785747939,
-        "narHash": "sha256-NqaCaIITVSDaBYdcWcfCyEu1erL7paTPEQbISQp9xwQ=",
-        "rev": "104240a772428cc2e20d8fd86c9ddbb886bbaff2",
+        "lastModified": 1788372231,
+        "narHash": "sha256-4ua7nluyuvF5SVIa2nBTCTW9ZiuzYuSBZQk4EdwOWhI=",
+        "rev": "9387b3fcc0c23c86661636da63faabad4235a0a6",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.11pre1046984.104240a77242/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.11pre1066425.9387b3fcc0c2/nixexprs.tar.xz"
       },
       "original": {
         "id": "nixpkgs",
@@ -309,11 +309,11 @@
     "skyr-agent-plugin": {
       "flake": false,
       "locked": {
-        "lastModified": 1785920187,
-        "narHash": "sha256-eC95fSJ22RUq4MBZw71WDe8psYo4Ly8WGXlC20N0Y4w=",
+        "lastModified": 1788359225,
+        "narHash": "sha256-4GBYToiyNkmP6618plhJg+EAXLOsRZdKHHUW1GqFFkI=",
         "owner": "skyr-cloud",
         "repo": "agent-plugin",
-        "rev": "debb7ac0fd42f4b293bfbbb027329e774ec86e8a",
+        "rev": "961eb19efb929c51b656284cf13c1a8ac8b4fc06",
         "type": "github"
       },
       "original": {
@@ -369,11 +369,11 @@
     "tree-sitter-scl": {
       "flake": false,
       "locked": {
-        "lastModified": 1785920187,
-        "narHash": "sha256-Cma1KcjhFzw1sS+0C8Dy6dYm3nUp3INrLA6gBtUr8N0=",
+        "lastModified": 1787676353,
+        "narHash": "sha256-Eyj2J1WJ3HjRQzAlGZu0/LX78j5P7tW3ICx2Ns8/EPM=",
         "owner": "skyr-cloud",
         "repo": "tree-sitter-scl",
-        "rev": "67d821861a432609b5fe031589a5587252f80a90",
+        "rev": "c1dfe6c1f4e08bb0fecff99adabd3d11b63ceb1f",
         "type": "github"
       },
       "original": {
@@ -385,11 +385,11 @@
     "tree-sitter-scle": {
       "flake": false,
       "locked": {
-        "lastModified": 1785920187,
-        "narHash": "sha256-c1uU3MxdzLgxPjH7BXYRlZ6EBV5QrGbeSRIoZlycufY=",
+        "lastModified": 1787676353,
+        "narHash": "sha256-h/cN78vtlicvE3tT/bLrMGM8ui7pyMPQ6Mjp2KcP0pI=",
         "owner": "skyr-cloud",
         "repo": "tree-sitter-scle",
-        "rev": "d71acccfd36cecf5264cfbb6447ab2aa7f784534",
+        "rev": "6bdde561f5e49ccf6d296275c78788a5beed1120",
         "type": "github"
       },
       "original": {
@@ -416,11 +416,11 @@
     "tvm-cli": {
       "flake": false,
       "locked": {
-        "lastModified": 1782722782,
-        "narHash": "sha256-T/npnRozhZrODb4TLfW5OmF4Gh1wmy5OzRoOuKxU/w8=",
+        "lastModified": 1787568596,
+        "narHash": "sha256-JtopCt7mO/Z9nVwYJZOOBurt0RHRBS1401NsKI7XpEE=",
         "ref": "refs/heads/main",
-        "rev": "c0c251d8615c96f84e7fedc0326c396a6f3bc839",
-        "revCount": 138,
+        "rev": "0dab837596e5ceff58568768b7378a80439ccb75",
+        "revCount": 144,
         "type": "git",
         "url": "ssh://git@github.com/TV4/tvm-cli"
       },
@@ -475,13 +475,13 @@
     "zjstatus": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-JSJE0phFuDMsjHtKIFum5EXUXho0L8F0JmFYprNJoyc=",
+        "narHash": "sha256-uwV5Ufo8wREBwFcTrkEVogLh7125Raii4NgbmOD13fg=",
         "type": "file",
-        "url": "https://github.com/dj95/zjstatus/releases/download/v0.21.0/zjstatus.wasm"
+        "url": "https://github.com/dj95/zjstatus/releases/download/v0.24.0/zjstatus.wasm"
       },
       "original": {
         "type": "file",
-        "url": "https://github.com/dj95/zjstatus/releases/download/v0.21.0/zjstatus.wasm"
+        "url": "https://github.com/dj95/zjstatus/releases/download/v0.24.0/zjstatus.wasm"
       }
     }
   },

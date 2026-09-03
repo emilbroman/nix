@@ -59,13 +59,13 @@
     "zjstatus": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-JSJE0phFuDMsjHtKIFum5EXUXho0L8F0JmFYprNJoyc=",
+        "narHash": "sha256-uwV5Ufo8wREBwFcTrkEVogLh7125Raii4NgbmOD13fg=",
         "type": "file",
-        "url": "https://github.com/dj95/zjstatus/releases/download/v0.21.0/zjstatus.wasm"
+        "url": "https://github.com/dj95/zjstatus/releases/download/v0.24.0/zjstatus.wasm"
       },
       "original": {
         "type": "file",
-        "url": "https://github.com/dj95/zjstatus/releases/download/v0.21.0/zjstatus.wasm"
+        "url": "https://github.com/dj95/zjstatus/releases/download/v0.24.0/zjstatus.wasm"
       }
     }
   },

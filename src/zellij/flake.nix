@@ -1,6 +1,6 @@
 {
   inputs = {
-    zjstatus.url = "https://github.com/dj95/zjstatus/releases/download/v0.21.0/zjstatus.wasm";
+    zjstatus.url = "https://github.com/dj95/zjstatus/releases/download/v0.24.0/zjstatus.wasm";
     zjstatus.flake = false;
     nix-colors.url = "github:misterio77/nix-colors";
   };
@@ -47,7 +47,6 @@
                 tab_active   "#[bg=#${theme.zellij.pill.active.background},fg=#${theme.zellij.pill.active.foreground}] {name} #[bg=#${theme.zellij.pill.active.tag.background},fg=#${theme.zellij.pill.active.tag.foreground}] †{floating_total_count} #[normal] "
 
                 datetime          "#[fg=#${theme.zellij.clock.foreground}] {format}"
-                datetime_interval "60"
                 datetime_format   "%H:%M"
                 datetime_timezone "Europe/Stockholm"
 

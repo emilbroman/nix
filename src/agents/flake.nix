@@ -71,27 +71,64 @@
         ];
       };
 
-      workIngestHooks = let
-        entry = extra: [
-          {
-            hooks = [
-              ({
-                  type = "command";
-                  command = "${lib.getExe pkgs.python3} ${config.home.homeDirectory}/.config/work/work-ingest.py";
-                  timeout = 60;
-                }
-                // extra)
-            ];
-          }
-        ];
-      in {
-        # Stop uploads every turn, so a running session is already visible in
-        # Work; the other two run synchronously because the session or its
-        # transcript is about to stop existing in its current form.
-        Stop = entry {async = true;};
-        SessionEnd = entry {};
-        PreCompact = entry {};
+      # Codex only runs a hook whose identity it has been told to trust, and the
+      # trust its review screen writes can never land in a config.toml that is a
+      # symlink into the store. Deriving the state from the declared hooks keeps
+      # every one of them trusted, wherever in this flake it was added.
+      codexHooksPath = "${config.home.homeDirectory}/.codex/hooks.json";
+
+      codexEventKeys = {
+        PreToolUse = "pre_tool_use";
+        PermissionRequest = "permission_request";
+        PostToolUse = "post_tool_use";
+        PreCompact = "pre_compact";
+        PostCompact = "post_compact";
+        SessionStart = "session_start";
+        SessionEnd = "session_end";
+        UserPromptSubmit = "user_prompt_submit";
+        SubagentStart = "subagent_start";
+        SubagentStop = "subagent_stop";
+        Stop = "stop";
+        Interrupt = "interrupt";
       };
+
+      # SessionEnd and Interrupt hooks run while Codex is tearing down: it
+      # defaults them to a second and caps them at three, and hashes the capped
+      # value. Everything else defaults to ten minutes.
+      codexTimeout = event: handler:
+        if event == "SessionEnd" || event == "Interrupt"
+        then lib.min 3 (lib.max 1 (handler.timeout or 1))
+        else lib.max 1 (handler.timeout or 600);
+
+      # The hash covers the canonical JSON of the event, the group carrying this
+      # one handler, and the defaults Codex fills in — `hook_hash` in
+      # codex-rs/hooks/src/engine/discovery.rs. Nix writes attribute names
+      # sorted and unspaced, which is that canonical form. A matcher is taken as
+      # declared, and Codex normalizes those per event, so a hook that needs one
+      # normalized would land back on the review screen rather than run.
+      codexTrustedHash = event: group: handler:
+        "sha256:"
+        + builtins.hashString "sha256" (builtins.toJSON ({
+            event_name = codexEventKeys.${event};
+            hooks = [({async = false;} // handler // {timeout = codexTimeout event handler;})];
+          }
+          // lib.optionalAttrs (group ? matcher) {inherit (group) matcher;}));
+
+      codexHookState = lib.listToAttrs (lib.concatLists (lib.mapAttrsToList (
+          event: groups:
+            lib.concatLists (lib.imap0 (
+                groupIndex: group:
+                  lib.imap0 (handlerIndex: handler: {
+                    name = "${codexHooksPath}:${codexEventKeys.${event}}:${toString groupIndex}:${toString handlerIndex}";
+                    value.trusted_hash = codexTrustedHash event group handler;
+                  })
+                  group.hooks
+              )
+              groups)
+        )
+        # An event Codex doesn't know is dropped when it reads hooks.json, and
+        # never asked about, so it has no trust state either.
+        (lib.filterAttrs (event: _: codexEventKeys ? ${event}) config.programs.codex.hooks)));
     in {
       programs.codex = {
         enable = true;
@@ -107,14 +144,7 @@
           approval_policy = "on-request";
           approvals_reviewer = "auto_review";
 
-          hooks.state = let
-            h = "${config.home.homeDirectory}/.codex/hooks.json";
-          in {
-            "${h}:user_prompt_submit:0:0".trusted_hash = "sha256:0fa90362de5751e5c8c74bd52f5ba4ffdfe66385f13532892518ceb68d3cc955";
-            "${h}:subagent_start:0:0".trusted_hash = "sha256:5cb71f2ee92443b08bda1a30ec4535354df7f28c766116617dd1b39db938c697";
-            "${h}:subagent_stop:0:0".trusted_hash = "sha256:93f2b97619da3776c1f982f46ca08f226b5d7813669fa1045840e2fa819f60f0";
-            "${h}:stop:0:0".trusted_hash = "sha256:8891077ffdd313425e969af792c8d538146f433b2e3a9929631cfd53ee2c8e7a";
-          };
+          hooks.state = codexHookState;
         };
       };
 
@@ -144,13 +174,10 @@
           };
           tui = "fullscreen";
 
-          hooks = lib.zipAttrsWith (_: lib.concatLists) [
-            (lib.optionalAttrs pkgs.stdenv.isDarwin (hooks {
-              adrafinilTool = "claude";
-              harnessName = "Claude Code";
-            }))
-            workIngestHooks
-          ];
+          hooks = lib.optionalAttrs pkgs.stdenv.isDarwin (hooks {
+            adrafinilTool = "claude";
+            harnessName = "Claude Code";
+          });
         };
       };
     };

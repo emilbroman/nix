@@ -75,6 +75,7 @@
               programs.codex.settings.projects."${config.users.users.emilbroman.home}/code/skyr".trust_level = "trusted";
               programs.codex.settings.projects."${config.users.users.emilbroman.home}/code/skyr-constructs/Ingress".trust_level = "trusted";
               programs.codex.settings.projects."${config.users.users.emilbroman.home}/code/skyr-constructs/IAM".trust_level = "trusted";
+              programs.codex.settings.projects."${config.users.users.emilbroman.home}/code/tv4/work".trust_level = "trusted";
 
               home.stateVersion = "23.05";
 

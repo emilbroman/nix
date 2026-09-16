@@ -401,7 +401,8 @@
     "tv4": {
       "inputs": {
         "claude-plugins": "claude-plugins",
-        "tvm-cli": "tvm-cli"
+        "tvm-cli": "tvm-cli",
+        "work": "work"
       },
       "locked": {
         "path": "tv4",
@@ -441,6 +442,22 @@
       "parent": [
         "apps"
       ]
+    },
+    "work": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789564794,
+        "narHash": "sha256-VJmUrbg5U9QOmxUCMEKVHtt350/8HyBSrjnx5r+Cp68=",
+        "ref": "refs/heads/main",
+        "rev": "cf7afa86ff79b45aeae4d567d6791600856d85b7",
+        "revCount": 1902,
+        "type": "git",
+        "url": "ssh://git@github.com/TV4/work"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/TV4/work"
+      }
     },
     "zed": {
       "locked": {

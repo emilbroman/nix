@@ -46,6 +46,9 @@
         "notion"
         "firefox"
         "podman-desktop"
+        "steam"
+        "discord"
+        "opencode-desktop"
       ];
     };
 

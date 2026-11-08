@@ -47,6 +47,7 @@
         moreutils
         tree
         gh
+        git-crypt
       ];
     };
   };

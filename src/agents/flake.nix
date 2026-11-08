@@ -1,5 +1,13 @@
 {
-  outputs = {self}: {
+  inputs = {
+    claude-plugins-official.url = "git+ssh://git@github.com/anthropics/claude-plugins-official";
+    claude-plugins-official.flake = false;
+  };
+
+  outputs = {
+    claude-plugins-official,
+    self,
+  }: {
     system-module = {lib, ...}: {
       nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) ["claude-code"];
     };
@@ -153,27 +161,23 @@
         context = ./AGENTS.md;
         skills = ./skills;
 
-        settings = {
-          extraKnownMarketplaces = {
-            claude-plugins-official = {
-              source = {
-                source = "github";
-                repo = "anthropics/claude-plugins-official";
-              };
-            };
-          };
+        marketplaces = {
+          cpo = claude-plugins-official;
+        };
 
+        settings = {
           voice.enabled = true;
           voice.mode = "tap";
 
           permissions.defaultMode = "bypassPermissions";
           skipDangerousModePermissionPrompt = true;
           enabledPlugins = {
-            "rust-analyzer-lsp@claude-plugins-official" = true;
-            "typescript-lsp@claude-plugins-official" = true;
-            "code-review@claude-plugins-official" = true;
-            "playwright@claude-plugins-official" = true;
-            "frontend-design@claude-plugins-official" = true;
+            "rust-analyzer-lsp@cpo" = true;
+            "typescript-lsp@cpo" = true;
+            "code-review@cpo" = true;
+            "playwright@cpo" = true;
+            "frontend-design@cpo" = true;
+            "mattpocock-skills@cpo" = true;
           };
           tui = "fullscreen";
 

@@ -141,8 +141,8 @@
         });
 
         settings = {
-          approval_policy = "on-request";
-          approvals_reviewer = "auto_review";
+          approval_policy = "never";
+          sandbox_mode = "danger-full-access";
 
           hooks.state = codexHookState;
         };
@@ -163,8 +163,8 @@
             };
           };
 
-          permissions.defaultMode = "auto";
-          permissions.skipDangerousModePermissionPrompt = true;
+          permissions.defaultMode = "bypassPermissions";
+          skipDangerousModePermissionPrompt = true;
           enabledPlugins = {
             "rust-analyzer-lsp@claude-plugins-official" = true;
             "typescript-lsp@claude-plugins-official" = true;

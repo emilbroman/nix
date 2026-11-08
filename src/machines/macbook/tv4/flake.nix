@@ -40,7 +40,7 @@
           hooks = [
             ({
                 type = "command";
-                command = "${lib.getExe pkgs.python3} ${work}/components/runtime-service/hooks/work-ingest.py";
+                command = "${lib.getExe pkgs.python3} ${work}/components/sessions/hooks/work-ingest.py";
                 timeout = 60;
               }
               // extra)

@@ -7,32 +7,39 @@
       config,
       ...
     }: {
-      home.packages = with pkgs; [
-        helix
-
-        # Web
-        biome
-
-        # Nix
-        nil
-        alejandra
-
-        # Markdown
-        marksman
-
-        # Typst
-        tinymist
-
-        # Go
-        gopls
-      ];
-
       programs.helix = {
         enable = true;
 
         defaultEditor = true;
 
         themes.${themeName} = theme.helix;
+
+        extraPackages = with pkgs; [
+          # TypeScript
+          typescript-language-server
+
+          # Rust
+          rust-analyzer
+          cargo
+          rustup
+          rustc
+
+          # Web
+          biome
+
+          # Nix
+          nil
+          alejandra
+
+          # Markdown
+          marksman
+
+          # Typst
+          tinymist
+
+          # Go
+          gopls
+        ];
 
         settings = {
           theme = themeName;

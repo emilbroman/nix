@@ -257,6 +257,81 @@
         };
       };
 
+      # OpenCode has no shell hooks; its equivalent is a plugin. A prompt starts
+      # the top-level hold and the session going idle ends it. A child session
+      # is a subagent, held from its creation until it goes idle. Each session
+      # is released at most once, so the duplicate idle events OpenCode emits
+      # are harmless.
+      xdg.configFile."opencode/plugins/adrafinil/index.ts" = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+        text = ''
+          import { spawn } from "node:child_process"
+          import { Plugin } from "@opencode/plugin"
+
+          const adrafinil = "/Applications/Adrafinil.app/Contents/Helpers/adrafinil"
+
+          const run = (verb: string, subagent: boolean) => {
+            const args = [verb, "--tool", "opencode"]
+            if (subagent) args.push("--subagent")
+            spawn(adrafinil, args, { stdio: "ignore" }).on("error", () => {})
+          }
+
+          export default Plugin.define({
+            id: "adrafinil",
+            async setup(ctx) {
+              // sessionID -> whether it is a subagent
+              const held = new Map<string, boolean>()
+
+              const acquire = (sessionID: string, subagent: boolean) => {
+                if (held.has(sessionID)) return
+                held.set(sessionID, subagent)
+                run("acquire", subagent)
+              }
+
+              const release = (sessionID: string) => {
+                const subagent = held.get(sessionID)
+                if (subagent === undefined) return
+                held.delete(sessionID)
+                run("release", subagent)
+              }
+
+              const isSubagent = async (sessionID: string) => {
+                try {
+                  const session: any = await ctx.session.get({ sessionID })
+                  return Boolean(session?.parentID)
+                } catch {
+                  return false
+                }
+              }
+
+              await ctx.session.hook("prompt", async (event: any) => {
+                const sessionID = event.sessionID
+                acquire(sessionID, await isSubagent(sessionID))
+              })
+
+              const controller = new AbortController()
+              void (async () => {
+                for await (const event of ctx.event.subscribe({ signal: controller.signal }) as AsyncIterable<any>) {
+                  const sessionID = event.data?.sessionID ?? event.properties?.sessionID
+                  if (!sessionID) continue
+                  if (event.type === "session.created") {
+                    if (await isSubagent(sessionID)) acquire(sessionID, true)
+                  } else if (event.type === "session.idle" || event.type === "session.deleted") {
+                    release(sessionID)
+                  } else if (event.type === "session.status" && (event.data?.status ?? event.properties?.status)?.type === "idle") {
+                    release(sessionID)
+                  }
+                }
+              })().catch(() => {})
+
+              return () => {
+                controller.abort()
+                for (const sessionID of [...held.keys()]) release(sessionID)
+              }
+            },
+          })
+        '';
+      };
+
       programs.opencode = let
         # Every model goes through the bb3 LiteLLM gateway, which only routes
         # ids carrying the prefix of their upstream. Each provider here borrows

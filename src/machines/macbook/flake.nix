@@ -78,6 +78,23 @@
               programs.codex.settings.projects."${config.users.users.emilbroman.home}/code/tv4/work".trust_level = "trusted";
               programs.codex.settings.projects."${config.users.users.emilbroman.home}/code/nix".trust_level = "trusted";
 
+              # MCPL proxies downstream MCP servers behind a typed scripting
+              # language. The binary is a local release build of ~/code/mcpl.
+              programs.claude-code.mcpServers.mcpl = let
+                mcplConfig = (pkgs.formats.json {}).generate "mcpl-config.json" {
+                  mcpServers = {
+                    playwright = {
+                      command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
+                      args = ["--headless"];
+                    };
+                  };
+                };
+              in {
+                type = "stdio";
+                command = "${config.users.users.emilbroman.home}/code/mcpl/target/release/mcpl";
+                args = ["--config" "${mcplConfig}"];
+              };
+
               home.stateVersion = "23.05";
 
               programs.home-manager.enable = true;

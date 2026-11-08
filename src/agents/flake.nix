@@ -256,6 +256,60 @@
           });
         };
       };
+
+      programs.opencode = let
+        # Every model goes through the bb3 LiteLLM gateway, which only routes
+        # ids carrying the prefix of their upstream. Each provider here borrows
+        # a catalog provider's wire protocol through `canonical` but holds only
+        # the models listed, and each model inherits its catalog entry (limits,
+        # capabilities) by name, with `modelID` rewriting the id on the wire.
+        #
+        # They are providers of their own rather than overrides of the built-in
+        # ones for two reasons: a built-in provider keeps its whole catalog,
+        # which the gateway mostly won't route, and its env vars
+        # (OPENAI_API_KEY, MELIOUS_API_KEY) take precedence over a configured
+        # apiKey.
+        bb3 = canonical: name: prefix: models: {
+          inherit canonical name;
+          settings = {
+            baseURL = "https://litellm.bb3.internal/v1";
+            # A personal virtual key, minted in the gateway's UI.
+            apiKey = "{env:BB3_LITELLM_API_KEY}";
+          };
+          models = lib.genAttrs models (model: {modelID = "${prefix}/${model}";});
+        };
+      in {
+        enable = true;
+        context = ./AGENTS.md;
+        skills = ./skills;
+
+        settings = {
+          # The catalog providers the ones below stand in for.
+          disabled_providers = ["anthropic" "openai" "melious"];
+
+          providers = {
+            bb3-anthropic = bb3 "anthropic" "Anthropic (bb3)" "anthropic" [
+              "claude-fable-5-1"
+              "claude-opus-5-5"
+              "claude-sonnet-5-5"
+              "claude-haiku-5-5"
+            ];
+
+            # The ChatGPT subscription, over the Responses API. The gateway
+            # retries a failed request on the paid `openai/` route.
+            bb3-chatgpt = bb3 "openai" "ChatGPT (bb3)" "chatgpt" [
+              "gpt-6-astra"
+              "gpt-6.1-sol"
+              "gpt-6.1-terra"
+              "gpt-6-luna"
+            ];
+
+            bb3-melious = bb3 "melious" "Melious (bb3)" "melious" [
+              "deepseek-v4.1-flash-1017"
+            ];
+          };
+        };
+      };
     };
   };
 }

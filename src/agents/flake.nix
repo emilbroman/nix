@@ -2,10 +2,18 @@
   inputs = {
     claude-plugins-official.url = "git+ssh://git@github.com/anthropics/claude-plugins-official";
     claude-plugins-official.flake = false;
+
+    mattpocock-skills.url = "git+ssh://git@github.com/mattpocock/skills";
+    mattpocock-skills.flake = false;
+
+    openai-plugins.url = "github:openai/plugins";
+    openai-plugins.flake = false;
   };
 
   outputs = {
     claude-plugins-official,
+    mattpocock-skills,
+    openai-plugins,
     self,
   }: {
     system-module = {lib, ...}: {
@@ -137,6 +145,35 @@
         # An event Codex doesn't know is dropped when it reads hooks.json, and
         # never asked about, so it has no trust state either.
         (lib.filterAttrs (event: _: codexEventKeys ? ${event}) config.programs.codex.hooks)));
+
+      # openai/plugins names its marketplace `openai-curated`, which Codex
+      # reserves for its own built-in copy and so drops when configured. The
+      # manifest is rewritten under a name of our own.
+      openaiMarketplace = pkgs.runCommand "openai-plugins-marketplace" {nativeBuildInputs = [pkgs.jq];} ''
+        mkdir -p $out/.agents/plugins
+        ln -s ${openai-plugins}/plugins $out/plugins
+        jq '.name = "openai"' ${openai-plugins}/.agents/plugins/marketplace.json > $out/.agents/plugins/marketplace.json
+      '';
+
+      # A marketplace plugin only loads once it is installed into Codex's
+      # cache, which `codex plugin add` does by copying the plugin root there.
+      # It can't be a link into the store: Codex skips a plugin whose manifest
+      # is a symlink, while still listing it as installed.
+      codexPlugins = {
+        linear = {
+          marketplace = "openai";
+          marketplaceSource = openaiMarketplace;
+          source = "${openai-plugins}/plugins/linear";
+          manifest = ".codex-plugin/plugin.json";
+        };
+        mattpocock-skills = {
+          marketplace = "mattpocock";
+          source = mattpocock-skills;
+          manifest = ".claude-plugin/plugin.json";
+        };
+      };
+
+      codexPluginCacheDir = name: plugin: "${config.home.homeDirectory}/.codex/plugins/cache/${plugin.marketplace}/${name}";
     in {
       programs.codex = {
         enable = true;
@@ -153,8 +190,31 @@
           sandbox_mode = "danger-full-access";
 
           hooks.state = codexHookState;
+
+          plugins = lib.mapAttrs' (name: plugin: lib.nameValuePair "${name}@${plugin.marketplace}" {enabled = true;}) codexPlugins;
         };
+
+        marketplaces = lib.mapAttrs' (_: plugin: lib.nameValuePair plugin.marketplace (plugin.marketplaceSource or plugin.source)) codexPlugins;
       };
+
+      home.activation.installCodexPlugins = lib.hm.dag.entryAfter ["writeBoundary"] (lib.concatStrings (lib.mapAttrsToList (name: plugin: let
+          cacheDir = lib.escapeShellArg (codexPluginCacheDir name plugin);
+          version = (builtins.fromJSON (builtins.readFile "${plugin.source}/${plugin.manifest}")).version;
+        in ''
+          # The marker holds the store path that was copied, so a new revision
+          # replaces the copy even when the plugin's version is unchanged.
+          if [[ "$(cat ${cacheDir}/.nix-source 2>/dev/null)" != ${plugin.source} ]]; then
+            if [[ -e ${cacheDir} ]]; then
+              run chmod -R u+w ${cacheDir}
+              run rm -rf ${cacheDir}
+            fi
+            run mkdir -p ${cacheDir}
+            run cp -R ${plugin.source} ${cacheDir}/${lib.escapeShellArg version}
+            run chmod -R u+w ${cacheDir}/${lib.escapeShellArg version}
+            [[ -v DRY_RUN ]] || echo ${plugin.source} > ${cacheDir}/.nix-source
+          fi
+        '')
+        codexPlugins));
 
       programs.claude-code = {
         enable = true;

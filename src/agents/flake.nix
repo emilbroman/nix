@@ -135,7 +135,7 @@
         context = ./AGENTS.md;
         skills = ./skills;
 
-        hooks = lib.optionalAttrs pkgs.stdenv.isDarwin (hooks {
+        hooks = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin (hooks {
           adrafinilTool = "codex";
           harnessName = "Codex";
         });
@@ -174,7 +174,7 @@
           };
           tui = "fullscreen";
 
-          hooks = lib.optionalAttrs pkgs.stdenv.isDarwin (hooks {
+          hooks = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin (hooks {
             adrafinilTool = "claude";
             harnessName = "Claude Code";
           });

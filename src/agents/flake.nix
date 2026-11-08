@@ -163,6 +163,9 @@
             };
           };
 
+          voice.enabled = true;
+          voice.mode = "tap";
+
           permissions.defaultMode = "bypassPermissions";
           skipDangerousModePermissionPrompt = true;
           enabledPlugins = {

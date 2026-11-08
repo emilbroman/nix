@@ -180,6 +180,13 @@
         context = ./AGENTS.md;
         skills = ./skills;
 
+        # The desktop app installs its bundled plugins (computer-use and the
+        # unified-computer-use MCP backend it relies on) by registering the
+        # `openai-bundled` marketplace and enabling them in config.toml. A
+        # store symlink makes those writes fail, so keep config.toml a real
+        # file and merge the declared settings over it on activation instead.
+        mutableSettings = true;
+
         hooks = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin (hooks {
           adrafinilTool = "codex";
           harnessName = "Codex";
@@ -191,7 +198,9 @@
 
           hooks.state = codexHookState;
 
-          plugins = lib.mapAttrs' (name: plugin: lib.nameValuePair "${name}@${plugin.marketplace}" {enabled = true;}) codexPlugins;
+          plugins = (lib.mapAttrs' (name: plugin: lib.nameValuePair "${name}@${plugin.marketplace}" {enabled = true;}) codexPlugins) // {
+            "computer-use@openai-bundled".enabled = true;
+          };
         };
 
         marketplaces = lib.mapAttrs' (_: plugin: lib.nameValuePair plugin.marketplace (plugin.marketplaceSource or plugin.source)) codexPlugins;

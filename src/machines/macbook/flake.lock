@@ -1,6 +1,11 @@
 {
   "nodes": {
     "agents": {
+      "inputs": {
+        "claude-plugins-official": "claude-plugins-official",
+        "mattpocock-skills": "mattpocock-skills",
+        "openai-plugins": "openai-plugins"
+      },
       "locked": {
         "path": "../../agents",
         "type": "path"
@@ -46,16 +51,16 @@
     "brew-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1788591592,
-        "narHash": "sha256-NbwVKwKLFl0oXub7oPjvmDaOygCtV2oboeKTu4xXFTk=",
+        "lastModified": 1789661079,
+        "narHash": "sha256-geVTQ51PGZ1mLULM5k7wO7qt/6xenOR/YG8X7Q3eCaI=",
         "owner": "Homebrew",
         "repo": "brew",
-        "rev": "08e85c4e42f5d8f1ea17c36cb59cf61c2ccb26c3",
+        "rev": "edb70f031e4170c780799633a1226ff73e1077f4",
         "type": "github"
       },
       "original": {
         "owner": "Homebrew",
-        "ref": "6.0.22",
+        "ref": "7.0.4",
         "repo": "brew",
         "type": "github"
       }
@@ -63,17 +68,33 @@
     "claude-plugins": {
       "flake": false,
       "locked": {
-        "lastModified": 1787925408,
-        "narHash": "sha256-XKLkWHVllN1OVdXbOpugTjPyJBQONEbvnaZ+iDxfJiM=",
+        "lastModified": 1793094735,
+        "narHash": "sha256-C9i16d6fBtoA3rUG0L8JqomIwzjA6a2w9+5n6A0sDrk=",
         "ref": "refs/heads/main",
-        "rev": "cba3020b2df9ebb810aad3328f527a971f9cedae",
-        "revCount": 53,
+        "rev": "2f725a93e63244e7021b9d80f9eea6c970fc78a2",
+        "revCount": 59,
         "type": "git",
         "url": "ssh://git@github.com/TV4/claude-plugins"
       },
       "original": {
         "type": "git",
         "url": "ssh://git@github.com/TV4/claude-plugins"
+      }
+    },
+    "claude-plugins-official": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793130704,
+        "narHash": "sha256-lmJbRtHsAN/rxqzm5hzxxu8lx+iiqRCtocJ7YET03Lg=",
+        "ref": "refs/heads/main",
+        "rev": "f8c5e7a1dcb71b10cb74586224b5401f3de5db28",
+        "revCount": 4656,
+        "type": "git",
+        "url": "ssh://git@github.com/anthropics/claude-plugins-official"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/anthropics/claude-plugins-official"
       }
     },
     "fish": {
@@ -138,11 +159,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789482455,
-        "narHash": "sha256-pD3qVlQ4mUCFoTWrYtxecpSitQMsgJvJIN0FUIDZoEU=",
+        "lastModified": 1793193205,
+        "narHash": "sha256-X6xa6sGA7RnJQuZGbFMC+K+KToWAlBDCCjJXfTwEPsw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "efa3ccb4c3cc90d832eab232976379058fa75aa3",
+        "rev": "095fef2f265c3c0da4fe315efba8f8a04495ab34",
         "type": "github"
       },
       "original": {
@@ -175,6 +196,22 @@
       },
       "parent": []
     },
+    "mattpocock-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793087052,
+        "narHash": "sha256-CkNJKbSlW8bUSfvHqfl7JTPnq8o1iYdzI24LGDMojE4=",
+        "ref": "refs/heads/main",
+        "rev": "59db609eb1e18aaf59b63284d0e52255aff0c63c",
+        "revCount": 548,
+        "type": "git",
+        "url": "ssh://git@github.com/mattpocock/skills"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/mattpocock/skills"
+      }
+    },
     "nix-colors": {
       "inputs": {
         "base16-schemes": "base16-schemes",
@@ -201,11 +238,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786845137,
-        "narHash": "sha256-oQFip+v0luP8NIxJzmiW4Wu8bILsbFWom5l0zonl8hQ=",
+        "lastModified": 1792737899,
+        "narHash": "sha256-P0/GhewcEQmAbzq3QunNWY2jLJaYH9F6c/5dEM/jQ4M=",
         "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "4cff07de74b50e64bdd68cd4e722ab5b6b35ee48",
+        "rev": "bb0b90dbd54e207100de72b5dcbe3188c98a4b69",
         "type": "github"
       },
       "original": {
@@ -219,11 +256,11 @@
         "brew-src": "brew-src"
       },
       "locked": {
-        "lastModified": 1788981439,
-        "narHash": "sha256-fEaFq0XgpgWFPLfpq1UK4/8ylHd2T0+fo6O3hKz1LUM=",
+        "lastModified": 1789928041,
+        "narHash": "sha256-iV37ieTcE4ZLOYEe0VznW6dWMBe4lEL8AbK1vblyZGM=",
         "owner": "zhaofengli-wip",
         "repo": "nix-homebrew",
-        "rev": "09a921d0181146cf6163ec2cc1db7b6fd539a885",
+        "rev": "c11cccfdd36dd69b5323d70d354b2853379c2426",
         "type": "github"
       },
       "original": {
@@ -234,11 +271,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1789426278,
-        "narHash": "sha256-GnotcvKtbTMnoVx6G4E7ZdUX6487Dky74dqq3pU7iRk=",
+        "lastModified": 1793110635,
+        "narHash": "sha256-dhoW6VgFWlaodSY5jrBn+CF2FLmaUvDVgM7+C7T2+NM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "efe6f071ede9d21c37462d2d6682d5e670099684",
+        "rev": "31ecbaca1bdefa45dffc409f0250bd8039ea0010",
         "type": "github"
       },
       "original": {
@@ -265,15 +302,31 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1789370336,
-        "narHash": "sha256-obwZbWHP7htCIoq2Z0g/uTMcEgN6yqcMNIcOMe6P2qI=",
-        "rev": "c7def046b9a883d46974757852106483d741586f",
+        "lastModified": 1793225069,
+        "narHash": "sha256-GYpArmwi/iMuX2ov31oCBhAXRMJdNX9kOl2LZHCuR6M=",
+        "rev": "e62746b0b472753ef019baceab6f1e2e52014980",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.11pre1073483.c7def046b9a8/nixexprs.tar.zst"
+        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.11pre1104102.e62746b0b472/nixexprs.tar.zst"
       },
       "original": {
         "id": "nixpkgs",
         "type": "indirect"
+      }
+    },
+    "openai-plugins": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791436892,
+        "narHash": "sha256-0HXOrcWKpNexof5Y7iDOy7wixwvCjF1FoN1M95P+n74=",
+        "owner": "openai",
+        "repo": "plugins",
+        "rev": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "openai",
+        "repo": "plugins",
+        "type": "github"
       }
     },
     "root": {
@@ -309,11 +362,11 @@
     "skyr-agent-plugin": {
       "flake": false,
       "locked": {
-        "lastModified": 1789250237,
-        "narHash": "sha256-Jmqn0q2/IXhDZSsTzCZHjQgLSfFfglaGJxpTEGUNGG8=",
+        "lastModified": 1793105109,
+        "narHash": "sha256-BzO/5KPuyt8g89R1iBQlOiLcPEC/p9HGpQ+9i2yObSQ=",
         "owner": "skyr-cloud",
         "repo": "agent-plugin",
-        "rev": "970058b1146389dfaf3c3a5bb0766ea33036b801",
+        "rev": "59a7f6dfeed635a071c0eef46684cfa08ed6bb05",
         "type": "github"
       },
       "original": {
@@ -417,11 +470,11 @@
     "tvm-cli": {
       "flake": false,
       "locked": {
-        "lastModified": 1787568596,
-        "narHash": "sha256-JtopCt7mO/Z9nVwYJZOOBurt0RHRBS1401NsKI7XpEE=",
+        "lastModified": 1793087367,
+        "narHash": "sha256-s+rqqRh+0Ojuck/veKm3XQoS0EaNoos4vauBMjsIhiU=",
         "ref": "refs/heads/main",
-        "rev": "0dab837596e5ceff58568768b7378a80439ccb75",
-        "revCount": 144,
+        "rev": "115ad9bceea35fc02d47bbf329e00d89ae57ab6d",
+        "revCount": 155,
         "type": "git",
         "url": "ssh://git@github.com/TV4/tvm-cli"
       },
@@ -446,11 +499,11 @@
     "work": {
       "flake": false,
       "locked": {
-        "lastModified": 1789564794,
-        "narHash": "sha256-VJmUrbg5U9QOmxUCMEKVHtt350/8HyBSrjnx5r+Cp68=",
+        "lastModified": 1793256915,
+        "narHash": "sha256-q8UK8ICG8qV9ueF3nZ2ILUPcHdYv+Xf9noIai+TKE/Y=",
         "ref": "refs/heads/main",
-        "rev": "cf7afa86ff79b45aeae4d567d6791600856d85b7",
-        "revCount": 1902,
+        "rev": "6ac50728ae0eb6372c3a442991b185f62a726702",
+        "revCount": 6009,
         "type": "git",
         "url": "ssh://git@github.com/TV4/work"
       },
